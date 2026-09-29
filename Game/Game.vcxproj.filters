@@ -4,6 +4,21 @@
     <Filter Include="system">
       <UniqueIdentifier>{22dd8095-74f9-46df-81a1-36675a040b1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{6af6b6ec-2e2d-475e-9e4d-cb01b5b47607}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Actor">
+      <UniqueIdentifier>{d0b1b4a2-6aff-4c50-97ed-7afe937d1803}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Actor\Player">
+      <UniqueIdentifier>{ac796dd2-abf6-4cf6-8473-5f5f1be09456}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Actor\Stage">
+      <UniqueIdentifier>{90b3cd28-0a33-4b61-8492-ff82543ee535}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Transform">
+      <UniqueIdentifier>{b5893b33-0878-4937-97cf-a793d8845656}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -12,6 +27,21 @@
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Source\Actor\Actor.cpp">
+      <Filter>Source\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform\Transform.cpp">
+      <Filter>Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\Player\Player.cpp">
+      <Filter>Source\Actor\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\Player\PlayerModel.cpp">
+      <Filter>Source\Actor\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\Stage\MainStage.cpp">
+      <Filter>Source\Actor\Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -19,5 +49,20 @@
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Source\Actor\Actor.h">
+      <Filter>Source\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform\Transform.h">
+      <Filter>Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Player\Player.h">
+      <Filter>Source\Actor\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Player\PlayerModel.h">
+      <Filter>Source\Actor\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Stage\MainStage.h">
+      <Filter>Source\Actor\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
