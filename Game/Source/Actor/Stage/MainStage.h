@@ -1,4 +1,9 @@
 #pragma once
+/**
+ * MainStage.h
+ * メインステージクラス
+ * ここでメインステージを管理する。
+ */
 class MainStage : public IGameObject
 {
 public:
