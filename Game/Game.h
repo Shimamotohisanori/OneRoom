@@ -23,5 +23,8 @@ private:
 
 	/** ゲームカメラ */
 	GameCamera* m_gameCamera;
+
+	/** スカイキューブ */
+	SkyCube* m_skyCube;
 };
 
