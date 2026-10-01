@@ -3,10 +3,10 @@
 namespace 
 {
 	/** 歩きの最大速度 */
-	constexpr float WALK_MAX_SPEED = 20.0f;
+	constexpr float WALK_MAX_SPEED = 50.0f;
 	
 	/** 走りの最大速度 */
-	constexpr float RUN_MAX_SPEED = 50.0f;
+	constexpr float RUN_MAX_SPEED = 100.0f;
 
 	/** 左右の向きを変える速さ(度数/フレーム換算前の係数) */
 	constexpr float YAW_ROTATE_SPEED = 2.0f;
@@ -16,6 +16,9 @@ namespace
 
 	/** 入力無しとみなす閾値 */
 	constexpr float NO_INPUT_THRESHOLD = 0.01f;
+
+	/** プレイヤーの初期位置 */
+	const Vector3 INITIAL_POSITION = {0.0f, -50.0f, 0.0f};
 }
 
 PlayerController::PlayerController()
@@ -26,6 +29,7 @@ PlayerController::~PlayerController()
 
 bool PlayerController::Start()
 {
+	m_position = INITIAL_POSITION;
 	return true;
 }
 

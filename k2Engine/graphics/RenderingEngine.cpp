@@ -25,7 +25,7 @@ namespace nsK2Engine {
         InitShadowMapRender();
         InitDeferredLighting();
         Init2DRenderTarget();
-        
+
         m_lightCulling.Init(
             m_zprepassRenderTarget.GetRenderTargetTexture(),
             m_diferredLightingSprite.GetExpandConstantBufferGPU(),
@@ -38,11 +38,10 @@ namespace nsK2Engine {
             m_gBuffer[enGBufferNormal],
             m_gBuffer[enGBufferMetaricShadowSmooth],
             m_gBuffer[enGBufferAlbedoDepth]);
-        
     }
     void RenderingEngine::InitDefferedLighting_Sprite()
     {
-        // ポストエフェクト的にディファードライティングを行うためのスプライトを初期化
+        // ポストエフェクト後にディファードライティングを行うためのスプライトを初期化
         SpriteInitData spriteInitData;
 
         // 画面全体にレンダリングするので幅と高さはフレームバッファーの幅と高さと同じ
@@ -55,7 +54,6 @@ namespace nsK2Engine {
         {
             spriteInitData.m_textures[texNo++] = &gBuffer.GetRenderTargetTexture();
         }
-        // IBL用のテクスチャをセット。
 
         spriteInitData.m_fxFilePath = "Assets/shader/DeferredLighting.fx";
         if (m_isSoftShadow) {
@@ -69,7 +67,7 @@ namespace nsK2Engine {
         spriteInitData.m_expandShaderResoruceView[0] = &m_pointLightNoListInTileUAV;
         spriteInitData.m_expandShaderResoruceView[1] = &m_spotLightNoListInTileUAV;
         if (g_graphicsEngine->IsPossibleRaytracing()) {
-            // レイトレを行うことが可能。
+            // レイトレを行うときに可能。
             spriteInitData.m_expandShaderResoruceView[2] = &g_graphicsEngine->GetRaytracingOutputTexture();
             spriteInitData.m_expandShaderResoruceView[3] = &m_giTextureBlur[eGITextureBlur_1024x1024].GetBokeTexture();
             spriteInitData.m_expandShaderResoruceView[4] = &m_giTextureBlur[eGITextureBlur_512x512].GetBokeTexture();
@@ -98,7 +96,7 @@ namespace nsK2Engine {
     {
         // IBLデータを初期化。
         InitIBLData(iblTexFilePath, luminance);
-        
+
         InitDefferedLighting_Sprite();
 
         m_lightCulling.Init(
@@ -110,6 +108,13 @@ namespace nsK2Engine {
         // イベントリスナーにIBLデータに変更があったことを通知する。
         for (auto& listener : m_eventListeners) {
             listener.listenerFunc(enEventReInitIBLTexture);
+        }
+    }
+    void RenderingEngine::SetShadowParameter(float nearRate, float middleRate, float farRate, float lightHeght)
+    {
+        SetCascadeNearAreaRates(nearRate, middleRate, farRate);
+        for (auto& shadowMapRender : m_shadowMapRenders) {
+            shadowMapRender.SetLightMaxHeight(lightHeght);
         }
     }
     void RenderingEngine::InitShadowMapRender()
@@ -161,7 +166,7 @@ namespace nsK2Engine {
         int frameBuffer_w = g_graphicsEngine->GetFrameBufferWidth();
         int frameBuffer_h = g_graphicsEngine->GetFrameBufferHeight();
 
-        // アルベドカラーを出力用のレンダリングターゲットを初期化する
+        // アルベドカラー出力用のレンダリングターゲットを作成する
         float clearColor[] = { 0.5f, 0.5f, 0.5f, 1.0f };
         m_gBuffer[enGBufferAlbedoDepth].Create(
             frameBuffer_w,
@@ -173,7 +178,7 @@ namespace nsK2Engine {
             clearColor
         );
 
-        // 法線出力用のレンダリングターゲットを初期化する
+        // 法線出力用のレンダリングターゲットを作成する
         m_gBuffer[enGBufferNormal].Create(
             frameBuffer_w,
             frameBuffer_h,
@@ -183,8 +188,7 @@ namespace nsK2Engine {
             DXGI_FORMAT_UNKNOWN
         );
 
-
-        // メタリック、影パラメータ、スムース出力用のレンダリングターゲットを初期化する    
+        // メタリック、影パラメータ、スムース出力用のレンダリングターゲットを作成する
         m_gBuffer[enGBufferMetaricShadowSmooth].Create(
             frameBuffer_w,
             frameBuffer_h,
@@ -193,13 +197,12 @@ namespace nsK2Engine {
             DXGI_FORMAT_R8G8B8A8_UNORM,
             DXGI_FORMAT_UNKNOWN
         );
-
     }
     void RenderingEngine::InitCopyMainRenderTargetToFrameBufferSprite()
     {
         SpriteInitData spriteInitData;
 
-        // テクスチャはyBlurRenderTargetのカラーバッファー
+        // テクスチャはメインレンダリングターゲットのカラーバッファー
         spriteInitData.m_textures[0] = &m_mainRenderTarget.GetRenderTargetTexture();
 
         // レンダリング先がフレームバッファーなので、解像度はフレームバッファーと同じ
@@ -211,9 +214,8 @@ namespace nsK2Engine {
         spriteInitData.m_psEntryPoinFunc = "PSMain";
         spriteInitData.m_colorBufferFormat[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
 
-        // 初期化オブジェクトを使って、スプライトを初期化する
+        // 初期化データを使ってスプライトを作成する
         m_copyMainRtToFrameBufferSprite.Init(spriteInitData);
-
     }
     void RenderingEngine::InitIBLData(const wchar_t* iblTexFilePath, float intencity)
     {
@@ -223,7 +225,7 @@ namespace nsK2Engine {
     }
     void RenderingEngine::InitDeferredLighting()
     {
-        // GIテクスチャを作成するためのブラー処理を初期化する。
+        // GIテクスチャを作成するためのブラーを初期化する。
         m_giTextureBlur[eGITextureBlur_1024x1024].Init(&g_graphicsEngine->GetRaytracingOutputTexture(), 1024, 1024);
         m_giTextureBlur[eGITextureBlur_512x512].Init(&m_giTextureBlur[eGITextureBlur_1024x1024].GetBokeTexture(), 512, 512);
         m_giTextureBlur[eGITextureBlur_256x256].Init(&m_giTextureBlur[eGITextureBlur_512x512].GetBokeTexture(), 256, 256);
@@ -239,19 +241,19 @@ namespace nsK2Engine {
             nullptr,
             false
         );
-        // タイルごとのスポットライトの番号を記憶するリストのUAVを作成。
+        // タイルごとのスポットライトの番号を記録するリストのUAVを作成。
         m_spotLightNoListInTileUAV.Init(
             sizeof(int),
             MAX_SPOT_LIGHT * NUM_TILE,
             nullptr,
             false
         );
-        // ポストエフェクト的にディファードライティングを行うためのスプライトを初期化
+        // ポストエフェクト後にディファードライティングを行うためのスプライトを初期化
         InitDefferedLighting_Sprite();
     }
     void RenderingEngine::Init2DRenderTarget()
     {
-        float clearColor[4] = { 0.0f,0.0f,0.0f,0.0f };
+        float clearColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
         m_2DRenderTarget.Create(
             UI_SPACE_WIDTH,
@@ -265,31 +267,30 @@ namespace nsK2Engine {
 
         // 最終合成用のスプライトを初期化する
         SpriteInitData spriteInitData;
-        //テクスチャは2Dレンダ―ターゲット。
+        // テクスチャは2D描画レンダリングターゲット。
         spriteInitData.m_textures[0] = &m_2DRenderTarget.GetRenderTargetTexture();
-        // 解像度はmainRenderTargetの幅と高さ
+        // 解像度はメインレンダリングターゲットの幅と高さ
         spriteInitData.m_width = m_mainRenderTarget.GetWidth();
         spriteInitData.m_height = m_mainRenderTarget.GetHeight();
         // 2D用のシェーダーを使用する
         spriteInitData.m_fxFilePath = "Assets/shader/sprite.fx";
         spriteInitData.m_vsEntryPointFunc = "VSMain";
         spriteInitData.m_psEntryPoinFunc = "PSMain";
-        //上書き。
+        // 上書き。
         spriteInitData.m_alphaBlendMode = AlphaBlendMode_None;
-        //レンダリングターゲットのフォーマット。
+        // レンダリングターゲットのフォーマット。
         spriteInitData.m_colorBufferFormat[0] = m_mainRenderTarget.GetColorBufferFormat();
 
         m_2DSprite.Init(spriteInitData);
 
-        //テクスチャはメインレンダ―ターゲット。
+        // テクスチャはメインレンダリングターゲット。
         spriteInitData.m_textures[0] = &m_mainRenderTarget.GetRenderTargetTexture();
-
-        //解像度は2Dレンダ―ターゲットの幅と高さ
+        // 解像度は2D描画レンダリングターゲットの幅と高さ
         spriteInitData.m_width = m_2DRenderTarget.GetWidth();
         spriteInitData.m_height = m_2DRenderTarget.GetHeight();
-        //レンダリングターゲットのフォーマット。
+        // レンダリングターゲットのフォーマット。
         spriteInitData.m_colorBufferFormat[0] = m_2DRenderTarget.GetColorBufferFormat();
-       
+
         m_mainSprite.Init(spriteInitData);
     }
     void RenderingEngine::CalcViewProjectionMatrixForViewCulling()
@@ -307,7 +308,7 @@ namespace nsK2Engine {
     {
         // ビューカリング用のビュープロジェクション行列の計算。
         CalcViewProjectionMatrixForViewCulling();
-        // シーンのジオメトリ情報の更新。
+        // シーンのジオメトリデータの更新。
         m_sceneGeometryData.Update();
         // シーンライトの更新。
         m_sceneLight.Update();
@@ -345,7 +346,7 @@ namespace nsK2Engine {
         // G-Bufferへのレンダリング
         RenderToGBuffer(rc);
 
-        // レイトレで映り込み画像を作成する。
+        // ライトレーシングで影込み画像を作成する。
         if (IsEnableRaytracing()) {
             g_graphicsEngine->DispatchRaytracing(rc);
             for (auto& blur : m_giTextureBlur) {
@@ -355,7 +356,7 @@ namespace nsK2Engine {
 
         // ディファードライティング
         DeferredLighting(rc);
-            
+
         // 不透明オブジェクトの描画が終わった時点でスナップショットを撮影する
         SnapshotMainRenderTarget(rc, EnMainRTSnapshot::enDrawnOpacity);
 
@@ -372,7 +373,7 @@ namespace nsK2Engine {
         CopyMainRenderTargetToFrameBuffer(rc);
 #ifdef COPY_RAYTRACING_FRAMEBUFFER
         g_graphicsEngine->DispatchRaytracing(rc);
-        //レイトレの結果をフレームバッファに書き戻す。
+        // レイトレの結果をフレームバッファに書き込む。
         g_graphicsEngine->CopyToFrameBuffer(rc, g_graphicsEngine->GetRaytracingOutputTexture().Get());
 #endif
         // 登録されている描画オブジェクトをクリア
@@ -408,10 +409,8 @@ namespace nsK2Engine {
         BeginGPUEvent("ZPrepass");
         // まず、レンダリングターゲットとして設定できるようになるまで待つ
         rc.WaitUntilToPossibleSetRenderTarget(m_zprepassRenderTarget);
-
         // レンダリングターゲットを設定
         rc.SetRenderTargetAndViewport(m_zprepassRenderTarget);
-
         // レンダリングターゲットをクリア
         rc.ClearRenderTargetView(m_zprepassRenderTarget);
 
@@ -425,13 +424,11 @@ namespace nsK2Engine {
     void RenderingEngine::Render2D(RenderContext& rc)
     {
         BeginGPUEvent("Render2D");
-        // レンダリングターゲットとして利用できるまで待つ。
-        //PRESENTからRENDERTARGETへ。
+        // レンダリングターゲットとして利用できるまで待機。
+        // PRESENT→RENDERTARGETへ。
         rc.WaitUntilToPossibleSetRenderTarget(m_2DRenderTarget);
-    
         // レンダリングターゲットを設定
         rc.SetRenderTargetAndViewport(m_2DRenderTarget);
-
         // レンダリングターゲットをクリア
         rc.ClearRenderTargetView(m_2DRenderTarget);
 
@@ -441,17 +438,16 @@ namespace nsK2Engine {
             renderObj->OnRender2D(rc);
         }
 
-        //RENDERTARGETからPRESENTへ。
+        // RENDERTARGET→PRESENTへ。
         rc.WaitUntilFinishDrawingToRenderTarget(m_2DRenderTarget);
-        //PRESENTからRENDERTARGETへ。
+        // PRESENT→RENDERTARGETへ。
         rc.WaitUntilToPossibleSetRenderTarget(m_mainRenderTarget);
-
         // レンダリングターゲットを設定
         rc.SetRenderTargetAndViewport(m_mainRenderTarget);
 
         m_2DSprite.Draw(rc);
 
-        //RENDERTARGETからPRESENTへ。
+        // RENDERTARGET→PRESENTへ。
         rc.WaitUntilFinishDrawingToRenderTarget(m_mainRenderTarget);
 
         EndGPUEvent();
@@ -464,26 +460,26 @@ namespace nsK2Engine {
             m_mainRenderTarget.GetRTVCpuDescriptorHandle(),
             m_gBuffer[enGBufferAlbedoDepth].GetDSVCpuDescriptorHandle()
         );
-        
+
         for (auto& renderObj : m_renderObjects) {
             renderObj->OnForwardRender(rc);
         }
 
         // ボリュームライトを描画。
         m_volumeLightRender.Render(
-            rc, 
+            rc,
             m_mainRenderTarget.GetRTVCpuDescriptorHandle(),
             m_gBuffer[enGBufferAlbedoDepth].GetDSVCpuDescriptorHandle()
         );
 
-        // 続いて半透明オブジェクトを描画。
+        // 続いて透明なオブジェクトを描画。
         for (auto& renderObj : m_renderObjects) {
             renderObj->OnTlanslucentRender(rc);
         }
 
         // メインレンダリングターゲットへの書き込み終了待ち
         rc.WaitUntilFinishDrawingToRenderTarget(m_mainRenderTarget);
-        
+
         EndGPUEvent();
     }
     void RenderingEngine::RenderToGBuffer(RenderContext& rc)
@@ -491,17 +487,15 @@ namespace nsK2Engine {
         BeginGPUEvent("RenderToGBuffer");
         // レンダリングターゲットをG-Bufferに変更
         RenderTarget* rts[enGBufferNum] = {
-            &m_gBuffer[enGBufferAlbedoDepth],         // 0番目のレンダリングターゲット
-            &m_gBuffer[enGBufferNormal],              // 1番目のレンダリングターゲット
-            &m_gBuffer[enGBufferMetaricShadowSmooth], // 2番目のレンダリングターゲット
+            &m_gBuffer[enGBufferAlbedoDepth],          // 0番目のレンダリングターゲット
+            &m_gBuffer[enGBufferNormal],               // 1番目のレンダリングターゲット
+            &m_gBuffer[enGBufferMetaricShadowSmooth],  // 2番目のレンダリングターゲット
         };
 
         // まず、レンダリングターゲットとして設定できるようになるまで待つ
         rc.WaitUntilToPossibleSetRenderTargets(ARRAYSIZE(rts), rts);
-
         // レンダリングターゲットを設定
         rc.SetRenderTargets(ARRAYSIZE(rts), rts);
-
         // レンダリングターゲットをクリア
         rc.ClearRenderTargetViews(ARRAYSIZE(rts), rts);
 

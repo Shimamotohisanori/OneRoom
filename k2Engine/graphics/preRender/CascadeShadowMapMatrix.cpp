@@ -1,4 +1,4 @@
-#include "k2EnginePreCompile.h"
+ï»¿#include "k2EnginePreCompile.h"
 #include "CascadeShadowMapMatrix.h"
 
 namespace nsK2Engine {
@@ -6,100 +6,101 @@ namespace nsK2Engine {
         Vector3 lightDirection,
         float cascadeAreaRateTbl[NUM_SHADOW_MAP],
         const Vector3& sceneMaxPosition,
-        const Vector3& sceneMinPosition
+        const Vector3& sceneMinPosition,
+        float lightMaxHeight
     )
     {
-        // Å‘åƒtƒ@[‚Í150m
-        float maxFar = g_camera3D->GetFar() * cascadeAreaRateTbl[NUM_SHADOW_MAP-1];
-        //ƒrƒ…[s—ñ‚ğŒvZ‚·‚éB
+        // ï¿½Å‘ï¿½tï¿½@ï¿½[ï¿½ï¿½150m
+        float maxFar = g_camera3D->GetFar() * cascadeAreaRateTbl[NUM_SHADOW_MAP - 1];
+        //ï¿½rï¿½ï¿½ï¿½[ï¿½sï¿½ï¿½ï¿½ï¿½vï¿½Zï¿½ï¿½ï¿½ï¿½B
         Matrix viewMatrix;
         Vector3 lightTarget = g_camera3D->GetPosition();
         Vector3 lightPos = lightTarget;
-        // ƒ‰ƒCƒg‚Ì‚‚³‚Í50mŒˆ‚ß‘Å‚¿B
-        float lightMaxHeight = 5000.0f;
         lightPos += (lightDirection) * (lightMaxHeight / lightDirection.y);
-        //ã•ûŒü‚ğİ’è
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ’ï¿½
         if (fabsf(lightDirection.y) > 0.9999f) {
-            //‚Ù‚Ú^ãA^‰º‚ğŒü‚¢‚Ä‚¢‚é
+            //ï¿½Ù‚Ú^ï¿½ï¿½Aï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
             viewMatrix.MakeLookAt(lightPos, lightTarget, g_vec3AxisX);
         }
         else {
             viewMatrix.MakeLookAt(lightPos, lightTarget, g_vec3AxisY);
         }
+        float lightToSceneDist = lightMaxHeight / max(fabsf(lightDirection.y), 0.01f);
+        float shadowFar = lightToSceneDist * 3.0f;
         Matrix projMatrix;
         projMatrix.MakeOrthoProjectionMatrix(
             5000.0f,
             5000.0f,
             1.0f,
-            maxFar
+            shadowFar
         );
 
-        // •ªŠ„ƒGƒŠƒA‚ÌÅ‘å[“x’l‚ğ’è‹`‚·‚é
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Gï¿½ï¿½ï¿½Aï¿½ÌÅ‘ï¿½[ï¿½xï¿½lï¿½ï¿½ï¿½`ï¿½ï¿½ï¿½ï¿½
         float cascadeAreaTbl[NUM_SHADOW_MAP] = {
-            maxFar * cascadeAreaRateTbl[SHADOW_MAP_AREA_NEAR],     // ‹ß‰e‚ğ‰f‚·Å‘å[“x’l
-            maxFar * cascadeAreaRateTbl[SHADOW_MAP_AREA_MIDDLE],   // ’†‰e‚ğ‰f‚·Å‘å[“x’l
-            maxFar * cascadeAreaRateTbl[SHADOW_MAP_AREA_FAR] ,     // ‰“‰e‚ğ‰f‚·Å‘å[“x’lB
+            shadowFar * cascadeAreaRateTbl[SHADOW_MAP_AREA_NEAR],     // ï¿½ß‰eï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Å‘ï¿½[ï¿½xï¿½l
+            shadowFar * cascadeAreaRateTbl[SHADOW_MAP_AREA_MIDDLE],   // ï¿½ï¿½ï¿½eï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Å‘ï¿½[ï¿½xï¿½l
+            shadowFar * cascadeAreaRateTbl[SHADOW_MAP_AREA_FAR] ,     // ï¿½ï¿½ï¿½eï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Å‘ï¿½[ï¿½xï¿½lï¿½B
         };
-        // ƒJƒƒ‰‚Ì‘O•ûŒüA‰E•ûŒüAã•ûŒü‚ğ‹‚ß‚é
-        // ‘O•ûŒü‚Æ‰E•ûŒü‚Í‚·‚Å‚ÉŒvZÏ‚İ‚È‚Ì‚ÅA‚»‚ê‚ğˆø‚Á’£‚Á‚Ä‚­‚é
+        // ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Ì‘Oï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
+        // ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½Æ‰Eï¿½ï¿½ï¿½ï¿½ï¿½Í‚ï¿½ï¿½Å‚ÉŒvï¿½Zï¿½Ï‚İ‚È‚Ì‚ÅAï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
         const auto& cameraForward = g_camera3D->GetForward();
         const auto& cameraRight = g_camera3D->GetRight();
 
-        // ƒJƒƒ‰‚Ìã•ûŒü‚Í‘O•ûŒü‚Æ‰E•ûŒü‚ÌŠOÏ‚Å‹‚ß‚é
+        // ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½Í‘Oï¿½ï¿½ï¿½ï¿½ï¿½Æ‰Eï¿½ï¿½ï¿½ï¿½ï¿½ÌŠOï¿½Ï‚Å‹ï¿½ï¿½ß‚ï¿½
         Vector3 cameraUp;
         cameraUp.Cross(cameraForward, cameraRight);
-        // nearDepth‚ÍƒGƒŠƒA‚ÌÅ¬[“x’l‚ğ•\‚·
-            // ˆê”Ô‹ß‚¢ƒGƒŠƒA‚ÌÅ¬[“x’l‚ÍƒJƒƒ‰‚ÌƒjƒAƒNƒŠƒbƒv
+        // nearDepthï¿½ÍƒGï¿½ï¿½ï¿½Aï¿½ÌÅï¿½ï¿½[ï¿½xï¿½lï¿½ï¿½\ï¿½ï¿½
+            // ï¿½ï¿½Ô‹ß‚ï¿½ï¿½Gï¿½ï¿½ï¿½Aï¿½ÌÅï¿½ï¿½[ï¿½xï¿½lï¿½ÍƒJï¿½ï¿½ï¿½ï¿½ï¿½Ìƒjï¿½Aï¿½Nï¿½ï¿½ï¿½bï¿½v
         float nearDepth = g_camera3D->GetNear();
         for (int areaNo = 0; areaNo < NUM_SHADOW_MAP; areaNo++)
         {
-            // step-7 ƒGƒŠƒA‚ğ“à•ï‚·‚é‹‘ä‚Ì‚W’¸“_‚ğ‹‚ß‚é
-            // ƒGƒŠƒA‚Ì‹ß•½–Ê‚Ì’†S‚©‚ç‚Ìã–ÊA‰º–Ê‚Ü‚Å‚Ì‹——£‚ğ‹‚ß‚é
+            // step-7 ï¿½Gï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï‚·ï¿½é‹ï¿½ï¿½ï¿½ï¿½Ì‚Wï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
+            // ï¿½Gï¿½ï¿½ï¿½Aï¿½Ì‹ß•ï¿½ï¿½Ê‚Ì’ï¿½ï¿½Sï¿½ï¿½ï¿½ï¿½Ìï¿½ÊAï¿½ï¿½ï¿½Ê‚Ü‚Å‚Ì‹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
             float nearY = tanf(g_camera3D->GetViewAngle() * 0.5f) * nearDepth;
 
-            // ƒGƒŠƒA‚Ì‹ß•½–Ê‚Ì’†S‚©‚ç‚Ì‰E–ÊA¶–Ê‚Ü‚Å‚Ì‹——£‚ğ‹‚ß‚é
+            // ï¿½Gï¿½ï¿½ï¿½Aï¿½Ì‹ß•ï¿½ï¿½Ê‚Ì’ï¿½ï¿½Sï¿½ï¿½ï¿½ï¿½Ì‰Eï¿½ÊAï¿½ï¿½ï¿½Ê‚Ü‚Å‚Ì‹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
             float nearX = nearY * g_camera3D->GetAspect();
 
-            // ƒGƒŠƒA‚Ì‰“•½–Ê‚Ì’†S‚©‚ç‚Ìã–ÊA‰º–Ê‚Ü‚Å‚Ì‹——£‚ğ‹‚ß‚é
+            // ï¿½Gï¿½ï¿½ï¿½Aï¿½Ì‰ï¿½ï¿½ï¿½ï¿½Ê‚Ì’ï¿½ï¿½Sï¿½ï¿½ï¿½ï¿½Ìï¿½ÊAï¿½ï¿½ï¿½Ê‚Ü‚Å‚Ì‹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
             float farY = tanf(g_camera3D->GetViewAngle() * 0.5f) * cascadeAreaTbl[areaNo];
 
-            // ƒGƒŠƒA‚Ì‰“•½–Ê‚Ì’†S‚©‚ç‚Ì‰E–ÊA¶–Ê‚Ü‚Å‚Ì‹——£‚ğ‹‚ß‚é
+            // ï¿½Gï¿½ï¿½ï¿½Aï¿½Ì‰ï¿½ï¿½ï¿½ï¿½Ê‚Ì’ï¿½ï¿½Sï¿½ï¿½ï¿½ï¿½Ì‰Eï¿½ÊAï¿½ï¿½ï¿½Ê‚Ü‚Å‚Ì‹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
             float farX = farY * g_camera3D->GetAspect();
 
-            // ƒGƒŠƒA‚Ì‹ß•½–Ê‚Ì’†SÀ•W‚ğ‹‚ß‚é
+            // ï¿½Gï¿½ï¿½ï¿½Aï¿½Ì‹ß•ï¿½ï¿½Ê‚Ì’ï¿½ï¿½Sï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
             Vector3 nearPos = g_camera3D->GetPosition() + cameraForward * nearDepth;
 
-            // ƒGƒŠƒA‚Ì‰“•½–Ê‚Ì’†SÀ•W‚ğ‹‚ß‚é
+            // ï¿½Gï¿½ï¿½ï¿½Aï¿½Ì‰ï¿½ï¿½ï¿½ï¿½Ê‚Ì’ï¿½ï¿½Sï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
             Vector3 farPos = g_camera3D->GetPosition() + cameraForward * cascadeAreaTbl[areaNo];
 
-            // 8’¸“_‚ğ‹‚ß‚é
+            // 8ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
             Vector3 vertex[8];
 
-            // ‹ß•½–Ê‚Ì‰Eã‚Ì’¸“_
-            vertex[0] += nearPos + cameraUp * nearY + cameraRight * nearX;
+            // ï¿½ß•ï¿½ï¿½Ê‚Ì‰Eï¿½ï¿½Ì’ï¿½ï¿½_
+            vertex[0] = nearPos + cameraUp * nearY + cameraRight * nearX;
 
-            // ‹ß•½–Ê‚Ì¶ã‚Ì’¸“_
-            vertex[1] += nearPos + cameraUp * nearY + cameraRight * -nearX;
+            // ï¿½ß•ï¿½ï¿½Ê‚Ìï¿½ï¿½ï¿½Ì’ï¿½ï¿½_
+            vertex[1] = nearPos + cameraUp * nearY + cameraRight * -nearX;
 
-            // ‹ß•½–Ê‚Ì‰E‰º‚Ì’¸“_
-            vertex[2] += nearPos + cameraUp * -nearY + cameraRight * nearX;
+            // ï¿½ß•ï¿½ï¿½Ê‚Ì‰Eï¿½ï¿½ï¿½Ì’ï¿½ï¿½_
+            vertex[2] = nearPos + cameraUp * -nearY + cameraRight * nearX;
 
-            // ‹ß•½–Ê‚Ì¶‰º‚Ì’¸“_
-            vertex[3] += nearPos + cameraUp * -nearY + cameraRight * -nearX;
+            // ï¿½ß•ï¿½ï¿½Ê‚Ìï¿½ï¿½ï¿½ï¿½Ì’ï¿½ï¿½_
+            vertex[3] = nearPos + cameraUp * -nearY + cameraRight * -nearX;
 
-            // ‰“•½–Ê‚Ì‰Eã‚Ì’¸“_
-            vertex[4] += farPos + cameraUp * farY + cameraRight * farX;
+            // ï¿½ï¿½ï¿½ï¿½ï¿½Ê‚Ì‰Eï¿½ï¿½Ì’ï¿½ï¿½_
+            vertex[4] = farPos + cameraUp * farY + cameraRight * farX;
 
-            // ‰“•½–Ê‚Ì¶ã‚Ì’¸“_
-            vertex[5] += farPos + cameraUp * farY + cameraRight * -farX;
+            // ï¿½ï¿½ï¿½ï¿½ï¿½Ê‚Ìï¿½ï¿½ï¿½Ì’ï¿½ï¿½_
+            vertex[5] = farPos + cameraUp * farY + cameraRight * -farX;
 
-            // ‰“•½–Ê‚Ì‰E‰º‚Ì’¸“_
-            vertex[6] += farPos + cameraUp * -farY + cameraRight * farX;
+            // ï¿½ï¿½ï¿½ï¿½ï¿½Ê‚Ì‰Eï¿½ï¿½ï¿½Ì’ï¿½ï¿½_
+            vertex[6] = farPos + cameraUp * -farY + cameraRight * farX;
 
-            // ‰“•½–Ê‚Ì¶‰º‚Ì’¸“_
-            vertex[7] += farPos + cameraUp * -farY + cameraRight * -farX;
+            // ï¿½ï¿½ï¿½ï¿½ï¿½Ê‚Ìï¿½ï¿½ï¿½ï¿½Ì’ï¿½ï¿½_
+            vertex[7] = farPos + cameraUp * -farY + cameraRight * -farX;
 
-            // 8’¸“_‚ğƒJƒƒ‰‹óŠÔ‚É•ÏŠ·‚µ‚ÄA‹ß•½–Ê‚Æ‰“•½–Ê‚ğ‹‚ß‚éB
+            // 8ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô‚É•ÏŠï¿½ï¿½ï¿½ï¿½ÄAï¿½ß•ï¿½ï¿½Ê‚Æ‰ï¿½ï¿½ï¿½ï¿½Ê‚ï¿½ï¿½ï¿½ï¿½ß‚ï¿½B
             float nearZ = FLT_MAX, farZ = -FLT_MAX;
             for (auto v : vertex) {
                 viewMatrix.Apply(v);
@@ -107,7 +108,7 @@ namespace nsK2Engine {
                 farZ = max(v.z, farZ);
             }
 
-            // 8’¸“_‚ğƒ‰ƒCƒgƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“‹óŠÔ‚É•ÏŠ·‚µ‚ÄA8’¸“_‚ÌÅ‘å’lAÅ¬’l‚ğ‹‚ß‚é
+            // 8ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Cï¿½gï¿½rï¿½ï¿½ï¿½[ï¿½vï¿½ï¿½ï¿½Wï¿½Fï¿½Nï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô‚É•ÏŠï¿½ï¿½ï¿½ï¿½ÄA8ï¿½ï¿½ï¿½_ï¿½ÌÅ‘ï¿½lï¿½Aï¿½Åï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
             Matrix lvpMatrix = viewMatrix * projMatrix;
             Vector3 vMax, vMin;
             vMax = { -FLT_MAX, -FLT_MAX, -FLT_MAX };
@@ -119,7 +120,7 @@ namespace nsK2Engine {
                 vMin.Min(v);
             }
 
-            // step-9 ƒNƒƒbƒvs—ñ‚ğ‹‚ß‚é
+            // step-9 ï¿½Nï¿½ï¿½ï¿½bï¿½vï¿½sï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
             float xScale = 2.0f / (vMax.x - vMin.x);
             float yScale = 2.0f / (vMax.y - vMin.y);
             float xOffset = (vMax.x + vMin.x) * -0.5f * xScale;
@@ -130,10 +131,10 @@ namespace nsK2Engine {
             clopMatrix.m[3][0] = xOffset;
             clopMatrix.m[3][1] = yOffset;
 
-            // ƒ‰ƒCƒgƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ‚ÉƒNƒƒbƒvs—ñ‚ğæZ‚·‚é
+            // ï¿½ï¿½ï¿½Cï¿½gï¿½rï¿½ï¿½ï¿½[ï¿½vï¿½ï¿½ï¿½Wï¿½Fï¿½Nï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ÉƒNï¿½ï¿½ï¿½bï¿½vï¿½sï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½ï¿½
             m_lvpcMatrix[areaNo] = lvpMatrix * clopMatrix;
 
-            // Ÿ‚ÌƒGƒŠƒA‚Ì‹ß•½–Ê‚Ü‚Å‚Ì‹——£‚ğ‘ã“ü‚·‚é
+            // ï¿½ï¿½ï¿½ÌƒGï¿½ï¿½ï¿½Aï¿½Ì‹ß•ï¿½ï¿½Ê‚Ü‚Å‚Ì‹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             nearDepth = cascadeAreaTbl[areaNo];
         }
     };

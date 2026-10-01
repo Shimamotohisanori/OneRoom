@@ -4,7 +4,6 @@
 namespace nsK2Engine {
     void ShadowMapRender::Init(bool isSoftShadow)
     {
- 
         float clearColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
         DXGI_FORMAT colorFormat;
@@ -17,7 +16,7 @@ namespace nsK2Engine {
             colorFormat = g_hardShadowMapFormat.colorBufferFormat;
             depthFormat = g_hardShadowMapFormat.depthBufferFormat;
         }
-        //近景用のシャドウマップ
+        // 近影用のシャドウマップ
         m_shadowMaps[0].Create(
             2048,
             2048,
@@ -27,7 +26,7 @@ namespace nsK2Engine {
             depthFormat,
             clearColor
         );
-        //中景用のシャドウマップ
+        // 中影用のシャドウマップ
         m_shadowMaps[1].Create(
             1024,
             1024,
@@ -37,7 +36,7 @@ namespace nsK2Engine {
             depthFormat,
             clearColor
         );
-        //遠景用のシャドウマップ
+        // 遠影用のシャドウマップ
         m_shadowMaps[2].Create(
             512,
             512,
@@ -69,12 +68,13 @@ namespace nsK2Engine {
         if (lightDirection.LengthSq() < 0.001f) {
             return;
         }
-        // ライトの最大の高さをレンダラーのAABBから計算する。
+        // ライトビュープロジェクションクロップ行列を計算する。
         m_cascadeShadowMapMatrix.CalcLightViewProjectionCropMatrix(
             lightDirection,
             m_cascadeAreaRateArray,
             sceneMaxPosition,
-            sceneMinPosition
+            sceneMinPosition,
+            m_lightMaxHeight
         );
 
         int shadowMapNo = 0;
@@ -92,7 +92,7 @@ namespace nsK2Engine {
                 );
             }
 
-            //描画が終わったらクリア
+            // 描画が終わったらクリア
             m_renderers.clear();
 
             // 書き込み完了待ち
