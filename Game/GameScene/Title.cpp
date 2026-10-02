@@ -24,6 +24,7 @@ bool Title::Start()
 	/** タイトルスプライトの初期化 */
 	m_titleSprite.Init(TITLE_FILE_PATH, TITLE_WIDTH, TITLE_HEIGHT);
 	m_titleSprite.SetPosition(Vector3::Zero);
+
 	return true;
 }
 

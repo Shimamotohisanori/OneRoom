@@ -25,6 +25,9 @@
     <Filter Include="GameScene">
       <UniqueIdentifier>{7014b67b-246f-452b-819f-23a8ea9efd12}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SAN">
+      <UniqueIdentifier>{29048c54-a11c-44d9-9b95-15be004e924d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -62,6 +65,15 @@
     <ClCompile Include="GameScene\LoadingScene.cpp">
       <Filter>GameScene</Filter>
     </ClCompile>
+    <ClCompile Include="SAN\SANUI.cpp">
+      <Filter>SAN</Filter>
+    </ClCompile>
+    <ClCompile Include="SAN\SANCalculation.cpp">
+      <Filter>SAN</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene\GameOver.cpp">
+      <Filter>GameScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -96,6 +108,15 @@
       <Filter>GameScene</Filter>
     </ClInclude>
     <ClInclude Include="GameScene\LoadingScene.h">
+      <Filter>GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SAN\SANUI.h">
+      <Filter>SAN</Filter>
+    </ClInclude>
+    <ClInclude Include="SAN\SANCalculation.h">
+      <Filter>SAN</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene\GameOver.h">
       <Filter>GameScene</Filter>
     </ClInclude>
   </ItemGroup>

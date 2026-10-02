@@ -1,8 +1,9 @@
 ﻿#include "stdafx.h"
 #include "Game.h"
+#include "SAN/SANUI.h"
 bool Game::Start()
 {
-
+	m_sanUI = NewGO<SANUI>(0, "sanUI");
 	return true;
 }
 

@@ -48,6 +48,11 @@ bool GameCamera::Start()
 
 void GameCamera::Update()
 {
+	/** プレイヤーが存在しない場合は処理を中断 */
+	if (m_player == nullptr)
+	{
+		return;
+	}
 
 	/** ゲームパッドの右スティックのY入力を取得 */
 	float y = g_pad[0]->GetRStickYF();
