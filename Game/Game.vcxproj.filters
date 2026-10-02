@@ -22,6 +22,9 @@
     <Filter Include="GameCamera">
       <UniqueIdentifier>{e10e56e9-16f8-43ba-9782-6682655de9ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameScene">
+      <UniqueIdentifier>{7014b67b-246f-452b-819f-23a8ea9efd12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -29,7 +32,6 @@
     <ClCompile Include="system\system.cpp">
       <Filter>system</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Source\Actor\Actor.cpp">
       <Filter>Source\Actor</Filter>
     </ClCompile>
@@ -51,13 +53,21 @@
     <ClCompile Include="GameCamera\GameCamera.cpp">
       <Filter>GameCamera</Filter>
     </ClCompile>
+    <ClCompile Include="GameScene\Game.cpp">
+      <Filter>GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene\Title.cpp">
+      <Filter>GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene\LoadingScene.cpp">
+      <Filter>GameScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h" />
     <ClInclude Include="Source\Actor\Actor.h">
       <Filter>Source\Actor</Filter>
     </ClInclude>
@@ -78,6 +88,15 @@
     </ClInclude>
     <ClInclude Include="GameCamera\GameCamera.h">
       <Filter>GameCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene\Game.h">
+      <Filter>GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene\Title.h">
+      <Filter>GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene\LoadingScene.h">
+      <Filter>GameScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

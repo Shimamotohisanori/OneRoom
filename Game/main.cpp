@@ -4,7 +4,7 @@
 #include<InitGUID.h>
 #include<dxgidebug.h>
 
-#include "Game.h"
+#include "GameScene/Title.h"
 
 
 
@@ -33,8 +33,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	// ここから初期化を行うコードを記述する。
 	//////////////////////////////////////
 
-	//Gameクラスのオブジェクトを作成。
-	NewGO<Game>(0, "game");
+	//Titleクラスのオブジェクトを作成。
+	NewGO<Title>(0, "title");
 
 	//////////////////////////////////////
 	// 初期化を行うコードを書くのはここまで！！！
@@ -43,9 +43,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	// ここからゲームループ。
 	while (DispatchWindowMessage())
 	{
-		if (g_pad[0]->IsTrigger(enButtonA) ){
-			g_pad[0]->SetVibration(/*durationSec=*/0.5f, /*normalizedPower=*/1.0f);
-		}
 		K2Engine::GetInstance()->Execute();
 	}
 
