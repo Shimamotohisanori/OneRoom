@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "Level3DRender/LevelRender.h"
-
+class SANUI;
 class Game : public IGameObject
 {
 public:
@@ -12,5 +12,7 @@ public:
 	void Render(RenderContext& rc);
 
 private:
+	/** SANUI */
+	SANUI* m_sanUI;
 };
 

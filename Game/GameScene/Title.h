@@ -18,5 +18,6 @@ public:
 private:
 	/** タイトルスプライト */
 	SpriteRender m_titleSprite;
+
 };
 

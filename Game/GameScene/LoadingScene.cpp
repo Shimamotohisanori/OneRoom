@@ -3,7 +3,7 @@
 #include "Source/Actor/Player/Player.h"
 #include "Source/Actor/Stage/MainStage.h"
 #include "GameCamera/GameCamera.h"
-
+#include "Game.h"
 namespace
 {
 	/** ローディング画面のファイルパス */
@@ -48,10 +48,10 @@ bool LoadingScene::Start()
 
 void LoadingScene::Update()
 {
+	m_loadingSprite.Update();
+
 	/** ゲームをロードする */
 	LoadGame();
-
-	m_loadingSprite.Update();
 }
 
 void LoadingScene::Render(RenderContext & rc)
@@ -97,6 +97,9 @@ void LoadingScene::LoadGame()
 		break;
 	}
 	case 5:
+
+		NewGO<Game>(0, "Game");
+
 		/** ローディング完了 */
 		DeleteGO(this);
 		return;

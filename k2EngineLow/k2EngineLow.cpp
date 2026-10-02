@@ -73,13 +73,13 @@ namespace nsK2EngineLow {
 	void K2EngineLow::EndFrame()
 	{
 #ifdef K2_DEBUG
-		m_fpsFont->Begin(g_graphicsEngine->GetRenderContext());
+		/*m_fpsFont->Begin(g_graphicsEngine->GetRenderContext());
 		float time = g_gameTime->GetFrameDeltaTime();
 		wchar_t text[256];
 		swprintf(text, L"FPS = %0.2f", 1.0f / time);
 		m_fpsFontShadow->Draw(text, { UI_SPACE_WIDTH * -0.48f + 3.0f , UI_SPACE_HEIGHT * 0.48f - 3.0f }, { 0.0f, 0.0f, 0.0f, 1.0f }, 0.0f, 1.0f, { 0.0f, 1.0f });
 		m_fpsFont->Draw(text, { UI_SPACE_WIDTH * -0.48f, UI_SPACE_HEIGHT * 0.48f }, { 1.0f, 1.0f, 1.0f, 1.0f }, 0.0f, 1.0f, { 0.0f, 1.0f });
-		m_fpsFont->End(g_graphicsEngine->GetRenderContext());
+		m_fpsFont->End(g_graphicsEngine->GetRenderContext());*/
 #endif 
 		m_graphicsEngine->EndRender();
 #ifdef USE_FPS_LIMITTER
