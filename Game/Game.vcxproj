@@ -223,8 +223,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera\GameCamera.cpp" />
+    <ClCompile Include="GameScene\Game.cpp" />
+    <ClCompile Include="GameScene\LoadingScene.cpp" />
+    <ClCompile Include="GameScene\Title.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Source\Actor\Actor.cpp" />
     <ClCompile Include="Source\Actor\Player\Player.cpp" />
@@ -240,8 +242,10 @@
     <ClCompile Include="Transform\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera\GameCamera.h" />
+    <ClInclude Include="GameScene\Game.h" />
+    <ClInclude Include="GameScene\LoadingScene.h" />
+    <ClInclude Include="GameScene\Title.h" />
     <ClInclude Include="Source\Actor\Actor.h" />
     <ClInclude Include="Source\Actor\Player\Player.h" />
     <ClInclude Include="Source\Actor\Player\PlayerController.h" />
