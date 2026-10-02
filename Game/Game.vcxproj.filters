@@ -28,6 +28,18 @@
     <Filter Include="SAN">
       <UniqueIdentifier>{29048c54-a11c-44d9-9b95-15be004e924d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Actor\Stage\Door">
+      <UniqueIdentifier>{465d7806-363f-459a-ad99-a6eeed481273}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Actor\Stage\Door\PlateRoomDoor">
+      <UniqueIdentifier>{d39a17cc-5373-4bb0-94d4-cd6b953af2c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Actor\Stage\Door\HandSetRoomDoor">
+      <UniqueIdentifier>{84667f30-36cd-4ebc-94a8-dacd4c54ffc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Actor\Stage\Door\DarkRoomDoor">
+      <UniqueIdentifier>{1a1cbdc9-daa5-4330-8f01-a8140c950579}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -74,6 +86,18 @@
     <ClCompile Include="GameScene\GameOver.cpp">
       <Filter>GameScene</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Actor\Stage\Door\Door.cpp">
+      <Filter>Source\Actor\Stage\Door</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\Stage\Door\PlateRoomDoor\PlateRoomDoor.cpp">
+      <Filter>Source\Actor\Stage\Door\PlateRoomDoor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\Stage\Door\HandSetRoomDoor\HandSetRoomDoor.cpp">
+      <Filter>Source\Actor\Stage\Door\HandSetRoomDoor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\Stage\Door\DarkRoomDoor\DarkRoomDoor.cpp">
+      <Filter>Source\Actor\Stage\Door\DarkRoomDoor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -118,6 +142,18 @@
     </ClInclude>
     <ClInclude Include="GameScene\GameOver.h">
       <Filter>GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Stage\Door\Door.h">
+      <Filter>Source\Actor\Stage\Door</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Stage\Door\PlateRoomDoor\PlateRoomDoor.h">
+      <Filter>Source\Actor\Stage\Door\PlateRoomDoor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Stage\Door\HandSetRoomDoor\HandSetRoomDoor.h">
+      <Filter>Source\Actor\Stage\Door\HandSetRoomDoor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Stage\Door\DarkRoomDoor\DarkRoomDoor.h">
+      <Filter>Source\Actor\Stage\Door\DarkRoomDoor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

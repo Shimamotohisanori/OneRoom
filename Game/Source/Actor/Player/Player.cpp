@@ -35,5 +35,5 @@ void Player::Update()
 void Player::Render(RenderContext & rc)
 {
 	/** モデルの描画 */
-	m_model.Render(rc);
+	//m_model.Render(rc);
 }
