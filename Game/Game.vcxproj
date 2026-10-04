@@ -228,6 +228,8 @@
     <ClCompile Include="GameScene\GameOver.cpp" />
     <ClCompile Include="GameScene\LoadingScene.cpp" />
     <ClCompile Include="GameScene\Title.cpp" />
+    <ClCompile Include="Key\Key.cpp" />
+    <ClCompile Include="Key\KeyUI\KeyUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SAN\SANCalculation.cpp" />
     <ClCompile Include="SAN\SANUI.cpp" />
@@ -240,6 +242,8 @@
     <ClCompile Include="Source\Actor\Stage\Door\HandSetRoomDoor\HandSetRoomDoor.cpp" />
     <ClCompile Include="Source\Actor\Stage\Door\PlateRoomDoor\PlateRoomDoor.cpp" />
     <ClCompile Include="Source\Actor\Stage\MainStage.cpp" />
+    <ClCompile Include="Source\Actor\Stage\PlateRoom\PlateRoom.cpp" />
+    <ClCompile Include="Source\Actor\Stage\PlateRoom\Plate\Plate.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -254,6 +258,8 @@
     <ClInclude Include="GameScene\GameOver.h" />
     <ClInclude Include="GameScene\LoadingScene.h" />
     <ClInclude Include="GameScene\Title.h" />
+    <ClInclude Include="Key\Key.h" />
+    <ClInclude Include="Key\KeyUI\KeyUI.h" />
     <ClInclude Include="SAN\SANCalculation.h" />
     <ClInclude Include="SAN\SANUI.h" />
     <ClInclude Include="Source\Actor\Actor.h" />
@@ -265,6 +271,8 @@
     <ClInclude Include="Source\Actor\Stage\Door\HandSetRoomDoor\HandSetRoomDoor.h" />
     <ClInclude Include="Source\Actor\Stage\Door\PlateRoomDoor\PlateRoomDoor.h" />
     <ClInclude Include="Source\Actor\Stage\MainStage.h" />
+    <ClInclude Include="Source\Actor\Stage\PlateRoom\PlateRoom.h" />
+    <ClInclude Include="Source\Actor\Stage\PlateRoom\Plate\Plate.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
     <ClInclude Include="Transform\Transform.h" />
