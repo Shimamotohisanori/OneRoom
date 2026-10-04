@@ -8,10 +8,11 @@ class GameCamera;
 class SANUI;
 class Player;
 class MainStage;
+class Plate;
 class GameOver : public IGameObject
 {
 public:
-	GameOver() {}
+	GameOver();
 	~GameOver();
 	bool Start();
 	void Update();
@@ -36,5 +37,8 @@ private:
 
 	/** 空 */
 	SkyCube* m_skyCube;
+
+	/** プレート */
+	Plate* m_plate;
 };
 

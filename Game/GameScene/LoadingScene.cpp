@@ -4,6 +4,7 @@
 #include "Source/Actor/Stage/MainStage.h"
 #include "GameCamera/GameCamera.h"
 #include "Game.h"
+#include "Source/Actor/Stage/PlateRoom/Plate/Plate.h"
 namespace
 {
 	/** ローディング画面のファイルパス */
@@ -96,7 +97,14 @@ void LoadingScene::LoadGame()
 		g_renderingEngine->SetBloomThreshold(BLOOM_STRENGTH);
 		break;
 	}
+
 	case 5:
+	{
+		NewGO<Plate>(0, "Plate");
+		break;
+	}
+
+	case 6:
 
 		NewGO<Game>(0, "Game");
 

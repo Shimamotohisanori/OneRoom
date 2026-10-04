@@ -40,6 +40,27 @@
     <Filter Include="Source\Actor\Stage\Door\DarkRoomDoor">
       <UniqueIdentifier>{1a1cbdc9-daa5-4330-8f01-a8140c950579}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Actor\Stage\PlateRoom">
+      <UniqueIdentifier>{f6838e31-a0d3-4b8c-b86e-3318b23ed1ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Actor\Stage\PlateRoom\Plate">
+      <UniqueIdentifier>{f18e0959-004c-48e5-8c32-fdac08185f19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Key">
+      <UniqueIdentifier>{6f300306-13ca-4283-8a35-b1ddc0581cfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Key\KeyUI">
+      <UniqueIdentifier>{55cbd433-9760-4a20-8c27-d8c1727415f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Key\PlateRoomKey">
+      <UniqueIdentifier>{ea0cfb5f-fd55-4f23-89f4-c52fb43068a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Key\DarkRoomKey">
+      <UniqueIdentifier>{b9fe2202-a24a-42db-a09a-7a055891ea08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Key\HandSetRoomKey">
+      <UniqueIdentifier>{ed04af8d-2d4a-43cf-9f96-e48f71392266}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -98,6 +119,18 @@
     <ClCompile Include="Source\Actor\Stage\Door\DarkRoomDoor\DarkRoomDoor.cpp">
       <Filter>Source\Actor\Stage\Door\DarkRoomDoor</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Actor\Stage\PlateRoom\Plate\Plate.cpp">
+      <Filter>Source\Actor\Stage\PlateRoom\Plate</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\Stage\PlateRoom\PlateRoom.cpp">
+      <Filter>Source\Actor\Stage\PlateRoom</Filter>
+    </ClCompile>
+    <ClCompile Include="Key\KeyUI\KeyUI.cpp">
+      <Filter>Key\KeyUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Key\Key.cpp">
+      <Filter>Key</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -154,6 +187,18 @@
     </ClInclude>
     <ClInclude Include="Source\Actor\Stage\Door\DarkRoomDoor\DarkRoomDoor.h">
       <Filter>Source\Actor\Stage\Door\DarkRoomDoor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Stage\PlateRoom\Plate\Plate.h">
+      <Filter>Source\Actor\Stage\PlateRoom\Plate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Stage\PlateRoom\PlateRoom.h">
+      <Filter>Source\Actor\Stage\PlateRoom</Filter>
+    </ClInclude>
+    <ClInclude Include="Key\KeyUI\KeyUI.h">
+      <Filter>Key\KeyUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Key\Key.h">
+      <Filter>Key</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

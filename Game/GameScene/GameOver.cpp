@@ -5,6 +5,7 @@
 #include "Source/Actor/Stage/MainStage.h"
 #include "GameCamera/GameCamera.h"
 #include "SAN/SANUI.h"
+#include "Source/Actor/Stage/PlateRoom/Plate/Plate.h"
 namespace
 {
 	/** ゲームオーバー画面のファイルパス */
@@ -14,6 +15,8 @@ namespace
 	/** ゲームオーバー画面の縦幅 */
 	constexpr float GAMEOVER_HEIGHT = 1080.0f;
 }
+GameOver::GameOver()
+{}
 GameOver::~GameOver()
 {}
 
@@ -48,6 +51,11 @@ bool GameOver::Start()
 
 	/** SAN UIを削除 */
 	DeleteGO(m_sanUI);
+
+	/** プレートを取得 */
+	m_plate = FindGO<Plate>("Plate");
+	/** プレートを削除 */
+	DeleteGO(m_plate);
 
 	m_gameOverSprite.Init(GAMEOVER_FILE_PATH, GAMEOVER_WIDTH, GAMEOVER_HEIGHT);
 	return true;

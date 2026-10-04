@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "SANUI.h"
-#include "GameScene/GameOver.h"
 namespace
 {
 	/** SANUIのファイルパス */
@@ -52,13 +51,6 @@ void SANUI::Update()
 {
 	/** SAN値の計算クラスを更新 */
 	m_sanCalculation.Update();
-
-	if (m_sanCalculation.GetSANValue() < 0)
-	{
-		NewGO<GameOver>(0, "gameover");
-		DeleteGO(this);
-		return;
-	}
 
 	/** SAN値を表示する */
 	wchar_t text[256];
