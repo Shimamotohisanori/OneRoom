@@ -9,6 +9,8 @@ class SANUI;
 class Player;
 class MainStage;
 class Plate;
+class DanBall;
+class IntroductionUI;
 class GameOver : public IGameObject
 {
 public:
@@ -40,5 +42,11 @@ private:
 
 	/** プレート */
 	Plate* m_plate;
+
+	/** 段ボール */
+	DanBall* m_danBall;
+
+	/** 操作紹介UI */
+	IntroductionUI* m_introductionUI;
 };
 

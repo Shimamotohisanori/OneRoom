@@ -142,6 +142,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderOutputFile>$(Platform)\$(Configuration)\$(TargetName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -228,6 +229,7 @@
     <ClCompile Include="GameScene\GameOver.cpp" />
     <ClCompile Include="GameScene\LoadingScene.cpp" />
     <ClCompile Include="GameScene\Title.cpp" />
+    <ClCompile Include="IntroductionUI\IntroductionUI.cpp" />
     <ClCompile Include="Key\Key.cpp" />
     <ClCompile Include="Key\KeyUI\KeyUI.cpp" />
     <ClCompile Include="main.cpp" />
@@ -242,6 +244,7 @@
     <ClCompile Include="Source\Actor\Stage\Door\HandSetRoomDoor\HandSetRoomDoor.cpp" />
     <ClCompile Include="Source\Actor\Stage\Door\PlateRoomDoor\PlateRoomDoor.cpp" />
     <ClCompile Include="Source\Actor\Stage\MainStage.cpp" />
+    <ClCompile Include="Source\Actor\Stage\PlateRoom\DanBall\DanBall.cpp" />
     <ClCompile Include="Source\Actor\Stage\PlateRoom\PlateRoom.cpp" />
     <ClCompile Include="Source\Actor\Stage\PlateRoom\Plate\Plate.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -258,6 +261,7 @@
     <ClInclude Include="GameScene\GameOver.h" />
     <ClInclude Include="GameScene\LoadingScene.h" />
     <ClInclude Include="GameScene\Title.h" />
+    <ClInclude Include="IntroductionUI\IntroductionUI.h" />
     <ClInclude Include="Key\Key.h" />
     <ClInclude Include="Key\KeyUI\KeyUI.h" />
     <ClInclude Include="SAN\SANCalculation.h" />
@@ -271,6 +275,7 @@
     <ClInclude Include="Source\Actor\Stage\Door\HandSetRoomDoor\HandSetRoomDoor.h" />
     <ClInclude Include="Source\Actor\Stage\Door\PlateRoomDoor\PlateRoomDoor.h" />
     <ClInclude Include="Source\Actor\Stage\MainStage.h" />
+    <ClInclude Include="Source\Actor\Stage\PlateRoom\DanBall\DanBall.h" />
     <ClInclude Include="Source\Actor\Stage\PlateRoom\PlateRoom.h" />
     <ClInclude Include="Source\Actor\Stage\PlateRoom\Plate\Plate.h" />
     <ClInclude Include="stdafx.h" />

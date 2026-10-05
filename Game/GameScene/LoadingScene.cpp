@@ -5,6 +5,7 @@
 #include "GameCamera/GameCamera.h"
 #include "Game.h"
 #include "Source/Actor/Stage/PlateRoom/Plate/Plate.h"
+#include "Source/Actor/Stage/PlateRoom/DanBall/DanBall.h"
 namespace
 {
 	/** ローディング画面のファイルパス */
@@ -99,12 +100,20 @@ void LoadingScene::LoadGame()
 	}
 
 	case 5:
-	{
+	{		
+		/** プレートの生成 */
 		NewGO<Plate>(0, "Plate");
 		break;
 	}
 
 	case 6:
+	{
+		/** 段ボールの生成 */
+		NewGO<DanBall>(0, "DanBall");
+		break;
+	}
+
+	case 7:
 
 		NewGO<Game>(0, "Game");
 
