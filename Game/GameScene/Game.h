@@ -8,6 +8,7 @@
  */
 class SANUI;
 class KeyUI;
+class IntroductionUI;
 class Game : public IGameObject
 {
 public:
@@ -30,5 +31,8 @@ private:
 
 	/** SAN計算クラス */
 	SANCalculation m_sanCalculation;
+
+	/** 操作紹介UI */
+	IntroductionUI* m_introductionUI;
 };
 

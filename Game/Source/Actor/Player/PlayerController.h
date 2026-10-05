@@ -61,14 +61,14 @@ private:
 	/** プレイヤーの座標 */
 	Vector3 m_position = Vector3::Zero;
 
-	/** プレイヤーの向き */
-	Quaternion m_rotation = Quaternion::Identity;
-
 	/** 入力の生データ */
 	Vector3 m_moveInput = Vector3::Zero;
 
+	/** プレイヤーの向き */
+	Quaternion m_rotation = Quaternion::Identity;
+
 	/** 走るボタンが押されているか */
-	bool    m_isRunButtonPressed = false;
+	bool m_isRunButtonPressed = false;
 
 	/** 状態と速度 */
 	EnMoveState m_moveState = EnMoveState::enMoveState_Idle;
@@ -77,7 +77,7 @@ private:
 	float m_currentSpeed = 0.0f;
 	
 	/** 一秒あたりの加速量 */
-	float m_acceleration = 10.0f;	
+	float m_acceleration = 30.0f;	
 
 	/** 累積される左右の向き(度数)。
 	 * 移動方向にも、カメラの左右向きにも使う */

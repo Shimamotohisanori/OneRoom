@@ -6,6 +6,8 @@
 #include "GameCamera/GameCamera.h"
 #include "SAN/SANUI.h"
 #include "Source/Actor/Stage/PlateRoom/Plate/Plate.h"
+#include "Source/Actor/Stage/PlateRoom/DanBall/DanBall.h"
+#include "IntroductionUI/IntroductionUI.h"
 namespace
 {
 	/** ゲームオーバー画面のファイルパス */
@@ -54,8 +56,21 @@ bool GameOver::Start()
 
 	/** プレートを取得 */
 	m_plate = FindGO<Plate>("Plate");
+	
 	/** プレートを削除 */
 	DeleteGO(m_plate);
+
+	/** 段ボールを取得 */
+	m_danBall = FindGO<DanBall>("DanBall");
+
+	/** 段ボールを削除 */
+	DeleteGO(m_danBall);
+
+	/** 操作紹介UIを取得 */
+	m_introductionUI = FindGO<IntroductionUI>("introductionUI");
+
+	/** 操作紹介UIを削除 */
+	DeleteGO(m_introductionUI);
 
 	m_gameOverSprite.Init(GAMEOVER_FILE_PATH, GAMEOVER_WIDTH, GAMEOVER_HEIGHT);
 	return true;

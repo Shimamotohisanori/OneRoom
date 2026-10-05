@@ -61,6 +61,12 @@
     <Filter Include="Key\HandSetRoomKey">
       <UniqueIdentifier>{ed04af8d-2d4a-43cf-9f96-e48f71392266}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Actor\Stage\PlateRoom\DanBall">
+      <UniqueIdentifier>{d44ab33e-f479-42a2-a2fb-340729ade1a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IntroductionUI">
+      <UniqueIdentifier>{e9ccd3f5-9c5c-4b14-8db2-02ecdbb46080}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -131,6 +137,12 @@
     <ClCompile Include="Key\Key.cpp">
       <Filter>Key</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Actor\Stage\PlateRoom\DanBall\DanBall.cpp">
+      <Filter>Source\Actor\Stage\PlateRoom\DanBall</Filter>
+    </ClCompile>
+    <ClCompile Include="IntroductionUI\IntroductionUI.cpp">
+      <Filter>IntroductionUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -199,6 +211,12 @@
     </ClInclude>
     <ClInclude Include="Key\Key.h">
       <Filter>Key</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Stage\PlateRoom\DanBall\DanBall.h">
+      <Filter>Source\Actor\Stage\PlateRoom\DanBall</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroductionUI\IntroductionUI.h">
+      <Filter>IntroductionUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

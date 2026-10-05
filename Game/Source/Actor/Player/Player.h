@@ -40,6 +40,12 @@ public:
 		m_controller.SetRotation(rotation);
 	}
 
+	/** 段ボールを持っているかのフラグを取得 */
+	bool GetIsHoldingDanBall() const { return m_isHoldingDanBall; }
+
+	/** 段ボールを持っているかのフラグを設定 */
+	void SetIsHoldingDanBall(bool isHolding) { m_isHoldingDanBall = isHolding; }
+
 
 private:
 	/** プレイヤーモデル */
@@ -47,5 +53,8 @@ private:
 
 	/** プレイヤーコントローラー */
 	PlayerController m_controller;
+
+	/** 段ボールを持っているか */
+	bool m_isHoldingDanBall = false;
 };
 

@@ -3,6 +3,7 @@
 #include "SAN/SANUI.h"
 #include "GameScene/GameOver.h"
 #include "Key/KeyUI/KeyUI.h"
+#include "IntroductionUI/IntroductionUI.h"
 Game::Game()
 {}
 Game::~Game()
@@ -16,6 +17,9 @@ bool Game::Start()
 	/** KeyUIの生成 */
 	m_keyUI = NewGO<KeyUI>(0, "keyUI");
 	
+	/** 操作紹介UIの生成 */
+	m_introductionUI = NewGO<IntroductionUI>(0, "introductionUI");
+
 	return true;
 }
 

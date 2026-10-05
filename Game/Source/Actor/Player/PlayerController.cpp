@@ -3,7 +3,7 @@
 namespace 
 {
 	/** 歩きの最大速度 */
-	constexpr float WALK_MAX_SPEED = 50.0f;
+	constexpr float WALK_MAX_SPEED = 75.0f;
 	
 	/** 走りの最大速度 */
 	constexpr float RUN_MAX_SPEED = 100.0f;
