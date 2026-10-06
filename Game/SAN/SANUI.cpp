@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "SANUI.h"
+#include "SANCalculation.h"
 namespace
 {
 	/** SANUIのファイルパス */
@@ -41,31 +42,29 @@ bool SANUI::Start()
 	/** SANUIスプライトの初期化 */
 	m_sanUISprite.Init(SANUI_FILE_PATH, SANUI_WIDTH, SANUI_HEIGHT);
 	m_sanUISprite.SetPosition(SANUI_POSITION);
-
-	/** SAN値の計算クラスの初期化 */
-	m_sanCalculation.Start();
+	
+	/** SANUIフォントの初期化 */
+	m_sanCalculation = FindGO<SANCalculation>("SANCalculation");
 	return true;
 }
 
 void SANUI::Update()
 {
-	/** SAN値の計算クラスを更新 */
-	m_sanCalculation.Update();
 
 	/** SAN値を表示する */
 	wchar_t text[256];
-	swprintf_s(text, L"%d", m_sanCalculation.GetSANValue());
+	swprintf_s(text, L"%d", m_sanCalculation->GetSANValue());
 	m_sanUIFont.SetText(text);
 
 	/** SANUIフォントの座標を更新 */
 	/** SAN値の桁数によって座標を変更する */
 	/** 1桁の時 */
-	if (m_sanCalculation.GetSANValue() < TEN)
+	if (m_sanCalculation->GetSANValue() < TEN)
 	{
 		m_sanUIFont.SetPosition(SANUI_FONT_POSITION_1DIGIT);
 	}
 	/** 2桁の時 */
-	else if (m_sanCalculation.GetSANValue() < HUNDRED)
+	else if (m_sanCalculation->GetSANValue() < HUNDRED)
 	{
 		m_sanUIFont.SetPosition(SANUI_FONT_POSITION);
 	}

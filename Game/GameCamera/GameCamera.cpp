@@ -48,8 +48,8 @@ bool GameCamera::Start()
 
 void GameCamera::Update()
 {
-	/** プレイヤーが存在しない場合は処理を中断 */
-	if (m_player == nullptr)
+	/** プレイヤーが存在しない場合または入力が無効な場合は処理を中断 */
+	if (m_player == nullptr || m_player->GetIsInputEnabled() == false)
 	{
 		return;
 	}

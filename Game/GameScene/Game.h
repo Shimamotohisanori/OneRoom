@@ -1,5 +1,4 @@
-﻿#pragma once
-#include "SAN/SANCalculation.h"
+#pragma once
 /**
  * Game.h
  * ゲームクラス
@@ -9,6 +8,7 @@
 class SANUI;
 class KeyUI;
 class IntroductionUI;
+class SANCalculation;
 class Game : public IGameObject
 {
 public:
@@ -30,7 +30,7 @@ private:
 	KeyUI* m_keyUI;
 
 	/** SAN計算クラス */
-	SANCalculation m_sanCalculation;
+	SANCalculation* m_sanCalculation;
 
 	/** 操作紹介UI */
 	IntroductionUI* m_introductionUI;

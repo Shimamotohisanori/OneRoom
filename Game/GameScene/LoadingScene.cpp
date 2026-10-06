@@ -6,6 +6,10 @@
 #include "Game.h"
 #include "Source/Actor/Stage/PlateRoom/Plate/Plate.h"
 #include "Source/Actor/Stage/PlateRoom/DanBall/DanBall.h"
+#include "Source/Actor/Stage/Darkroom/Paper/Paper.h"
+#include "Source/Actor/Stage/Darkroom/KeyPad/KeyPad.h"
+#include "Key/Key.h"
+#include "SAN/SANCalculation.h"
 namespace
 {
 	/** ローディング画面のファイルパス */
@@ -108,13 +112,42 @@ void LoadingScene::LoadGame()
 
 	case 6:
 	{
+		/** キーの生成 */
+		NewGO<Key>(0, "Key");
+		break;
+	}
+
+	case 7:
+	{
+		/** SAN計算クラスの生成 */
+		NewGO<SANCalculation>(0, "SANCalculation");
+		break;
+	}
+
+	case 8:
+	{
+		/** 紙の生成 */
+		NewGO<Paper>(0, "Paper");
+		break;
+	}
+
+	case 9:
+	{
+		/** キーパッドの生成 */
+		NewGO<KeyPad>(0, "KeyPad");
+		break;
+	}
+
+	case 10:
+	{
 		/** 段ボールの生成 */
 		NewGO<DanBall>(0, "DanBall");
 		break;
 	}
 
-	case 7:
+	case 11:
 
+		/** ゲームの生成 */
 		NewGO<Game>(0, "Game");
 
 		/** ローディング完了 */

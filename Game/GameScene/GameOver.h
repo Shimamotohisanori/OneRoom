@@ -11,6 +11,11 @@ class MainStage;
 class Plate;
 class DanBall;
 class IntroductionUI;
+class Key;
+class KeyUI;
+class SANCalculation;
+class Paper;
+class KeyPad;
 class GameOver : public IGameObject
 {
 public:
@@ -48,5 +53,20 @@ private:
 
 	/** 操作紹介UI */
 	IntroductionUI* m_introductionUI;
+
+	/** キー */
+	Key* m_key;
+
+	/** キーUI */
+	KeyUI* m_keyUI;
+
+	/** SAN計算クラス */
+	SANCalculation* m_sanCalculation;
+
+	/** 紙 */
+	Paper* m_paper;
+
+	/** キーパッド */
+	KeyPad* m_keyPad;
 };
 

@@ -67,6 +67,15 @@
     <Filter Include="IntroductionUI">
       <UniqueIdentifier>{e9ccd3f5-9c5c-4b14-8db2-02ecdbb46080}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Actor\Stage\DarkRoom">
+      <UniqueIdentifier>{6940fa0f-8317-47d2-9366-390b85a8c472}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Actor\Stage\DarkRoom\Paper">
+      <UniqueIdentifier>{7ebde695-1adc-46f0-841f-0f3cb5f26a28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Actor\Stage\DarkRoom\KeyPad">
+      <UniqueIdentifier>{dbcbc5b4-b898-4773-8ee8-48c20cfb5b40}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -143,6 +152,15 @@
     <ClCompile Include="IntroductionUI\IntroductionUI.cpp">
       <Filter>IntroductionUI</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Actor\Stage\DarkRoom\DarkRoom.cpp">
+      <Filter>Source\Actor\Stage\DarkRoom</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\Stage\DarkRoom\Paper\Paper.cpp">
+      <Filter>Source\Actor\Stage\DarkRoom\Paper</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\Stage\DarkRoom\KeyPad\KeyPad.cpp">
+      <Filter>Source\Actor\Stage\DarkRoom\KeyPad</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -217,6 +235,15 @@
     </ClInclude>
     <ClInclude Include="IntroductionUI\IntroductionUI.h">
       <Filter>IntroductionUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Stage\DarkRoom\DarkRoom.h">
+      <Filter>Source\Actor\Stage\DarkRoom</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Stage\DarkRoom\Paper\Paper.h">
+      <Filter>Source\Actor\Stage\DarkRoom\Paper</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Stage\DarkRoom\KeyPad\KeyPad.h">
+      <Filter>Source\Actor\Stage\DarkRoom\KeyPad</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

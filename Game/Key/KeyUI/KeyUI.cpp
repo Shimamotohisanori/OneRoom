@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "KeyUI.h"
-
+#include "Key/Key.h"
 namespace
 {
 	/** キーUIスプライトのファイルパス */
@@ -38,9 +38,15 @@ bool KeyUI::Start()
 
 void KeyUI::Update()
 {
+	/** キーの取得 */
+	if (m_key == nullptr)
+	{
+		m_key = FindGO<Key>("Key");
+	}
+
 	/** キーUIフォントの更新 */
 	wchar_t keyCountStr[256];
-	swprintf_s(keyCountStr, L"%d / 3",m_key.GetKeyCount());
+	swprintf_s(keyCountStr, L"%d / 3",m_key->GetKeyCount());
 	m_keyUIFont.SetText(keyCountStr);
 	m_keyUIFont.SetPosition(KEY_UI_FONT_POSITION);
 	m_keyUIFont.SetScale(KEY_UI_FONT_SIZE);
