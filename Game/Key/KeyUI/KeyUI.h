@@ -1,7 +1,10 @@
 #pragma once
-
-#include "Key/Key.h"
-					
+/**
+ * KeyUI.h
+ * キーUIクラス
+ * ここでキーUIの操作や状態を管理する。
+ */
+class Key;
 class KeyUI : public IGameObject {
 public:
 	KeyUI();
@@ -18,5 +21,5 @@ private:
 	FontRender m_keyUIFont;
 
 	/** キー */
-	Key m_key;
+	Key* m_key = nullptr;
 };

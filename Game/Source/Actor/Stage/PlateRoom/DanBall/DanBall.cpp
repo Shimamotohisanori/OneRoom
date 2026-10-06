@@ -2,6 +2,8 @@
 #include "DanBall.h"
 #include "Source/Actor/Player/Player.h"
 #include "Source/Actor/Stage/PlateRoom/Plate/Plate.h"
+#include "Key/Key.h"
+#include "SAN/SANCalculation.h"
 namespace
 {
 	/** 段ボールモデルのファイルパス */
@@ -36,6 +38,9 @@ namespace
 
 	/** 操作案内フォントのスケール */
 	constexpr float PROMPT_FONT_SCALE = 1.5f;
+
+	/** プレートに置いたときのSAN減少量 */
+	constexpr float SAN_DECREASE_AMOUNT = 15.0f;
 }
 
 DanBall::DanBall()
@@ -69,6 +74,19 @@ bool DanBall::Start()
 
 void DanBall::Update()
 {
+
+	/** キーの取得 */
+	if (m_key == nullptr)
+	{
+		m_key = FindGO<Key>("Key");
+	}
+
+	/** SAN計算クラスの取得 */
+	if (m_sanCalculation == nullptr)
+	{
+		m_sanCalculation = FindGO<SANCalculation>("SANCalculation");
+	}
+
 	/** 毎フレーム非表示から始めて、条件を満たしたときだけ表示する */
 	m_isPromptVisible = false;
 
@@ -77,12 +95,10 @@ void DanBall::Update()
 	case EnState::enState_Ground:
 		if (IsPlayerInRange())
 		{
-			wchar_t text[256];
-			swprintf_s(text, L"Aボタンで物を取得");	
-			m_promptFont.SetText(text);
+			m_promptFont.SetText(L"Press A to pick up");
 			m_isPromptVisible = true;
 
-			if (g_pad[0]->IsTrigger(enButtonA))
+			if (m_player->IsInteractTriggered())
 			{
 				PickUp();
 			}
@@ -96,12 +112,10 @@ void DanBall::Update()
 		/** プレートに近いときだけ「置く」案内を出す */
 		if (m_plate != nullptr && m_plate->IsInPlacementRange(m_player->GetPosition()))
 		{
-			wchar_t text[256];
-			swprintf_s(text, L"Aボタンで置く");
-			m_promptFont.SetText(text);
+			m_promptFont.SetText(L"Press A to place");
 			m_isPromptVisible = true;
 
-			if (g_pad[0]->IsTrigger(enButtonA))
+			if (m_player->IsInteractTriggered())
 			{
 				PlaceOnPlate();
 			}
@@ -145,6 +159,12 @@ void DanBall::PickUp()
 
 void DanBall::PlaceOnPlate()
 {
+	/** キーの数を増やす */
+	m_key->AddKey();
+	
+	/** SANを減らす */
+	m_sanCalculation->SubtractSANValue(SAN_DECREASE_AMOUNT);
+
 	/** プレートに置く */
 	m_state = EnState::enState_Placed;
 

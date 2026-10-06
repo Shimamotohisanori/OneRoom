@@ -35,6 +35,15 @@ bool PlayerController::Start()
 
 void PlayerController::Update()
 {
+	UpdateActionInput();
+	/** 入力を受け付けない場合は、入力を無視する */
+	if (!m_isInputEnabled)
+	{
+		m_moveInput = Vector3::Zero;
+		m_isRunButtonPressed = false;
+		return;
+	}
+
 	UpdateInput();
 	UpdateMoveState();
 	UpdateMove();
@@ -42,6 +51,14 @@ void PlayerController::Update()
 
 void PlayerController::UpdateInput()
 {
+	/** 入力を受け付けない場合は、入力を無視する */
+	if (!m_isInputEnabled)
+	{
+		m_moveInput = Vector3::Zero;
+		m_isRunButtonPressed = false;
+		return;
+	}
+
 	/** ゲームパッドの左スティックの入力を取得 */
 	m_moveInput.Set(g_pad[0]->GetLStickXF(), Y_AXIS_INPUT, g_pad[0]->GetLStickYF());
 
@@ -94,6 +111,15 @@ float PlayerController::DecideTargetSpeed() const
 	}
 
 	return targetSpeed;
+}
+
+void PlayerController::UpdateActionInput()
+{
+	/** ボタンの割り当てはここだけで管理する */
+	m_isInteractTriggered = g_pad[0]->IsTrigger(enButtonA);
+	m_isLightToggleTriggered = g_pad[0]->IsTrigger(enButtonY);
+	m_isCancelTriggered = g_pad[0]->IsTrigger(enButtonB);
+	m_isPauseTriggered = g_pad[0]->IsTrigger(enButtonSelect);
 }
 
 void PlayerController::UpdateMove()

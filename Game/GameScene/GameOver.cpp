@@ -8,6 +8,11 @@
 #include "Source/Actor/Stage/PlateRoom/Plate/Plate.h"
 #include "Source/Actor/Stage/PlateRoom/DanBall/DanBall.h"
 #include "IntroductionUI/IntroductionUI.h"
+#include "Key/Key.h"
+#include "Key/KeyUI/KeyUI.h"
+#include "SAN/SANCalculation.h"
+#include "Source/Actor/Stage/DarkRoom/Paper/Paper.h"
+#include "Source/Actor/Stage/DarkRoom/KeyPad/KeyPad.h"
 namespace
 {
 	/** ゲームオーバー画面のファイルパス */
@@ -71,6 +76,36 @@ bool GameOver::Start()
 
 	/** 操作紹介UIを削除 */
 	DeleteGO(m_introductionUI);
+
+	/** キーを取得 */
+	m_key = FindGO<Key>("Key");
+
+	/** キーを削除 */
+	DeleteGO(m_key);
+
+	/** キーUIを取得 */
+	m_keyUI = FindGO<KeyUI>("keyUI");
+
+	/** キーUIを削除 */
+	DeleteGO(m_keyUI);
+
+	/** SAN計算クラスを取得 */
+	m_sanCalculation = FindGO<SANCalculation>("SANCalculation");
+
+	/** SAN計算クラスを削除 */
+	DeleteGO(m_sanCalculation);
+
+	/** 紙を取得 */
+	m_paper = FindGO<Paper>("Paper");
+
+	/** 紙を削除 */
+	DeleteGO(m_paper);
+
+	/** キーパッドを取得 */
+	m_keyPad = FindGO<KeyPad>("KeyPad");
+
+	/** キーパッドを削除 */
+	DeleteGO(m_keyPad);
 
 	m_gameOverSprite.Init(GAMEOVER_FILE_PATH, GAMEOVER_WIDTH, GAMEOVER_HEIGHT);
 	return true;

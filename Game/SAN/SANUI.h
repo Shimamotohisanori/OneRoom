@@ -1,10 +1,10 @@
 #pragma once
-#include "SANCalculation.h"
 /**
  * SANUI.h
  * SANUIクラス
  * ここでSANUIの操作や状態を管理する。
  */
+class SANCalculation;
 class SANUI : public IGameObject
 {
 public:
@@ -22,6 +22,6 @@ private:
 	FontRender m_sanUIFont;
 
 	/** SAN値の計算クラス */
-	SANCalculation m_sanCalculation;
+	SANCalculation* m_sanCalculation = nullptr;
 };
 

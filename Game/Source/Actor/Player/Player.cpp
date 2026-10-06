@@ -30,6 +30,12 @@ void Player::Update()
 
 	/** コントローラーの向きをモデルに反映 */
 	m_model.SetRotation(m_controller.GetRotation());
+
+	/** ライト切り替えボタンが押されたら、ライトのON/OFFを切り替える */
+	if (m_controller.IsLightToggleTriggered())
+	{
+		m_isLightOn = !m_isLightOn;
+	}
 }
 
 void Player::Render(RenderContext & rc)

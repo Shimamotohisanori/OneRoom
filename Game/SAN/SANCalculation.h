@@ -12,6 +12,18 @@ public:
 	bool Start();
 	void Update();
 	
+	/** SAN値を増やす */
+	void AddSANValue(int value)
+	{
+		m_sanValue += value;
+	}
+
+	/** SAN値を減らす */
+	void SubtractSANValue(int value)
+	{
+		m_sanValue -= value;
+	}
+
 	/** SAN値を取得する */
 	void SetSANValue(int value)
 	{

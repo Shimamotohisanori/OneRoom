@@ -43,6 +43,24 @@ public:
 	/** 現在の向きを設定 */
 	void SetRotation(const Quaternion& rotation) { m_rotation = rotation; }
 
+	/** このフレームにインタラクト(Aボタン)が押されたか */
+	bool IsInteractTriggered() const { return m_isInteractTriggered; }
+
+	/** このフレームにライト切り替え(Yボタン)が押されたか */
+	bool IsLightToggleTriggered() const { return m_isLightToggleTriggered; }
+
+	/** このフレームに戻る・やめる(Bボタン)が押されたか */
+	bool IsCancelTriggered() const { return m_isCancelTriggered; }
+
+	/** このフレームにポーズ(セレクト)が押されたか */
+	bool IsPauseTriggered() const { return m_isPauseTriggered; }
+
+	/** 入力を受け付けるかどうかの関数 */
+	void SetInputEnabled(bool enabled) { m_isInputEnabled = enabled; }
+
+	/** 入力の有効化の状態を取得 */
+	bool GetIsInputEnabled() const { return m_isInputEnabled; }
+
 private:
 	/** 入力を読み取るだけの処理 */
 	void UpdateInput();
@@ -56,6 +74,9 @@ private:
 	/** 状態ごとの目標最大速度を返す(Switch文で管理) */
 	float DecideTargetSpeed() const;
 
+	/** アクション入力(ボタン)を読み取る */
+	void UpdateActionInput();
+	
 
 private:
 	/** プレイヤーの座標 */
@@ -69,6 +90,21 @@ private:
 
 	/** 走るボタンが押されているか */
 	bool m_isRunButtonPressed = false;
+
+	/** インタラクトボタンのフラグ */
+	bool m_isInteractTriggered = false;
+
+	/** ライト切り替えボタンのフラグ */
+	bool m_isLightToggleTriggered = false;
+
+	/** やめる・戻るボタンのフラグ */
+	bool m_isCancelTriggered = false;
+
+	/** ポーズボタンのフラグ */
+	bool m_isPauseTriggered = false;
+
+	/** 入力を受け付けるかどうか */
+	bool m_isInputEnabled = true;
 
 	/** 状態と速度 */
 	EnMoveState m_moveState = EnMoveState::enMoveState_Idle;

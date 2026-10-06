@@ -46,6 +46,26 @@ public:
 	/** 段ボールを持っているかのフラグを設定 */
 	void SetIsHoldingDanBall(bool isHolding) { m_isHoldingDanBall = isHolding; }
 
+	/** アクション入力(ボタン)が押されたか */
+	bool IsInteractTriggered() const { return m_controller.IsInteractTriggered(); }
+
+	/** ライト切り替え入力(ボタン)が押されたか */
+	bool IsLightToggleTriggered() const { return m_controller.IsLightToggleTriggered(); }
+
+	/** やめる・戻る入力(ボタン)が押されたか */
+	bool IsCancelTriggered() const { return m_controller.IsCancelTriggered(); }
+
+	/** ポーズ入力(ボタン)が押されたか */
+	bool IsPauseTriggered() const { return m_controller.IsPauseTriggered(); }
+
+	/** ライトが点いているか */
+	bool IsLightOn() const { return m_isLightOn; }
+
+	/** 入力の有効化の設定 */
+	void SetInputEnabled(bool enabled) { m_controller.SetInputEnabled(enabled); }
+
+	/** 入力の有効化の状態を取得 */
+	bool GetIsInputEnabled() const { return m_controller.GetIsInputEnabled(); }
 
 private:
 	/** プレイヤーモデル */
@@ -56,5 +76,8 @@ private:
 
 	/** 段ボールを持っているか */
 	bool m_isHoldingDanBall = false;
+
+	/** ライトが点いているか */
+	bool m_isLightOn = false;
 };
 

@@ -20,6 +20,6 @@ public:
 
 private:
 	/** キーの数 */
-	int m_keyCount;
+	int m_keyCount = 0;
 };
 
