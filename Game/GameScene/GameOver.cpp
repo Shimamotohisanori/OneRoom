@@ -13,6 +13,8 @@
 #include "SAN/SANCalculation.h"
 #include "Source/Actor/Stage/DarkRoom/Paper/Paper.h"
 #include "Source/Actor/Stage/DarkRoom/KeyPad/KeyPad.h"
+#include "Source/Actor/Stage/HandSetRoom/Phone/Phone.h"
+#include "Source/Actor/Stage/HandSetRoom/PhonePaper/PhonePaper.h"
 namespace
 {
 	/** ゲームオーバー画面のファイルパス */
@@ -107,6 +109,21 @@ bool GameOver::Start()
 	/** キーパッドを削除 */
 	DeleteGO(m_keyPad);
 
+	/** 電話をすべて削除 */
+	/** QueryGOsで同じ名前のオブジェクトを検索している */
+	QueryGOs<Phone>("Phone", [](Phone* phone) -> bool
+		{
+			DeleteGO(phone);
+			return true;   // true を返すと次の電話も処理される
+		});
+
+	/** 電話の紙を取得 */
+	m_phonePaper = FindGO<PhonePaper>("PhonePaper");
+
+	/** 電話の紙を削除 */
+	DeleteGO(m_phonePaper);
+
+	/** ゲームオーバー画面を初期化 */
 	m_gameOverSprite.Init(GAMEOVER_FILE_PATH, GAMEOVER_WIDTH, GAMEOVER_HEIGHT);
 	return true;
 }

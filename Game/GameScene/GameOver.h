@@ -16,6 +16,7 @@ class KeyUI;
 class SANCalculation;
 class Paper;
 class KeyPad;
+class PhonePaper;
 class GameOver : public IGameObject
 {
 public:
@@ -68,5 +69,8 @@ private:
 
 	/** キーパッド */
 	KeyPad* m_keyPad;
+
+	/** 電話の紙 */
+	PhonePaper* m_phonePaper;
 };
 

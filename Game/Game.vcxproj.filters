@@ -58,9 +58,6 @@
     <Filter Include="Key\DarkRoomKey">
       <UniqueIdentifier>{b9fe2202-a24a-42db-a09a-7a055891ea08}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Key\HandSetRoomKey">
-      <UniqueIdentifier>{ed04af8d-2d4a-43cf-9f96-e48f71392266}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Actor\Stage\PlateRoom\DanBall">
       <UniqueIdentifier>{d44ab33e-f479-42a2-a2fb-340729ade1a7}</UniqueIdentifier>
     </Filter>
@@ -75,6 +72,18 @@
     </Filter>
     <Filter Include="Source\Actor\Stage\DarkRoom\KeyPad">
       <UniqueIdentifier>{dbcbc5b4-b898-4773-8ee8-48c20cfb5b40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Key\HandSetRoomKey">
+      <UniqueIdentifier>{ed04af8d-2d4a-43cf-9f96-e48f71392266}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Actor\Stage\HandSetRoom">
+      <UniqueIdentifier>{45ffc4b6-a8d7-4fc8-86b8-52d22b245d61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Actor\Stage\HandSetRoom\Phone">
+      <UniqueIdentifier>{94b5e585-135a-4bb2-8c9f-4281f7b0924c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Actor\Stage\HandSetRoom\PhonePaper">
+      <UniqueIdentifier>{29e9f84b-9c7d-48d1-a7fd-f5594de26975}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +170,15 @@
     <ClCompile Include="Source\Actor\Stage\DarkRoom\KeyPad\KeyPad.cpp">
       <Filter>Source\Actor\Stage\DarkRoom\KeyPad</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Actor\Stage\HandSetRoom\Phone\Phone.cpp">
+      <Filter>Source\Actor\Stage\HandSetRoom\Phone</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene\GameClear.cpp">
+      <Filter>GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\Stage\HandSetRoom\PhonePaper\PhonePaper.cpp">
+      <Filter>Source\Actor\Stage\HandSetRoom\PhonePaper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -244,6 +262,15 @@
     </ClInclude>
     <ClInclude Include="Source\Actor\Stage\DarkRoom\KeyPad\KeyPad.h">
       <Filter>Source\Actor\Stage\DarkRoom\KeyPad</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Stage\HandSetRoom\Phone\Phone.h">
+      <Filter>Source\Actor\Stage\HandSetRoom\Phone</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene\GameClear.h">
+      <Filter>GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Stage\HandSetRoom\PhonePaper\PhonePaper.h">
+      <Filter>Source\Actor\Stage\HandSetRoom\PhonePaper</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

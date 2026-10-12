@@ -6,7 +6,7 @@
  */
 
  /** キーパッドのボタンの種類 */
-enum class EnKeyButtonType {Number, Enter};
+enum class EnKeyButtonType {Number, Enter, Symbol};
 
 /** キーパッドのボタンの構造体 */
 struct KeyButton

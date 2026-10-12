@@ -226,6 +226,7 @@
   <ItemGroup>
     <ClCompile Include="GameCamera\GameCamera.cpp" />
     <ClCompile Include="GameScene\Game.cpp" />
+    <ClCompile Include="GameScene\GameClear.cpp" />
     <ClCompile Include="GameScene\GameOver.cpp" />
     <ClCompile Include="GameScene\LoadingScene.cpp" />
     <ClCompile Include="GameScene\Title.cpp" />
@@ -246,6 +247,8 @@
     <ClCompile Include="Source\Actor\Stage\Door\Door.cpp" />
     <ClCompile Include="Source\Actor\Stage\Door\HandSetRoomDoor\HandSetRoomDoor.cpp" />
     <ClCompile Include="Source\Actor\Stage\Door\PlateRoomDoor\PlateRoomDoor.cpp" />
+    <ClCompile Include="Source\Actor\Stage\HandSetRoom\PhonePaper\PhonePaper.cpp" />
+    <ClCompile Include="Source\Actor\Stage\HandSetRoom\Phone\Phone.cpp" />
     <ClCompile Include="Source\Actor\Stage\MainStage.cpp" />
     <ClCompile Include="Source\Actor\Stage\PlateRoom\DanBall\DanBall.cpp" />
     <ClCompile Include="Source\Actor\Stage\PlateRoom\PlateRoom.cpp" />
@@ -261,6 +264,7 @@
   <ItemGroup>
     <ClInclude Include="GameCamera\GameCamera.h" />
     <ClInclude Include="GameScene\Game.h" />
+    <ClInclude Include="GameScene\GameClear.h" />
     <ClInclude Include="GameScene\GameOver.h" />
     <ClInclude Include="GameScene\LoadingScene.h" />
     <ClInclude Include="GameScene\Title.h" />
@@ -280,6 +284,8 @@
     <ClInclude Include="Source\Actor\Stage\Door\Door.h" />
     <ClInclude Include="Source\Actor\Stage\Door\HandSetRoomDoor\HandSetRoomDoor.h" />
     <ClInclude Include="Source\Actor\Stage\Door\PlateRoomDoor\PlateRoomDoor.h" />
+    <ClInclude Include="Source\Actor\Stage\HandSetRoom\PhonePaper\PhonePaper.h" />
+    <ClInclude Include="Source\Actor\Stage\HandSetRoom\Phone\Phone.h" />
     <ClInclude Include="Source\Actor\Stage\MainStage.h" />
     <ClInclude Include="Source\Actor\Stage\PlateRoom\DanBall\DanBall.h" />
     <ClInclude Include="Source\Actor\Stage\PlateRoom\PlateRoom.h" />

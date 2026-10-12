@@ -10,6 +10,8 @@
 #include "Source/Actor/Stage/Darkroom/KeyPad/KeyPad.h"
 #include "Key/Key.h"
 #include "SAN/SANCalculation.h"
+#include "Source/Actor/Stage/HandSetRoom/Phone/Phone.h"
+#include "Source/Actor/Stage/HandSetRoom/PhonePaper/PhonePaper.h"
 namespace
 {
 	/** ローディング画面のファイルパス */
@@ -38,6 +40,28 @@ namespace
 
 	/** 光の色 */
 	const Vector3 LIGHT_COLOR = { 5.0f, 5.0f, 5.0f };
+
+	/** 受話器の数 */
+	constexpr int PHONE_COUNT = 3;
+
+	/** 正解の受話器の番号(0〜2) */
+	constexpr int CORRECT_PHONE_INDEX = 2;
+
+	/** 受話器の設置位置(ステージに合わせて調整) */
+	const Vector3 PHONE_POSITIONS[PHONE_COUNT] =
+	{
+		Vector3(850.0f, 0.0f, 890.0f),
+		Vector3(900.0f, -10.0f, 390.0f),
+		Vector3(1200.0f,-90.0f, 600.0f),
+	};
+
+	/** 受話器の向き(ステージに合わせて調整) */
+	const Vector3 PHONE_ROTATIONS[PHONE_COUNT] =
+	{
+		Vector3(0.0f, 180.0f, 0.0f),
+		Vector3(0.0f, 0.0f, 0.0f),
+		Vector3(0.0f, -90.0f, 0.0f),
+	};
 }
 
 LoadingScene::~LoadingScene()
@@ -133,19 +157,45 @@ void LoadingScene::LoadGame()
 
 	case 9:
 	{
+		/** 電話の紙の生成 */
+		NewGO<PhonePaper>(0, "PhonePaper");
+		break;
+	}
+
+	case 10:
+	{
 		/** キーパッドの生成 */
 		NewGO<KeyPad>(0, "KeyPad");
 		break;
 	}
 
-	case 10:
+	case 11:
 	{
 		/** 段ボールの生成 */
 		NewGO<DanBall>(0, "DanBall");
 		break;
 	}
 
-	case 11:
+	case 12:
+	{
+		/** 電話の生成(複数作る) */
+		for (int i = 0; i < PHONE_COUNT; i++)
+		{
+			Phone* phone = NewGO<Phone>(0, "Phone");
+			phone->SetPosition(PHONE_POSITIONS[i]);
+
+			phone->SetRotation(PHONE_ROTATIONS[i]);
+
+			/** 正解の番号と同じときだけ、正解の受話器にする */
+			phone->SetIsCorrectPhone(i == CORRECT_PHONE_INDEX);
+		}
+		break;
+
+		
+		break;
+	}
+
+	case 13:
 
 		/** ゲームの生成 */
 		NewGO<Game>(0, "Game");
