@@ -14,6 +14,9 @@ bool Player::Start()
 
 	/** コントローラーの初期化 */
 	m_controller.Start();
+
+	/** 懐中電灯の初期化 */
+	m_flashlight.Start();
 	return true;
 }
 
@@ -34,12 +37,22 @@ void Player::Update()
 	/** ライト切り替えボタンが押されたら、ライトのON/OFFを切り替える */
 	if (m_controller.IsLightToggleTriggered())
 	{
+		/** ライトのON/OFFを切り替える */
 		m_isLightOn = !m_isLightOn;
+
+		/** 懐中電灯にON/OFFを反映 */
+		m_flashlight.SetOn(m_isLightOn);
 	}
+
+	/** 懐中電灯の更新 */
+	m_flashlight.Update();
 }
 
 void Player::Render(RenderContext & rc)
 {
 	/** モデルの描画 */
 	//m_model.Render(rc);
+
+	/** 懐中電灯の描画 */
+	m_flashlight.Render(rc);
 }

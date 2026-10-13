@@ -85,6 +85,9 @@
     <Filter Include="Source\Actor\Stage\HandSetRoom\PhonePaper">
       <UniqueIdentifier>{29e9f84b-9c7d-48d1-a7fd-f5594de26975}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Flashlight">
+      <UniqueIdentifier>{81001a1d-c9ac-481b-bc0a-c1bee9c737d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -179,6 +182,9 @@
     <ClCompile Include="Source\Actor\Stage\HandSetRoom\PhonePaper\PhonePaper.cpp">
       <Filter>Source\Actor\Stage\HandSetRoom\PhonePaper</Filter>
     </ClCompile>
+    <ClCompile Include="Flashlight\Flashlight.cpp">
+      <Filter>Flashlight</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -271,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="Source\Actor\Stage\HandSetRoom\PhonePaper\PhonePaper.h">
       <Filter>Source\Actor\Stage\HandSetRoom\PhonePaper</Filter>
+    </ClInclude>
+    <ClInclude Include="Flashlight\Flashlight.h">
+      <Filter>Flashlight</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
