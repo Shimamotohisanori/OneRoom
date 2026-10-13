@@ -27,7 +27,7 @@ namespace
 	constexpr float SKY_CUBE_SIZE = 10000.0f;
 
 	/** IBLの強さ */
-	constexpr float IBL_STRENGTH = 0.95f;
+	constexpr float IBL_STRENGTH = 0.001f;
 
 	/** ブルームの強さ */
 	constexpr float BLOOM_STRENGTH = 3.0f;
@@ -39,7 +39,7 @@ namespace
 	const Vector3 LIGHT_DIRECTION = { 0.0f, -1.0f, 0.0f };
 
 	/** 光の色 */
-	const Vector3 LIGHT_COLOR = { 5.0f, 5.0f, 5.0f };
+	const Vector3 LIGHT_COLOR = { 0.001f, 0.001f, 0.001f };
 
 	/** 受話器の数 */
 	constexpr int PHONE_COUNT = 3;
@@ -124,6 +124,9 @@ void LoadingScene::LoadGame()
 
 		/** ブルームを抑制 */
 		g_renderingEngine->SetBloomThreshold(BLOOM_STRENGTH);
+		
+		/** 環境光の設定 */
+		g_sceneLight->SetAmbinet(Vector3(0.001f, 0.001f, 0.001f));
 		break;
 	}
 

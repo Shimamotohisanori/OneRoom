@@ -1,6 +1,7 @@
 #pragma once
 #include "PlayerModel.h"
 #include "PlayerController.h"
+#include "Flashlight/Flashlight.h"
 /**
  * Player.h
  * プレイヤークラス
@@ -73,6 +74,9 @@ private:
 
 	/** プレイヤーコントローラー */
 	PlayerController m_controller;
+
+	/** 懐中電灯 */
+	Flashlight m_flashlight;
 
 	/** 段ボールを持っているか */
 	bool m_isHoldingDanBall = false;
