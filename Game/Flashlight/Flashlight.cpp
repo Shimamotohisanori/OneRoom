@@ -30,19 +30,19 @@ namespace
 	constexpr float FADE_IN_SPEED = 12.0f;
 	constexpr float FADE_OUT_SPEED = 8.0f;
 
-	/** ライトの基本色(少し黄色寄りの白熱電球色)と強さ */
+	/** ライトの基本色(半透明くらいの明るさ)と強さ */
 	const Vector3 LIGHT_COLOR = { 1.0f, 0.92f, 0.75f };
-	constexpr float LIGHT_POWER = 25.0f;
+	constexpr float LIGHT_POWER = 5.0f;
 
 	/** 光が届く距離 */
-	constexpr float LIGHT_RANGE = 900.0f;
+	constexpr float LIGHT_RANGE = 700.0f;
 
 	/** 光の広がり(度)。内側の明るい部分と外側の淡い部分 */
 	constexpr float SPOT_ANGLE_DEG = 28.0f;
 
 	/** 距離減衰・角度減衰の累乗。大きいほど急に暗く/縁がぼける */
-	constexpr float RANGE_POW = 2.0f;
-	constexpr float ANGLE_POW = 1.5f;
+	constexpr float RANGE_POW = 3.0f;
+	constexpr float ANGLE_POW = 3.0f;
 
 	/** ちらつきの強さ(0.03 = ±3%) */
 	constexpr float FLICKER_AMOUNT = 0.03f;
