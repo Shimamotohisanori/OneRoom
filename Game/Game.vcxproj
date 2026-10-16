@@ -235,8 +235,10 @@
     <ClCompile Include="Key\Key.cpp" />
     <ClCompile Include="Key\KeyUI\KeyUI.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Pause.cpp" />
     <ClCompile Include="SAN\SANCalculation.cpp" />
     <ClCompile Include="SAN\SANUI.cpp" />
+    <ClCompile Include="SoundManager\SoundManager.cpp" />
     <ClCompile Include="Source\Actor\Actor.cpp" />
     <ClCompile Include="Source\Actor\Player\Player.cpp" />
     <ClCompile Include="Source\Actor\Player\PlayerController.cpp" />
@@ -273,8 +275,10 @@
     <ClInclude Include="IntroductionUI\IntroductionUI.h" />
     <ClInclude Include="Key\Key.h" />
     <ClInclude Include="Key\KeyUI\KeyUI.h" />
+    <ClInclude Include="Pause.h" />
     <ClInclude Include="SAN\SANCalculation.h" />
     <ClInclude Include="SAN\SANUI.h" />
+    <ClInclude Include="SoundManager\SoundManager.h" />
     <ClInclude Include="Source\Actor\Actor.h" />
     <ClInclude Include="Source\Actor\Player\Player.h" />
     <ClInclude Include="Source\Actor\Player\PlayerController.h" />

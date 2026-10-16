@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Title.h"
 #include "LoadingScene.h"
+#include "SoundManager/SoundManager.h"
 namespace
 {
 	/** タイトル画面のファイルパス */
@@ -25,6 +26,11 @@ bool Title::Start()
 	m_titleSprite.Init(TITLE_FILE_PATH, TITLE_WIDTH, TITLE_HEIGHT);
 	m_titleSprite.SetPosition(Vector3::Zero);
 
+	/** サウンドマネージャーの取得 */
+	SoundManager* sound = FindGO<SoundManager>("soundManager");
+	m_titleBGM = sound->PlayingBGM(enTitle, true);
+
+
 	return true;
 }
 
@@ -33,6 +39,8 @@ void Title::Update()
 	if (g_pad[0]->IsTrigger(enButtonA))
 	{
 		NewGO<LoadingScene>(0, "loading");
+
+		DeleteGO(m_titleBGM);
 
 		DeleteGO(this);
 		return;

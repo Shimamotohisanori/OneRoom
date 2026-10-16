@@ -88,6 +88,9 @@
     <Filter Include="Flashlight">
       <UniqueIdentifier>{81001a1d-c9ac-481b-bc0a-c1bee9c737d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SoundManager">
+      <UniqueIdentifier>{17011563-e345-4c08-b8c6-65e25137fd24}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -185,6 +188,10 @@
     <ClCompile Include="Flashlight\Flashlight.cpp">
       <Filter>Flashlight</Filter>
     </ClCompile>
+    <ClCompile Include="SoundManager\SoundManager.cpp">
+      <Filter>SoundManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Pause.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -281,5 +288,9 @@
     <ClInclude Include="Flashlight\Flashlight.h">
       <Filter>Flashlight</Filter>
     </ClInclude>
+    <ClInclude Include="SoundManager\SoundManager.h">
+      <Filter>SoundManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Pause.h" />
   </ItemGroup>
 </Project>

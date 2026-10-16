@@ -79,6 +79,12 @@ private:
 	/** キー */
 	Key* m_key = nullptr;
 
+	/** 選択を変えた時の効果音 */
+	SoundSource* m_selectSE = nullptr;
+
+	/** 決定した時の効果音 */
+	SoundSource* m_decisionSE = nullptr;
+
 	/** 操作案内文字を出すかどうか */
 	bool m_isPromptVisible = false;
 

@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "Player.h"
-
+#include "SoundManager/SoundManager.h"
 Player::Player()
 {}
 
 Player::~Player()
-{}
+{
+	DeleteGO(m_lightInteractSE);
+}
 
 bool Player::Start()
 {
@@ -39,6 +41,10 @@ void Player::Update()
 	{
 		/** ライトのON/OFFを切り替える */
 		m_isLightOn = !m_isLightOn;
+
+		/** ライト切り替えのSEを再生 */
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		m_lightInteractSE = sound->PlayingSE(enLightOnOff, false);
 
 		/** 懐中電灯にON/OFFを反映 */
 		m_flashlight.SetOn(m_isLightOn);

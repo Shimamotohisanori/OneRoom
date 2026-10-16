@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "PhonePaper.h"
 #include "Source/Actor/Player/Player.h"
-
+#include "SoundManager/SoundManager.h"
 namespace
 {
 	/** 紙モデルのファイルパス */
@@ -41,7 +41,9 @@ PhonePaper::PhonePaper()
 {}
 
 PhonePaper::~PhonePaper()
-{}
+{
+	DeleteGO(m_interactSE);
+}
 
 bool PhonePaper::Start()
 {
@@ -151,4 +153,8 @@ void PhonePaper::Interact()
 
 	/** プレイヤーの操作を無効化 */
 	m_player->SetInputEnabled(false);
+
+	/** インタラクト時のSEを再生 */
+	SoundManager* sound = FindGO<SoundManager>("soundManager");
+	m_interactSE = sound->PlayingSE(enPaperInteract, false);
 }

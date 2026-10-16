@@ -15,6 +15,7 @@
 #include "Source/Actor/Stage/DarkRoom/KeyPad/KeyPad.h"
 #include "Source/Actor/Stage/HandSetRoom/Phone/Phone.h"
 #include "Source/Actor/Stage/HandSetRoom/PhonePaper/PhonePaper.h"
+#include "SoundManager/SoundManager.h"
 namespace
 {
 	/** ゲームクリア画面のファイルパス */
@@ -106,6 +107,10 @@ bool GameClear::Start()
 		GAMECLEAR_WIDTH,
 		GAMECLEAR_HEIGHT
 	);
+
+	/** ゲームクリアBGMを再生 */
+	SoundManager* sound = FindGO<SoundManager>("soundManager");
+	m_clearBGM = sound->PlayingBGM(enGameClear, true);
 	return true;
 }
 
@@ -115,6 +120,7 @@ void GameClear::Update()
 	if (g_pad[0]->IsTrigger(enButtonA))
 	{
 		NewGO<Title>(0, "title");
+		DeleteGO(m_clearBGM);
 		DeleteGO(this);
 		return;
 	}

@@ -79,4 +79,7 @@ private:
 
 	/** 電話の紙 */
 	PhonePaper* m_phonePaper;
+
+    /** ゲームクリアのBGM */
+    SoundSource* m_clearBGM;
 };

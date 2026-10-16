@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Paper.h"
 #include "Source/Actor/Player/Player.h"
+#include "SoundManager/SoundManager.h"
 namespace
 {
 	/** 紙のモデルのファイルパス */
@@ -37,7 +38,9 @@ Paper::Paper()
 {}
 
 Paper::~Paper()
-{}
+{
+	DeleteGO(m_interactSE);
+}
 
 bool Paper::Start()
 {
@@ -136,4 +139,8 @@ void Paper::Interact()
 	/** 調べ始める。操作を止める */
 	m_isViewing = true;
 	m_player->SetInputEnabled(false);
+
+	/** インタラクト時のSEを再生 */
+	SoundManager* sound = FindGO<SoundManager>("soundManager");
+	m_interactSE = sound->PlayingSE(enPaperInteract, false);
 }

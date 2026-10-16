@@ -19,5 +19,8 @@ private:
 	/** タイトルスプライト */
 	SpriteRender m_titleSprite;
 
+	/** タイトルのBGM */
+	SoundSource* m_titleBGM = nullptr;
+
 };
 

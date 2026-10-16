@@ -78,6 +78,9 @@ private:
 	/** 懐中電灯 */
 	Flashlight m_flashlight;
 
+	/** ライトをインタラクトしたときのSE */
+	SoundSource* m_lightInteractSE;
+
 	/** 段ボールを持っているか */
 	bool m_isHoldingDanBall = false;
 

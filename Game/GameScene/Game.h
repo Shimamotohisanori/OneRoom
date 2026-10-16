@@ -45,5 +45,8 @@ private:
 
 	/** プレイヤー */
 	Player* m_player;
+
+	/** ゲーム中BGM */
+	SoundSource* m_gameBGM;
 };
 

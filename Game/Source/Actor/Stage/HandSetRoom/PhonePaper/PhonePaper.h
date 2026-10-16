@@ -40,6 +40,9 @@ private:
 	/** プレイヤー */
 	Player* m_player = nullptr;
 
+	/** インタラクト時のSE */
+	SoundSource* m_interactSE;
+
 	/** 紙を調べている最中か */
 	bool m_isViewing = false;
 

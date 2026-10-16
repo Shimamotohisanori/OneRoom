@@ -2,6 +2,7 @@
 #include "KeyPad.h"
 #include "Source/Actor/Player/Player.h"
 #include "Key/Key.h"
+#include "SoundManager/SoundManager.h"
 namespace
 {
 	/** キーパッドモデルのファイルパス */
@@ -99,6 +100,10 @@ KeyPad::~KeyPad()
 	{
 		m_player->SetInputEnabled(true);
 	}
+
+	DeleteGO(m_selectSE);
+
+	DeleteGO(m_decisionSE);
 }
 
 bool KeyPad::Start()
@@ -244,27 +249,32 @@ void KeyPad::UpdateSelection()
 	/** 移動先の番号、(-1なら動かない) */
 	int next = NONE;
 
+	SoundManager* sound = FindGO<SoundManager>("soundManager");
+
 	/** 入力に応じて移動先を決定 */
 	/** 上入力 */
 	if (g_pad[0]->IsTrigger(enButtonUp))
 	{
 		next = now.up;
-
+		m_selectSE = sound->PlayingSE(enPadSelect, false);
 	}
 	/** 下入力 */
 	else if (g_pad[0]->IsTrigger(enButtonDown))
 	{
 		next = now.down;
+		m_selectSE = sound->PlayingSE(enPadSelect, false);
 	}
 	/** 左入力 */
 	else if (g_pad[0]->IsTrigger(enButtonLeft))
 	{
 		next = now.left;
+		m_selectSE = sound->PlayingSE(enPadSelect, false);
 	}
 	/** 右入力 */
 	else if (g_pad[0]->IsTrigger(enButtonRight))
 	{
 		next = now.right;
+		m_selectSE = sound->PlayingSE(enPadSelect, false);
 	}
 
 	/** 移動先があるときだけ動く */
@@ -277,6 +287,10 @@ void KeyPad::UpdateSelection()
 void KeyPad::PressSelectedKey()
 {
 	const KeyButton& key = KEY_BUTTONS[m_selectedIndex];
+
+	/** 決定音を鳴らす */
+	SoundManager* sound = FindGO<SoundManager>("soundManager");
+	m_decisionSE = sound->PlayingSE(enPadDecision, false);
 
 	if (key.type == EnKeyButtonType::Number)
 	{
