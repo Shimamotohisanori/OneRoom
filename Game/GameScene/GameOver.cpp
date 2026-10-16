@@ -15,6 +15,7 @@
 #include "Source/Actor/Stage/DarkRoom/KeyPad/KeyPad.h"
 #include "Source/Actor/Stage/HandSetRoom/Phone/Phone.h"
 #include "Source/Actor/Stage/HandSetRoom/PhonePaper/PhonePaper.h"
+#include "SoundManager/SoundManager.h"
 namespace
 {
 	/** ゲームオーバー画面のファイルパス */
@@ -125,6 +126,10 @@ bool GameOver::Start()
 
 	/** ゲームオーバー画面を初期化 */
 	m_gameOverSprite.Init(GAMEOVER_FILE_PATH, GAMEOVER_WIDTH, GAMEOVER_HEIGHT);
+
+	/** ゲームオーバーBGMを再生 */
+	SoundManager* sound = FindGO<SoundManager>("soundManager");
+	m_gameOverBGM = sound->PlayingBGM(enGameOver, true);
 	return true;
 }
 
@@ -133,6 +138,7 @@ void GameOver::Update()
 	if (g_pad[0]->IsTrigger(enButtonA))
 	{
 		NewGO<Title>(0, "title");
+		DeleteGO(m_gameOverBGM);
 		DeleteGO(this);
 		return;
 	}

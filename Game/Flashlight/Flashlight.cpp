@@ -32,7 +32,7 @@ namespace
 
 	/** ライトの基本色(半透明くらいの明るさ)と強さ */
 	const Vector3 LIGHT_COLOR = { 1.0f, 0.92f, 0.75f };
-	constexpr float LIGHT_POWER = 5.0f;
+	constexpr float LIGHT_POWER = 1.0f;
 
 	/** 光が届く距離 */
 	constexpr float LIGHT_RANGE = 700.0f;

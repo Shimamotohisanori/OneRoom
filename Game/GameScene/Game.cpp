@@ -8,6 +8,7 @@
 #include "Key/Key.h"
 #include "GameScene/GameClear.h"
 #include "Source/Actor/Player/Player.h"
+#include "SoundManager/SoundManager.h"
 namespace
 {
 	/** ゲームクリアになる場所 */
@@ -45,6 +46,10 @@ bool Game::Start()
 	/** プレイヤーの取得 */
 	m_player = FindGO<Player>("Player");
 
+	/** ゲーム中BGMの再生 */
+	SoundManager* sound = FindGO<SoundManager>("soundManager");
+	m_gameBGM = sound->PlayingBGM(enGame, true);
+
 	return true;
 }
 
@@ -67,6 +72,7 @@ void Game::Death()
 	if (m_sanCalculation->GetSANValue() <= SAN_VALUE_ZERO)
 	{
 		NewGO<GameOver>(0,"GameOver");
+		DeleteGO(m_gameBGM);
 		DeleteGO(this);
 	}
 }
@@ -78,6 +84,7 @@ void Game::Clear()
 		m_player->GetPosition().z >= CLEAR_POSITION_Z)
 	{
 		NewGO<GameClear>(0,"GameClear");
+		DeleteGO(m_gameBGM);
 		DeleteGO(this);
 	}
 }

@@ -72,5 +72,8 @@ private:
 
 	/** 電話の紙 */
 	PhonePaper* m_phonePaper;
+
+	/** ゲームオーバーBGM */
+	SoundSource* m_gameOverBGM;
 };
 
