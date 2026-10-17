@@ -7,7 +7,6 @@
 #include "GameScene/Title.h"
 #include "SoundManager/SoundManager.h"
 
-
 void ReportLiveObjects()
 {
 	IDXGIDebug* pDxgiDebug;
@@ -33,11 +32,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	// ここから初期化を行うコードを記述する。
 	//////////////////////////////////////
 
-	//Titleクラスのオブジェクトを作成。
-	NewGO<Title>(0, "title");
-
 	/** サウンドマネージャーの初期化 */
 	SoundManager* soundManager = NewGO<SoundManager>(0, "soundManager");
+
+	//Titleクラスのオブジェクトを作成。
+	NewGO<Title>(0, "title");
 
 	//////////////////////////////////////
 	// 初期化を行うコードを書くのはここまで！！！

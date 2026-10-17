@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "DanBall.h"
 #include "Source/Actor/Player/Player.h"
 #include "Source/Actor/Stage/PlateRoom/Plate/Plate.h"
@@ -19,7 +19,7 @@ namespace
 	const Vector3 DAN_BALL_HELD_SCALE = Vector3(2.5f, 2.5f, 2.5f);
 
 	/** 案内文字の表示位置(画面中心が原点、下がマイナス) */
-	const Vector3 PROMPT_POSITION = Vector3(-150.0f, -200.0f, 0.0f);
+	const Vector3 PROMPT_POSITION = Vector3(-100.0f, -100.0f, 0.0f);
 
 	/** プレイヤーが段ボールを取得できる距離 */
 	const float PICKUP_DISTANCE = 50.0f;
@@ -95,7 +95,7 @@ void DanBall::Update()
 	case EnState::enState_Ground:
 		if (IsPlayerInRange())
 		{
-			m_promptFont.SetText(L"Press A to pick up");
+			m_promptFont.SetText(L"物を取る");
 			m_isPromptVisible = true;
 
 			if (m_player->IsInteractTriggered())
@@ -112,7 +112,7 @@ void DanBall::Update()
 		/** プレートに近いときだけ「置く」案内を出す */
 		if (m_plate != nullptr && m_plate->IsInPlacementRange(m_player->GetPosition()))
 		{
-			m_promptFont.SetText(L"Press A to place");
+			m_promptFont.SetText(L"物を置く");
 			m_isPromptVisible = true;
 
 			if (m_player->IsInteractTriggered())

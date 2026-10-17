@@ -9,6 +9,7 @@
 #include "GameScene/GameClear.h"
 #include "Source/Actor/Player/Player.h"
 #include "SoundManager/SoundManager.h"
+#include "Pause.h"
 namespace
 {
 	/** ゲームクリアになる場所 */
@@ -24,18 +25,21 @@ namespace
 Game::Game()
 {}
 Game::~Game()
-{}
+{
+	DeleteGO(m_pause);
+	DeleteGO(m_gameBGM);
+}
 
 bool Game::Start()
 {
 	/** SANUIの生成 */
-	m_sanUI = NewGO<SANUI>(0, "sanUI");
+	m_sanUI = NewGO<SANUI>(0, "SanUI");
 
 	/** KeyUIの生成 */
-	m_keyUI = NewGO<KeyUI>(0, "keyUI");
+	m_keyUI = NewGO<KeyUI>(0, "KeyUI");
 	
 	/** 操作紹介UIの生成 */
-	m_introductionUI = NewGO<IntroductionUI>(0, "introductionUI");
+	m_introductionUI = NewGO<IntroductionUI>(0, "IntroductionUI");
 
 	/** SAN計算クラスの取得 */
 	m_sanCalculation = FindGO<SANCalculation>("SANCalculation");
@@ -45,6 +49,9 @@ bool Game::Start()
 
 	/** プレイヤーの取得 */
 	m_player = FindGO<Player>("Player");
+
+	/** 一時停止クラスの生成 */
+	m_pause = NewGO<Pause>(0, "Pause");
 
 	/** ゲーム中BGMの再生 */
 	SoundManager* sound = FindGO<SoundManager>("soundManager");
@@ -58,6 +65,8 @@ void Game::Update()
 	Death();
 
 	Clear();
+
+	GamePause();
 	// g_renderingEngine->DisableRaytracing();
 }
 
@@ -72,7 +81,6 @@ void Game::Death()
 	if (m_sanCalculation->GetSANValue() <= SAN_VALUE_ZERO)
 	{
 		NewGO<GameOver>(0,"GameOver");
-		DeleteGO(m_gameBGM);
 		DeleteGO(this);
 	}
 }
@@ -84,7 +92,18 @@ void Game::Clear()
 		m_player->GetPosition().z >= CLEAR_POSITION_Z)
 	{
 		NewGO<GameClear>(0,"GameClear");
-		DeleteGO(m_gameBGM);
 		DeleteGO(this);
+	}
+}
+
+void Game::GamePause()
+{
+	if(m_player->IsPauseTriggered())
+	{
+		/** 一時停止状態にする */
+		m_pause->SetIsPaused(true);
+
+		/** プレイヤーの操作を無効化 */
+		m_player->SetInputEnabled(false);
 	}
 }

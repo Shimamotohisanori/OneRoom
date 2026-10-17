@@ -28,6 +28,12 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
+	/** キーパッドを開いているかどうか */
+	bool GetIsKeypadOpen() const
+	{
+		return m_isKeypadOpen;
+	}
+
 
 private:
 	/** キーパッドとプレイヤーの距離計算関数 */

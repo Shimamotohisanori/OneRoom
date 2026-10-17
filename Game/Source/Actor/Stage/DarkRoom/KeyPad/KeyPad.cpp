@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "KeyPad.h"
 #include "Source/Actor/Player/Player.h"
 #include "Key/Key.h"
@@ -39,7 +39,7 @@ namespace
 	const Vector3 KEYPAD_SPRITE_POSITION = Vector3(0.0f, 0.0f, 0.0f);
 
 	/** 案内文字の表示位置 */
-	const Vector3 PROMPT_POSITION = Vector3(-150.0f, -200.0f, 0.0f);
+	const Vector3 PROMPT_POSITION = Vector3(-130.0f, -100.0f, 0.0f);
 
 	/** カーソルの色 */
 	const Vector4 CURSOR_COLOR = Vector4(1.0f, 1.0f, 1.0f, 0.5f);
@@ -63,7 +63,7 @@ namespace
 	constexpr float PROMPT_FONT_SCALE = 1.5f;
 
 	/** 入力数字のスケール */
-	constexpr float INPUT_FONT_SCALE = 1.25f;
+	constexpr float INPUT_FONT_SCALE = 1.5f;
 
 	/** 入力できる最大桁数 */
 	constexpr int MAX_DIGITS = 4;
@@ -175,7 +175,7 @@ void KeyPad::Update()
 
 	if (IsPlayerInRange())
 	{
-		m_promptFont.SetText(L"Press A to use keypad");
+		m_promptFont.SetText(L"キーパッドを使う");
 		m_isPromptVisible = true;
 
 		if (m_player->IsInteractTriggered())

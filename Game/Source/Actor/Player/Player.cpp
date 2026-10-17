@@ -24,6 +24,7 @@ bool Player::Start()
 
 void Player::Update()
 {
+
 	/** コントローラーの更新 */
 	m_controller.Update();
 

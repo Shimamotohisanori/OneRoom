@@ -17,6 +17,13 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
+	/** 電話の紙を調べているかどうか */
+	bool GetIsViewing() const
+	{
+		return m_isViewing;
+	}
+
+
 private:
 	/** プレイヤーとの距離を計算する */
 	float CalculateDistanceToPlayer(const Vector3& playerPosition) const;
