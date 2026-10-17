@@ -30,6 +30,9 @@ public:
 	~SoundManager();
 	void Update();
 
+	/** 音量の最大段階 */
+	static const int VOLUME_LEVEL_MAX = 10;
+
 	/** BGMを再生する関数 */
 	SoundSource* PlayingBGM(SoundBGM number, bool isLoop = true);
 
@@ -60,6 +63,13 @@ public:
 		m_seVolume = volume;
 	}
 
+	/** BGM音量レベル(0〜10)を取得・設定 */
+	int GetBGMVolumeLevel() const { return m_bgmVolumeLevel; }
+	void SetBGMVolumeLevel(int level);
+
+	/** SE音量レベル(0〜10)を取得・設定 */
+	int GetSEVolumeLevel() const { return m_seVolumeLevel; }
+	void SetSEVolumeLevel(int level);
 
 private:
 	/** BGM音量 */
@@ -67,6 +77,15 @@ private:
 
 	/** SE音量 */
 	float m_seVolume = 0.3f;
+
+	/** BGM音量レベル(0〜10) */
+	int m_bgmVolumeLevel = 3;
+
+	/** SE音量レベル(0〜10) */
+	int m_seVolumeLevel = 3;
+
+	/** 再生中のBGM(音量の即時反映用) */
+	SoundSource* m_currentBGM = nullptr;
 
 	/** BGMの数 */
 	uint8_t m_bgmCount = 0;

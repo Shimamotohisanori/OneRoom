@@ -19,7 +19,7 @@ namespace
 	const Vector3 KEY_UI_FONT_POSITION = Vector3(-850.0f, 530.0f, 0.0f);
 
 	/** キーUIフォントのサイズ */
-	constexpr float KEY_UI_FONT_SIZE = 1.5f;
+	constexpr float KEY_UI_FONT_SIZE = 2.0f;
 }
 
 KeyUI::KeyUI()

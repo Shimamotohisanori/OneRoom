@@ -91,6 +91,9 @@
     <Filter Include="SoundManager">
       <UniqueIdentifier>{17011563-e345-4c08-b8c6-65e25137fd24}</UniqueIdentifier>
     </Filter>
+    <Filter Include="VolumeAdjustment">
+      <UniqueIdentifier>{53e1a3ad-42bc-46d0-a926-035564c254c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -191,7 +194,12 @@
     <ClCompile Include="SoundManager\SoundManager.cpp">
       <Filter>SoundManager</Filter>
     </ClCompile>
-    <ClCompile Include="Pause.cpp" />
+    <ClCompile Include="GameScene\Pause.cpp">
+      <Filter>GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="VolumeAdjustment\VolumeAdjustment.cpp">
+      <Filter>VolumeAdjustment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -291,6 +299,11 @@
     <ClInclude Include="SoundManager\SoundManager.h">
       <Filter>SoundManager</Filter>
     </ClInclude>
-    <ClInclude Include="Pause.h" />
+    <ClInclude Include="GameScene\Pause.h">
+      <Filter>GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="VolumeAdjustment\VolumeAdjustment.h">
+      <Filter>VolumeAdjustment</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

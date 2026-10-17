@@ -2,6 +2,7 @@
 #include "SoundManager.h"
 #include "sound/SoundEngine.h"
 #include "sound/SoundSource.h"
+#include <algorithm>
 namespace
 {
 	/** サウンド関連の定数をnamespace内にまとめる */
@@ -78,6 +79,9 @@ SoundSource* SoundManager::PlayingBGM(SoundBGM number, bool isLoop)
 	/** ループ再生するかどうかを指定して再生 */
 	bgm->Play(isLoop);
 
+	/** 再生中のBGMとして保持(音量の即時反映用) */
+	m_currentBGM = bgm;
+
 	/** 作成した音を返す */
 	return bgm;
 }
@@ -97,4 +101,32 @@ SoundSource* SoundManager::PlayingSE(SoundSE number, bool isLoop)
 	se->Play(isLoop);
 
 	return se;
+}
+
+void SoundManager::SetBGMVolumeLevel(int level)
+{
+	/** ここでBGM音量レベルを設定 */
+	/** maxとmin関数を使って、0からVOLUME_LEVEL_MAXの範囲内に収める */
+	m_bgmVolumeLevel = (std::max)(0, (std::min)(level, VOLUME_LEVEL_MAX));
+
+	/** ここでBGM音量を設定 */
+	/** 音量レベルをfloatに変換 */
+	m_bgmVolume = static_cast<float>(m_bgmVolumeLevel) / VOLUME_LEVEL_MAX;
+
+	/** 再生中のBGMにも即反映 */
+	if (m_currentBGM != nullptr)
+	{
+		m_currentBGM->SetVolume(m_bgmVolume);
+	}
+}
+
+void SoundManager::SetSEVolumeLevel(int level)
+{
+	/** ここでSE音量レベルを設定 */
+	/** maxとmin関数を使って、0からVOLUME_LEVEL_MAXの範囲内に収める */
+	m_seVolumeLevel = (std::max)(0, (std::min)(level, VOLUME_LEVEL_MAX));
+
+	/** ここでSE音量を設定 */
+	/** SEは再生中のSEを保持していないので、即反映はできない */
+	m_seVolume = static_cast<float>(m_seVolumeLevel) / VOLUME_LEVEL_MAX;
 }

@@ -53,7 +53,7 @@ bool GameClear::Start()
 	DeleteGO(m_skyCube);
 
 	/** SAN UIを削除 */
-	m_sanUI = FindGO<SANUI>("sanUI");
+	m_sanUI = FindGO<SANUI>("SanUI");
 	DeleteGO(m_sanUI);
 
 	/** プレートを削除 */
@@ -65,7 +65,7 @@ bool GameClear::Start()
 	DeleteGO(m_danBall);
 
 	/** 操作紹介UIを削除 */
-	m_introductionUI = FindGO<IntroductionUI>("introductionUI");
+	m_introductionUI = FindGO<IntroductionUI>("IntroductionUI");
 	DeleteGO(m_introductionUI);
 
 	/** キーを削除 */
@@ -73,7 +73,7 @@ bool GameClear::Start()
 	DeleteGO(m_key);
 
 	/** キーUIを削除 */
-	m_keyUI = FindGO<KeyUI>("keyUI");
+	m_keyUI = FindGO<KeyUI>("KeyUI");
 	DeleteGO(m_keyUI);
 
 	/** SAN計算クラスを削除 */

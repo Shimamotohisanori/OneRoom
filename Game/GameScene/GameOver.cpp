@@ -57,7 +57,7 @@ bool GameOver::Start()
 	DeleteGO(m_skyCube);
 
 	/** SAN UIを取得 */
-	m_sanUI = FindGO<SANUI>("sanUI");	
+	m_sanUI = FindGO<SANUI>("SanUI");	
 
 	/** SAN UIを削除 */
 	DeleteGO(m_sanUI);
@@ -75,7 +75,7 @@ bool GameOver::Start()
 	DeleteGO(m_danBall);
 
 	/** 操作紹介UIを取得 */
-	m_introductionUI = FindGO<IntroductionUI>("introductionUI");
+	m_introductionUI = FindGO<IntroductionUI>("IntroductionUI");
 
 	/** 操作紹介UIを削除 */
 	DeleteGO(m_introductionUI);
@@ -87,7 +87,7 @@ bool GameOver::Start()
 	DeleteGO(m_key);
 
 	/** キーUIを取得 */
-	m_keyUI = FindGO<KeyUI>("keyUI");
+	m_keyUI = FindGO<KeyUI>("KeyUI");
 
 	/** キーUIを削除 */
 	DeleteGO(m_keyUI);

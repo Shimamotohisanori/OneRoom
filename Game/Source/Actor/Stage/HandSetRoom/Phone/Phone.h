@@ -33,6 +33,12 @@ public:
 		m_isCorrectPhone = isCorrect;
 	}
 
+	/** 受話器を開いているかどうか */
+	bool GetIsPhoneOpen() const
+	{
+		return m_isPhoneOpen;
+	}
+
 private:
 	/** プレイヤーとの距離を計算する */
 	float CalculateDistanceToPlayer(const Vector3& playerPosition) const;

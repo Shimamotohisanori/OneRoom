@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "Paper.h"
 #include "Source/Actor/Player/Player.h"
 #include "SoundManager/SoundManager.h"
@@ -20,7 +20,7 @@ namespace
 	const Vector3 PAPER_SPRITE_INITIAL_POSITION = Vector3(0.0f, 0.0f, 0.0f);
 
 	/** 操作案内フォントの座標 */
-	const Vector3 PROMPT_POSITION = Vector3(-150.0f, -200.0f, 0.0f);
+	const Vector3 PROMPT_POSITION = Vector3(-100.0f, -100.0f, 0.0f);
 
 	/** 紙画像の横幅 */
 	constexpr float PAPER_SPRITE_WIDTH = 1920.0f;
@@ -32,7 +32,7 @@ namespace
 	constexpr float INTERACT_DISTANCE = 100.0f;
 
 	/** 操作案内フォントのスケール */
-	constexpr float PROMPT_SCALE = 1.0f;
+	constexpr float PROMPT_SCALE = 1.5f;
 }
 Paper::Paper()
 {}
@@ -82,7 +82,7 @@ void Paper::Update()
 		else if (IsPlayerInRange())
 		{
 			/** 範囲内: 案内を出し、Aで調べ始める */
-			m_introductionFont.SetText(L"Press A to interact");
+			m_introductionFont.SetText(L"調べる");
 			m_isPromptVisible = true;
 
 			if (m_player->IsInteractTriggered())

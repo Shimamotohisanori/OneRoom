@@ -230,12 +230,12 @@
     <ClCompile Include="GameScene\GameClear.cpp" />
     <ClCompile Include="GameScene\GameOver.cpp" />
     <ClCompile Include="GameScene\LoadingScene.cpp" />
+    <ClCompile Include="GameScene\Pause.cpp" />
     <ClCompile Include="GameScene\Title.cpp" />
     <ClCompile Include="IntroductionUI\IntroductionUI.cpp" />
     <ClCompile Include="Key\Key.cpp" />
     <ClCompile Include="Key\KeyUI\KeyUI.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Pause.cpp" />
     <ClCompile Include="SAN\SANCalculation.cpp" />
     <ClCompile Include="SAN\SANUI.cpp" />
     <ClCompile Include="SoundManager\SoundManager.cpp" />
@@ -263,6 +263,7 @@
     </ClCompile>
     <ClCompile Include="system\system.cpp" />
     <ClCompile Include="Transform\Transform.cpp" />
+    <ClCompile Include="VolumeAdjustment\VolumeAdjustment.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Flashlight\Flashlight.h" />
@@ -271,11 +272,11 @@
     <ClInclude Include="GameScene\GameClear.h" />
     <ClInclude Include="GameScene\GameOver.h" />
     <ClInclude Include="GameScene\LoadingScene.h" />
+    <ClInclude Include="GameScene\Pause.h" />
     <ClInclude Include="GameScene\Title.h" />
     <ClInclude Include="IntroductionUI\IntroductionUI.h" />
     <ClInclude Include="Key\Key.h" />
     <ClInclude Include="Key\KeyUI\KeyUI.h" />
-    <ClInclude Include="Pause.h" />
     <ClInclude Include="SAN\SANCalculation.h" />
     <ClInclude Include="SAN\SANUI.h" />
     <ClInclude Include="SoundManager\SoundManager.h" />
@@ -299,6 +300,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
     <ClInclude Include="Transform\Transform.h" />
+    <ClInclude Include="VolumeAdjustment\VolumeAdjustment.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -11,6 +11,7 @@ class Key;
 class IntroductionUI;
 class SANCalculation;
 class Player;
+class Pause;
 class Game : public IGameObject
 {
 public:
@@ -27,6 +28,9 @@ private:
 
 	/** ゲームクリア処理 */
 	void Clear();
+
+	/** 一時停止処理 */
+	void GamePause();
 
 	/** SANUI */
 	SANUI* m_sanUI;
@@ -46,6 +50,9 @@ private:
 	/** プレイヤー */
 	Player* m_player;
 
+	/** 一時停止クラス */
+	Pause* m_pause;
+	
 	/** ゲーム中BGM */
 	SoundSource* m_gameBGM;
 };

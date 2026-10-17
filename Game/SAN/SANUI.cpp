@@ -13,7 +13,7 @@ namespace
 	constexpr float SANUI_HEIGHT = 200.0f;
 
 	/** SANUIフォントのスケール */
-	constexpr float SANUI_FONT_SCALE = 1.5f;
+	constexpr float SANUI_FONT_SCALE = 2.0f;
 
 	/** 10 */
 	constexpr int TEN = 10;

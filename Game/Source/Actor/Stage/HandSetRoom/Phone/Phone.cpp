@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "Phone.h"
 #include "Source/Actor/Player/Player.h"
 #include "Key/Key.h"
@@ -35,7 +35,7 @@ namespace
 	constexpr float PROMPT_FONT_SCALE = 1.5f;
 
 	/** 入力した数字のスケール */
-	constexpr float INPUT_FONT_SCALE = 1.25f;
+	constexpr float INPUT_FONT_SCALE = 1.5f;
 
 	/** インタラクトできる距離 */
 	constexpr float INTERACT_DISTANCE = 50.0f;
@@ -44,7 +44,7 @@ namespace
 	const Vector3 PHONE_MODEL_SCALE = Vector3(0.3f, 0.3f, 0.3f);
 
 	/** 案内文字の位置 */
-	const Vector3 PROMPT_POSITION = Vector3(-150.0f, -200.0f, 0.0f);
+	const Vector3 PROMPT_POSITION = Vector3(-150.0f, -100.0f, 0.0f);
 	
 	/** 入力数字の位置 */
 	const Vector3 DIGITS_POSITION = Vector3(0.0f, 280.0f, 0.0f);
@@ -167,7 +167,7 @@ void Phone::Update()
 	if (IsPlayerInRange())
 	{
 		/** 操作案内文字を表示する */
-		m_promptFont.SetText(L"Press A to pick up the phone");
+		m_promptFont.SetText(L"電話を使う");
 		m_isPromptVisible = true;
 
 		/** Aボタンを押したとき */

@@ -15,6 +15,12 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
+	/** 紙を調べているかどうか */
+	bool GetIsViewing() const
+	{
+		return m_isViewing;
+	}
+
 
 private:
 	/** プレイヤーとの距離を計算する */
