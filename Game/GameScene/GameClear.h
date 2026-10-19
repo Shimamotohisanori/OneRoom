@@ -20,7 +20,9 @@ class Paper;
 class KeyPad;
 class Phone;
 class PhonePaper;
-
+class PlateRoomDoor;
+class DarkRoomDoor;
+class HandSetRoomDoor;
 class GameClear : public IGameObject
 {
 public:
@@ -79,6 +81,15 @@ private:
 
 	/** 電話の紙 */
 	PhonePaper* m_phonePaper;
+
+	/** プレートルームのドア */
+	PlateRoomDoor* m_plateRoomDoor;
+
+	/** ダークルームのドア */
+	DarkRoomDoor* m_darkRoomDoor;
+
+	/* ハンドセットルームのドア */
+	HandSetRoomDoor* m_handSetRoomDoor;
 
     /** ゲームクリアのBGM */
     SoundSource* m_clearBGM;

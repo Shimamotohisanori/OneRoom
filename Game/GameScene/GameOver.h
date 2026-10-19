@@ -17,6 +17,9 @@ class SANCalculation;
 class Paper;
 class KeyPad;
 class PhonePaper;
+class PlateRoomDoor;
+class DarkRoomDoor;
+class HandSetRoomDoor;
 class GameOver : public IGameObject
 {
 public:
@@ -72,6 +75,15 @@ private:
 
 	/** 電話の紙 */
 	PhonePaper* m_phonePaper;
+
+	/** プレートルームのドア */
+	PlateRoomDoor* m_plateRoomDoor;
+
+	/** ダークルームのドア */
+	DarkRoomDoor* m_darkRoomDoor;
+
+	/** ハンドセットルームのドア */
+	HandSetRoomDoor* m_handSetRoomDoor;
 
 	/** ゲームオーバーBGM */
 	SoundSource* m_gameOverBGM;

@@ -16,6 +16,11 @@ MainStage::~MainStage()
 bool MainStage::Start()
 {
 	m_mainStageRender.Init(MAIN_STAGE_MODEL_PATH);
+	
+	m_mainStagePhysics.CreateFromModel(
+		m_mainStageRender.GetModel(),
+		m_mainStageRender.GetModel().GetWorldMatrix()
+	);
 	return true;
 }
 

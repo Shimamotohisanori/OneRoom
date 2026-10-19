@@ -38,6 +38,7 @@ private:
 	/** プレートを(段ボールが)踏んだかどうか */
 	bool m_isSteppedOn = false;
 
+	/** プレートの位置 */
 	Vector3 m_position = Vector3::Zero;
 
 };

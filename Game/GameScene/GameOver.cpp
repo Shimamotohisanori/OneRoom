@@ -15,6 +15,9 @@
 #include "Source/Actor/Stage/DarkRoom/KeyPad/KeyPad.h"
 #include "Source/Actor/Stage/HandSetRoom/Phone/Phone.h"
 #include "Source/Actor/Stage/HandSetRoom/PhonePaper/PhonePaper.h"
+#include "Source/Actor/Stage/Door/PlateRoomDoor/PlateRoomDoor.h"
+#include "Source/Actor/Stage/Door/DarkRoomDoor/DarkRoomDoor.h"
+#include "Source/Actor/Stage/Door/HandSetRoomDoor/HandSetRoomDoor.h"
 #include "SoundManager/SoundManager.h"
 namespace
 {
@@ -123,6 +126,24 @@ bool GameOver::Start()
 
 	/** 電話の紙を削除 */
 	DeleteGO(m_phonePaper);
+
+	/** プレートルームのドアを取得 */
+	m_plateRoomDoor = FindGO<PlateRoomDoor>("PlateRoomDoor");
+
+	/** プレートルームのドアを削除 */
+	DeleteGO(m_plateRoomDoor);
+
+	/** ダークルームのドアを取得 */
+	m_darkRoomDoor = FindGO<DarkRoomDoor>("DarkRoomDoor");
+
+	/** ダークルームのドアを削除 */
+	DeleteGO(m_darkRoomDoor);
+
+	/** ハンドセットルームのドアを取得 */
+	m_handSetRoomDoor = FindGO<HandSetRoomDoor>("HandSetRoomDoor");
+
+	/** ハンドセットルームのドアを削除 */
+	DeleteGO(m_handSetRoomDoor);
 
 	/** ゲームオーバー画面を初期化 */
 	m_gameOverSprite.Init(GAMEOVER_FILE_PATH, GAMEOVER_WIDTH, GAMEOVER_HEIGHT);

@@ -22,7 +22,7 @@ namespace
 	const Vector3 PROMPT_POSITION = Vector3(-100.0f, -100.0f, 0.0f);
 
 	/** プレイヤーが段ボールを取得できる距離 */
-	const float PICKUP_DISTANCE = 50.0f;
+	const float PICKUP_DISTANCE = 70.0f;
 
 	/** カメラからの前方向オフセット */
 	constexpr float HELD_FORWARD_OFFSET = 60.0f;

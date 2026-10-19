@@ -12,6 +12,9 @@
 #include "SAN/SANCalculation.h"
 #include "Source/Actor/Stage/HandSetRoom/Phone/Phone.h"
 #include "Source/Actor/Stage/HandSetRoom/PhonePaper/PhonePaper.h"
+#include "Source/Actor/Stage/Door/PlateRoomDoor/PlateRoomDoor.h"
+#include "Source/Actor/Stage/Door/HandSetRoomDoor/HandSetRoomDoor.h"
+#include "Source/Actor/Stage/Door/DarkRoomDoor/DarkRoomDoor.h"
 namespace
 {
 	/** ローディング画面のファイルパス */
@@ -193,12 +196,19 @@ void LoadingScene::LoadGame()
 			phone->SetIsCorrectPhone(i == CORRECT_PHONE_INDEX);
 		}
 		break;
-
-		
-		break;
 	}
 
 	case 13:
+	{
+		/** ドアの生成 */
+		NewGO<PlateRoomDoor>(0, "PlateRoomDoor");
+		NewGO<HandSetRoomDoor>(0, "HandSetRoomDoor");
+		NewGO<DarkRoomDoor>(0, "DarkRoomDoor");
+
+		break;
+	}
+
+	case 14:
 
 		/** ゲームの生成 */
 		NewGO<Game>(0, "Game");

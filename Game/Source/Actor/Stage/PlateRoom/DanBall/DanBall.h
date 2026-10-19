@@ -17,6 +17,12 @@ public:
 	void Update();
 	void Render(RenderContext& renderContext);
 
+	/** プレートに段ボールが置かれたか */
+	bool IsPlaced() const 
+	{
+		return m_state == EnState::enState_Placed; 
+	}
+
 
 private:
 	/** 段ボールの状態 */

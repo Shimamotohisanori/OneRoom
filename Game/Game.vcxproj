@@ -250,6 +250,7 @@
     <ClCompile Include="Source\Actor\Stage\Door\Door.cpp" />
     <ClCompile Include="Source\Actor\Stage\Door\HandSetRoomDoor\HandSetRoomDoor.cpp" />
     <ClCompile Include="Source\Actor\Stage\Door\PlateRoomDoor\PlateRoomDoor.cpp" />
+    <ClCompile Include="Source\Actor\Stage\HandSetRoom\HandSetRoom.cpp" />
     <ClCompile Include="Source\Actor\Stage\HandSetRoom\PhonePaper\PhonePaper.cpp" />
     <ClCompile Include="Source\Actor\Stage\HandSetRoom\Phone\Phone.cpp" />
     <ClCompile Include="Source\Actor\Stage\MainStage.cpp" />
@@ -291,6 +292,7 @@
     <ClInclude Include="Source\Actor\Stage\Door\Door.h" />
     <ClInclude Include="Source\Actor\Stage\Door\HandSetRoomDoor\HandSetRoomDoor.h" />
     <ClInclude Include="Source\Actor\Stage\Door\PlateRoomDoor\PlateRoomDoor.h" />
+    <ClInclude Include="Source\Actor\Stage\HandSetRoom\HandSetRoom.h" />
     <ClInclude Include="Source\Actor\Stage\HandSetRoom\PhonePaper\PhonePaper.h" />
     <ClInclude Include="Source\Actor\Stage\HandSetRoom\Phone\Phone.h" />
     <ClInclude Include="Source\Actor\Stage\MainStage.h" />

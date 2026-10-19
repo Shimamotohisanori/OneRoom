@@ -53,6 +53,9 @@ private:
 	/** 項目名("BGM" / "SE") */
 	FontRender m_labelFont[enItemNum];
 
+	/** 「Bボタンを押して戻る」の案内文字 */
+	FontRender m_backFont;
+
 	/** 選択中の項目 */
 	int m_selectItem = enItemBGM;
 

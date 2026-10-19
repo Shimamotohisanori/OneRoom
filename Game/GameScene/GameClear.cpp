@@ -15,6 +15,9 @@
 #include "Source/Actor/Stage/DarkRoom/KeyPad/KeyPad.h"
 #include "Source/Actor/Stage/HandSetRoom/Phone/Phone.h"
 #include "Source/Actor/Stage/HandSetRoom/PhonePaper/PhonePaper.h"
+#include "Source/Actor/Stage/Door/PlateRoomDoor/PlateRoomDoor.h"
+#include "Source/Actor/Stage/Door/DarkRoomDoor/DarkRoomDoor.h"
+#include "Source/Actor/Stage/Door/HandSetRoomDoor/HandSetRoomDoor.h"
 #include "SoundManager/SoundManager.h"
 namespace
 {
@@ -100,6 +103,18 @@ bool GameClear::Start()
 
 	/** 電話の紙を削除 */
 	DeleteGO(m_phonePaper);
+
+	/** プレートルームのドアを削除 */
+	m_plateRoomDoor = FindGO<PlateRoomDoor>("PlateRoomDoor");
+	DeleteGO(m_plateRoomDoor);
+
+	/** ダークルームのドアを削除 */
+	m_darkRoomDoor = FindGO<DarkRoomDoor>("DarkRoomDoor");
+	DeleteGO(m_darkRoomDoor);
+
+	/** ハンドセットルームのドアを削除 */
+	m_handSetRoomDoor = FindGO<HandSetRoomDoor>("HandSetRoomDoor");
+	DeleteGO(m_handSetRoomDoor);
 
 	/** ゲームクリア画像を初期化 */
 	m_clearSprite.Init(
