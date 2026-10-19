@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "VolumeAdjustment.h"
 
 namespace
@@ -10,7 +10,7 @@ namespace
 	constexpr int VOLUME_PRIORITY = 10;
 
 	/** ゲージ左端のX */
-	constexpr float GAUGE_START_X = -200.0f;
+	constexpr float GAUGE_START_X = -100.0f;
 
 	/** ゲージ左端のY */
 	constexpr float GAUGE_START_Y = 0.0f;
@@ -36,6 +36,9 @@ namespace
 	/** フォントのスケール */
 	constexpr float FONT_SCALE = 1.5f;
 
+	/** 戻る案内文字のスケール */
+	constexpr float BACK_FONT_SCALE = 1.5f;
+
 	/** 選択中の色 */
 	const Vector4 COLOR_ON_SELECT(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -44,6 +47,9 @@ namespace
 
 	/** 消灯の色 */
 	const Vector4 COLOR_OFF(0.15f, 0.15f, 0.15f, 1.0f);
+
+	/** 戻る案内文字の位置 */
+	const Vector3 BACK_FONT_POSITION = { -225.0f, -300.0f, 0.0f };
 }
 
 /** 音量調節画面が開いているかどうかのフラグ */
@@ -81,6 +87,12 @@ bool VolumeAdjustment::Start()
 			m_gauge[item][i].Update();
 		}
 	}
+
+	/** 戻る案内文字 */
+	m_backFont.SetText(L"Bボタンを押して戻る");
+	m_backFont.SetPosition(BACK_FONT_POSITION);
+	m_backFont.SetScale(BACK_FONT_SCALE);
+	m_backFont.SetColor(COLOR_ON_SELECT);
 
 	UpdateGauge();
 	return true;
@@ -191,6 +203,9 @@ void VolumeAdjustment::Render(RenderContext& renderContext)
 			m_gauge[item][i].Draw(renderContext);
 		}
 	}
+
+	/** 戻る案内文字を描画 */
+	m_backFont.Draw(renderContext);
 }
 
 void VolumeAdjustment::Open()

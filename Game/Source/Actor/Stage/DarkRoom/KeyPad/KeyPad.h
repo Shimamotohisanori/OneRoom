@@ -34,6 +34,12 @@ public:
 		return m_isKeypadOpen;
 	}
 
+	/** キーパッドの謎が解けたかどうかを取得する */
+	bool GetIsUnlock() const
+	{
+		return m_isUnlock;
+	}
+
 
 private:
 	/** キーパッドとプレイヤーの距離計算関数 */

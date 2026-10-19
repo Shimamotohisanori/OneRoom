@@ -14,5 +14,9 @@ public:
 	void Render(RenderContext& rc);
 
 private:
+	/** メインステージのモデル */
 	ModelRender m_mainStageRender;
+
+	/** メインステージの当たり判定 */
+	PhysicsStaticObject m_mainStagePhysics;
 };

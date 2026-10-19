@@ -38,7 +38,7 @@ namespace
 	constexpr float INPUT_FONT_SCALE = 1.5f;
 
 	/** インタラクトできる距離 */
-	constexpr float INTERACT_DISTANCE = 50.0f;
+	constexpr float INTERACT_DISTANCE = 70.0f;
 
 	/** 電話モデルの大きさ */
 	const Vector3 PHONE_MODEL_SCALE = Vector3(0.3f, 0.3f, 0.3f);

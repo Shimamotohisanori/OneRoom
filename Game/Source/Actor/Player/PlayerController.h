@@ -26,7 +26,7 @@ public:
 	}
 
 	/** 位置を設定 */
-	void SetPosition(const Vector3& position) { m_position = position; }
+	void SetPosition(const Vector3& position);
 
 	/** 現在の移動状態を取得(アニメーション再生などから呼ばれる想定) */
 	EnMoveState GetMoveState() const
@@ -79,6 +79,9 @@ private:
 	
 
 private:
+	/** プレイヤーの当たり判定 */
+	CharacterController m_characterController;
+
 	/** プレイヤーの座標 */
 	Vector3 m_position = Vector3::Zero;
 
@@ -110,10 +113,10 @@ private:
 	EnMoveState m_moveState = EnMoveState::enMoveState_Idle;
 	
 	/** 現在の速度 */
-	float m_currentSpeed = 0.0f;
-	
-	/** 一秒あたりの加速量 */
-	float m_acceleration = 30.0f;	
+	//float m_currentSpeed = 0.0f;
+	//
+	///** 一秒あたりの加速量 */
+	//float m_acceleration = 30.0f;	
 
 	/** 累積される左右の向き(度数)。
 	 * 移動方向にも、カメラの左右向きにも使う */

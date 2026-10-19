@@ -6,7 +6,7 @@ namespace
 	constexpr float WALK_MAX_SPEED = 75.0f;
 	
 	/** 走りの最大速度 */
-	constexpr float RUN_MAX_SPEED = 100.0f;
+	constexpr float RUN_MAX_SPEED = 150.0f;
 
 	/** 左右の向きを変える速さ(度数/フレーム換算前の係数) */
 	constexpr float YAW_ROTATE_SPEED = 2.0f;
@@ -17,8 +17,14 @@ namespace
 	/** 入力無しとみなす閾値 */
 	constexpr float NO_INPUT_THRESHOLD = 0.01f;
 
-	/** プレイヤーの初期位置 */
-	const Vector3 INITIAL_POSITION = {0.0f, -50.0f, 0.0f};
+	/** 当たり判定の半径 */
+	constexpr float COLLISION_RADIUS = 25.0f;
+
+	/** 当たり判定の高さ */
+	constexpr float COLLISION_HEIGHT = 100.0f;
+
+	/** プレイヤー座標(目線)から、当たり判定(足元)までの高さの差 */
+	constexpr float FOOT_OFFSET = 100.0f;
 }
 
 PlayerController::PlayerController()
@@ -29,7 +35,11 @@ PlayerController::~PlayerController()
 
 bool PlayerController::Start()
 {
-	m_position = INITIAL_POSITION;
+	m_position = Vector3::Zero;
+	/** 当たり判定は足元の座標で作る */
+	Vector3 footPosition = m_position;
+	footPosition.y -= FOOT_OFFSET;
+	m_characterController.Init(COLLISION_RADIUS, COLLISION_HEIGHT, footPosition);
 	return true;
 }
 
@@ -47,6 +57,15 @@ void PlayerController::Update()
 	UpdateInput();
 	UpdateMoveState();
 	UpdateMove();
+}
+
+void PlayerController::SetPosition(const Vector3& position)
+{
+	m_position = position;
+	/** 当たり判定側にも、足元の座標で反映する */
+	Vector3 footPosition = position;
+	footPosition.y -= FOOT_OFFSET;
+	m_characterController.SetPosition(footPosition);
 }
 
 void PlayerController::UpdateInput()
@@ -124,55 +143,34 @@ void PlayerController::UpdateActionInput()
 
 void PlayerController::UpdateMove()
 {
-	/** 状態に応じて目標速度を決定 */
-	float targetSpeed = DecideTargetSpeed();
-	
 	/** 1フレームの経過時間を取得 */
 	float deltaTime = g_gameTime->GetFrameDeltaTime();
 
-	/** 現在速度を、目標最大速度に
-	 * 少しずつ近づける(加速・減速) */
-	if (m_currentSpeed < targetSpeed)
-	{
-		/** 現在の速度 + 加速度 * 経過時間 */
-		m_currentSpeed += m_acceleration * deltaTime;
+	/** 入力がないときは移動量ゼロ */
+	Vector3 moveSpeed = Vector3::Zero;
 
-		/** 目標速度を超えないようにする */
-		if (m_currentSpeed > targetSpeed) m_currentSpeed = targetSpeed;
-	}
-
-	/** 目標速度よりも速い場合は減速する */
-	else if (m_currentSpeed > targetSpeed)
-	{
-		/** 現在の速度 - 加速度 * 経過時間 */
-		m_currentSpeed -= m_acceleration * deltaTime;
-
-		/** 目標速度を下回らないようにする */
-		if (m_currentSpeed < targetSpeed) m_currentSpeed = targetSpeed;
-	}
-
-	/** 実際に座標を進める */
 	if (m_moveInput.Length() > NO_INPUT_THRESHOLD)
 	{
 		/** 入力方向 */
 		Vector3 moveDir = m_moveInput;
 		moveDir.Normalize();
-		
-		/** 入力方向に今のyawを適用して
-		 *  前進する方向を決定 */
+
+		/** 入力方向に今のyawを適用して、前進する方向を決定 */
 		Quaternion yawRotation;
-
-		/** Yawの回転を作る(Y軸) */
 		yawRotation.SetRotationDeg(Vector3::AxisY, m_yaw);
-
-		/** 入力方向にyawを適用 */
 		yawRotation.Apply(moveDir);
 
 		/** プレイヤーの向きを更新 */
 		m_rotation = yawRotation;
 
-		/** 入力方向 * 現在の速度 * 経過時間 */
-		m_position += moveDir * m_currentSpeed * deltaTime;
-
+		/** 入力方向 * 状態ごとの速度(加速なしで、すぐ最大速度) */
+		moveSpeed = moveDir * DecideTargetSpeed();
 	}
+
+	/** 壁などにぶつかりながら移動し、結果(足元の座標)を受け取る */
+	Vector3 footPosition = m_characterController.Execute(moveSpeed, deltaTime);
+
+	/** プレイヤー座標は、足元からオフセット分上にする */
+	m_position = footPosition;
+	m_position.y += FOOT_OFFSET;
 }

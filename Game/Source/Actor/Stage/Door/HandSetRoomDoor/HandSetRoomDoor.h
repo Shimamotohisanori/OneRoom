@@ -10,8 +10,16 @@ class HandSetRoomDoor : public Door
 public:
 	HandSetRoomDoor();
 	~HandSetRoomDoor();
-	bool Start();
-	void Update();
-	void Render(RenderContext& rc);
+
+
+protected:
+	const char* GetModelPath() const override;
+	Vector3 GetDoorPosition() const override;
+	bool CanOpen() const override;
+	Vector3 GetDoorScale() const override;
+	Vector3 GetDoorOpenPosition() const override;
+	float GetDoorRotationY() const override;
+	float GetDoorOpenRotationY() const override;
+	bool IsInitiallyOpen() const override;
 };
 

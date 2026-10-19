@@ -57,7 +57,7 @@ namespace
 	constexpr float CURSOR_SPRITE_WIDTH = 70.0f;
 
 	/** インタラクトできる距離(モデルの大きさに合わせて調整) */
-	constexpr float INTERACT_DISTANCE = 30.0f;
+	constexpr float INTERACT_DISTANCE = 35.0f;
 
 	/** 案内文字のスケール */
 	constexpr float PROMPT_FONT_SCALE = 1.5f;

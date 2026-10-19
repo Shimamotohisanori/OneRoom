@@ -10,8 +10,13 @@ class PlateRoomDoor : public Door
 public:
 	PlateRoomDoor();
 	~PlateRoomDoor();
-	bool Start();
-	void Update();
-	void Render(RenderContext& rc);
+
+
+protected:
+	const char* GetModelPath() const override;
+	Vector3 GetDoorPosition() const override;
+	bool CanOpen() const override;
+	Vector3 GetDoorScale() const override;
+	float GetDoorRotationY() const override;
 };
 

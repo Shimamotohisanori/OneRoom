@@ -38,7 +38,7 @@ namespace
 	constexpr float LIGHT_RANGE = 700.0f;
 
 	/** 光の広がり(度)。内側の明るい部分と外側の淡い部分 */
-	constexpr float SPOT_ANGLE_DEG = 28.0f;
+	constexpr float SPOT_ANGLE_DEG = 38.0f;
 
 	/** 距離減衰・角度減衰の累乗。大きいほど急に暗く/縁がぼける */
 	constexpr float RANGE_POW = 3.0f;

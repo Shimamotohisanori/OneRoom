@@ -45,7 +45,7 @@ public:
 	bool GetIsHoldingDanBall() const { return m_isHoldingDanBall; }
 
 	/** 段ボールを持っているかのフラグを設定 */
-	void SetIsHoldingDanBall(bool isHolding) { m_isHoldingDanBall = isHolding; }
+	void SetIsHoldingDanBall(bool isHolding);
 
 	/** アクション入力(ボタン)が押されたか */
 	bool IsInteractTriggered() const { return m_controller.IsInteractTriggered(); }
@@ -77,9 +77,12 @@ private:
 
 	/** 懐中電灯 */
 	Flashlight m_flashlight;
-
+	
 	/** ライトをインタラクトしたときのSE */
-	SoundSource* m_lightInteractSE;
+	SoundSource* m_lightInteractSE = nullptr;
+
+	/** 段ボールを持つ前のライトの状態 */
+	bool m_wasLightOnBeforeHold = false;
 
 	/** 段ボールを持っているか */
 	bool m_isHoldingDanBall = false;

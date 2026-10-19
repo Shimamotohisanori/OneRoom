@@ -16,6 +16,10 @@
 #include "Source/Actor/Stage/HandSetRoom/Phone/Phone.h"
 #include "Source/Actor/Stage/HandSetRoom/PhonePaper/PhonePaper.h"
 #include "Game.h"
+#include "Source/Actor/Stage/Door/PlateRoomDoor/PlateRoomDoor.h"
+#include "Source/Actor/Stage/Door/DarkRoomDoor/DarkRoomDoor.h"
+#include "Source/Actor/Stage/Door/HandSetRoomDoor/HandSetRoomDoor.h"
+
 #include "VolumeAdjustment/VolumeAdjustment.h"
 namespace
 {
@@ -233,6 +237,15 @@ void Pause::DeleteAllGameObjects()
 
 	/** 電話の紙を削除 */
 	DeleteGO(FindGO<PhonePaper>("PhonePaper"));
+
+	/** プレートルームのドアを削除 */
+	DeleteGO(FindGO<PlateRoomDoor>("PlateRoomDoor"));
+
+	/** ダークルームのドアを削除 */
+	DeleteGO(FindGO<DarkRoomDoor>("DarkRoomDoor"));
+
+	/** ハンドセットルームのドアを削除 */
+	DeleteGO(FindGO<HandSetRoomDoor>("HandSetRoomDoor"));
 
 	/** ゲームを消去 */
 	DeleteGO(FindGO<Game>("Game"));

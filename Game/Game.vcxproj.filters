@@ -200,6 +200,9 @@
     <ClCompile Include="VolumeAdjustment\VolumeAdjustment.cpp">
       <Filter>VolumeAdjustment</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Actor\Stage\HandSetRoom\HandSetRoom.cpp">
+      <Filter>Source\Actor\Stage\HandSetRoom</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -254,9 +257,6 @@
     <ClInclude Include="Source\Actor\Stage\Door\HandSetRoomDoor\HandSetRoomDoor.h">
       <Filter>Source\Actor\Stage\Door\HandSetRoomDoor</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Actor\Stage\Door\DarkRoomDoor\DarkRoomDoor.h">
-      <Filter>Source\Actor\Stage\Door\DarkRoomDoor</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Actor\Stage\PlateRoom\Plate\Plate.h">
       <Filter>Source\Actor\Stage\PlateRoom\Plate</Filter>
     </ClInclude>
@@ -304,6 +304,12 @@
     </ClInclude>
     <ClInclude Include="VolumeAdjustment\VolumeAdjustment.h">
       <Filter>VolumeAdjustment</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Stage\HandSetRoom\HandSetRoom.h">
+      <Filter>Source\Actor\Stage\HandSetRoom</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Stage\Door\DarkRoomDoor\DarkRoomDoor.h">
+      <Filter>Source\Actor\Stage\Door\DarkRoomDoor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
