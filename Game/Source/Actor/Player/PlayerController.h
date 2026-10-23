@@ -111,12 +111,6 @@ private:
 
 	/** 状態と速度 */
 	EnMoveState m_moveState = EnMoveState::enMoveState_Idle;
-	
-	/** 現在の速度 */
-	//float m_currentSpeed = 0.0f;
-	//
-	///** 一秒あたりの加速量 */
-	//float m_acceleration = 30.0f;	
 
 	/** 累積される左右の向き(度数)。
 	 * 移動方向にも、カメラの左右向きにも使う */

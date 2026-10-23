@@ -1,6 +1,6 @@
 ﻿#include "stdafx.h"
 #include "VolumeAdjustment.h"
-
+#include "SoundManager/SoundManager.h"
 namespace
 {
 	/** 音量調節画像ファイルパス */
@@ -48,6 +48,21 @@ namespace
 	/** 消灯の色 */
 	const Vector4 COLOR_OFF(0.15f, 0.15f, 0.15f, 1.0f);
 
+	/** 文字を黒系にするとき:選択中の文字の色(黒) */
+	const Vector4 FONT_DARK_SELECT(0.0f, 0.0f, 0.0f, 1.0f);
+
+	/** 文字を黒系にするとき:非選択中の文字の色(選択中と見分けがつく濃いグレー) */
+	const Vector4 FONT_DARK_NORMAL(0.35f, 0.35f, 0.35f, 1.0f);
+
+	/** 黒系モード:選択中の項目の点灯した目盛りの色(白い背景でも見えるオレンジ寄りの赤) */
+	const Vector4 GAUGE_DARK_SELECT(0.9f, 0.3f, 0.0f, 1.0f);
+
+	/** 黒系モード:非選択の項目の点灯した目盛りの色(濃いグレー) */
+	const Vector4 GAUGE_DARK_NORMAL(0.4f, 0.4f, 0.4f, 1.0f);
+
+	/** 黒系モード:消灯した目盛りの色(薄いグレー) */
+	const Vector4 GAUGE_DARK_OFF(0.8f, 0.8f, 0.8f, 1.0f);
+
 	/** 戻る案内文字の位置 */
 	const Vector3 BACK_FONT_POSITION = { -225.0f, -300.0f, 0.0f };
 }
@@ -92,7 +107,7 @@ bool VolumeAdjustment::Start()
 	m_backFont.SetText(L"Bボタンを押して戻る");
 	m_backFont.SetPosition(BACK_FONT_POSITION);
 	m_backFont.SetScale(BACK_FONT_SCALE);
-	m_backFont.SetColor(COLOR_ON_SELECT);
+	m_backFont.SetColor(m_isDarkText ? FONT_DARK_SELECT : COLOR_ON_SELECT);
 
 	UpdateGauge();
 	return true;
@@ -116,6 +131,9 @@ void VolumeAdjustment::SelectItem()
 	/** 上で項目を選択 */
 	if (g_pad[0]->IsTrigger(enButtonUp))
 	{
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		m_selectionSE = sound->PlayingSE(enOutGameSelect, false);
+
 		m_selectItem = (m_selectItem + enItemNum - 1) % enItemNum;
 		UpdateGauge();
 	}
@@ -123,6 +141,9 @@ void VolumeAdjustment::SelectItem()
 	/** 下で項目を選択 */
 	else if (g_pad[0]->IsTrigger(enButtonDown))
 	{
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		m_selectionSE = sound->PlayingSE(enOutGameSelect, false);
+
 		m_selectItem = (m_selectItem + 1) % enItemNum;
 		UpdateGauge();
 	}
@@ -132,8 +153,22 @@ void VolumeAdjustment::ChangeVolume()
 {
 	/** 左右で音量を変更 */
 	int delta = 0;
-	if (g_pad[0]->IsTrigger(enButtonLeft)) { delta = -1; }
-	if (g_pad[0]->IsTrigger(enButtonRight)) { delta = 1; }
+	if (g_pad[0]->IsTrigger(enButtonLeft))
+	{
+		/** 選択時のSEを再生 */
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		m_selectionSE = sound->PlayingSE(enOutGameSelect, false);
+
+		delta = -1;
+	}
+	if (g_pad[0]->IsTrigger(enButtonRight))
+	{
+		/** 選択時のSEを再生 */
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		m_selectionSE = sound->PlayingSE(enOutGameSelect, false);
+
+		delta = 1;
+	}
 	if (delta == 0) { return; }
 
 	/** 選択中の項目の音量レベルを変更 */
@@ -159,8 +194,17 @@ void VolumeAdjustment::UpdateGauge()
 		/** 選択中の項目かどうか */
 		bool isSelected = (item == m_selectItem);
 
-		/** 項目名の色をゲージと揃える(選択中は白、非選択は灰色) */
-		m_labelFont[item].SetColor(isSelected ? COLOR_ON_SELECT : COLOR_ON);
+		/** 項目名の色を設定する
+		 * 通常:選択中は白、非選択は灰色
+		 * 黒系モード:選択中は黒、非選択は濃いグレー */
+		if (m_isDarkText)
+		{
+			m_labelFont[item].SetColor(isSelected ? FONT_DARK_SELECT : FONT_DARK_NORMAL);
+		}
+		else
+		{
+			m_labelFont[item].SetColor(isSelected ? COLOR_ON_SELECT : COLOR_ON);
+		}
 
 		/** ゲージの目盛りごとに色を設定 */
 		for (int i = 0; i < GAUGE_SEGMENT_NUM; i++)
@@ -168,13 +212,20 @@ void VolumeAdjustment::UpdateGauge()
 			/** 選択中の項目かつ、現在の音量レベルより小さい目盛りは点灯 */
 			if (i < level)
 			{
-				m_gauge[item][i].SetMulColor(isSelected ? COLOR_ON_SELECT : COLOR_ON);
+				if (m_isDarkText)
+				{
+					m_gauge[item][i].SetMulColor(isSelected ? GAUGE_DARK_SELECT : GAUGE_DARK_NORMAL);
+				}
+				else
+				{
+					m_gauge[item][i].SetMulColor(isSelected ? COLOR_ON_SELECT : COLOR_ON);
+				}
 			}
-			
+
 			/** それ以外は消灯 */
 			else
 			{
-				m_gauge[item][i].SetMulColor(COLOR_OFF);
+				m_gauge[item][i].SetMulColor(m_isDarkText ? GAUGE_DARK_OFF : COLOR_OFF);
 			}
 			m_gauge[item][i].Update();
 		}
@@ -208,7 +259,7 @@ void VolumeAdjustment::Render(RenderContext& renderContext)
 	m_backFont.Draw(renderContext);
 }
 
-void VolumeAdjustment::Open()
+void VolumeAdjustment::Open(bool isDarkText)
 {
 	/** すでに開いていたら何もしない */
 	if (m_isOpen)
@@ -216,7 +267,10 @@ void VolumeAdjustment::Open()
 		return;
 	}
 	m_isOpen = true;
-	NewGO<VolumeAdjustment>(VOLUME_PRIORITY, "volumeAdjustment");
+
+	/** Start()が呼ばれる前に文字色のモードを設定しておく */
+	VolumeAdjustment* volume = NewGO<VolumeAdjustment>(VOLUME_PRIORITY, "volumeAdjustment");
+	volume->m_isDarkText = isDarkText;
 }
 
 bool VolumeAdjustment::IsOpen()

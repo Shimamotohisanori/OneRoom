@@ -15,6 +15,7 @@
 #include "Source/Actor/Stage/Door/PlateRoomDoor/PlateRoomDoor.h"
 #include "Source/Actor/Stage/Door/HandSetRoomDoor/HandSetRoomDoor.h"
 #include "Source/Actor/Stage/Door/DarkRoomDoor/DarkRoomDoor.h"
+#include "Source/Actor/Stage/Door/GoalDoor/GoalDoor.h"
 namespace
 {
 	/** ローディング画面のファイルパス */
@@ -204,7 +205,7 @@ void LoadingScene::LoadGame()
 		NewGO<PlateRoomDoor>(0, "PlateRoomDoor");
 		NewGO<HandSetRoomDoor>(0, "HandSetRoomDoor");
 		NewGO<DarkRoomDoor>(0, "DarkRoomDoor");
-
+		NewGO<GoalDoor>(0, "GoalDoor");
 		break;
 	}
 

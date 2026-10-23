@@ -30,7 +30,17 @@ Title::Title()
 }
 
 Title::~Title()
-{}
+{
+	if (m_selectionSE != nullptr)
+	{
+		DeleteGO(m_selectionSE);
+	}
+
+	if (m_startSE != nullptr)
+	{
+		DeleteGO(m_startSE);
+	}
+}
 
 bool Title::Start()
 {
@@ -60,6 +70,13 @@ void Title::Update()
 	/** 音量調節画面が開いている間は操作を受け付けない */
 	if (VolumeAdjustment::IsOpen())
 	{
+		return;
+	}
+
+	/** スタート決定後は、SEの再生が終わるのを待つ */
+	if (m_isStarting)
+	{
+		UpdateStartWait();
 		return;
 	}
 
@@ -111,12 +128,14 @@ void Title::HandleInput()
 {
 	if (g_pad[0]->IsTrigger(enButtonA) && m_selectedFontIndex == TitleState::Start)
 	{
-		/** ローディング画面に遷移する処理 */
-		NewGO<LoadingScene>(0, "loading");
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		m_startSE = sound->PlayingSE(enStartGame, false);
 
 		DeleteGO(m_titleBGM);
 
-		DeleteGO(this);
+		/** ゲームスタートが決定されたことを示すフラグを立てる */
+		m_isStarting = true;
+
 		return;
 	}
 
@@ -140,6 +159,10 @@ void Title::HandleSelection()
 	if (g_pad[0]->IsTrigger(enButtonUp))
 	{
 		m_selectedFontIndex--;
+
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		m_selectionSE = sound->PlayingSE(enOutGameSelect, false);
+
 		if (m_selectedFontIndex < TitleState::Start)
 		{
 			m_selectedFontIndex = TitleState::Exit;
@@ -150,10 +173,27 @@ void Title::HandleSelection()
 	if (g_pad[0]->IsTrigger(enButtonDown))
 	{
 		m_selectedFontIndex++;
+
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		m_selectionSE = sound->PlayingSE(enOutGameSelect, false);
+
 		if (m_selectedFontIndex > TitleState::Exit)
 		{
 			m_selectedFontIndex = TitleState::Start;
 		}
 
 	}
+}
+
+void Title::UpdateStartWait()
+{
+	/** SEがまだ再生中なら待つ */
+	if (m_startSE != nullptr && m_startSE->IsPlaying())
+	{
+		return;
+	}
+
+	/** 再生が終わったので、ローディング画面に遷移する */
+	NewGO<LoadingScene>(0, "loading");
+	DeleteGO(this);
 }

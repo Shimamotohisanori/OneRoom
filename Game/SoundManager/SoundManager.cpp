@@ -25,7 +25,9 @@ namespace
 		"PaperInteractSE",
 		"LightOnOffSE",
 		"PadSelectSE",
-		"PadDecisionSE"
+		"PadDecisionSE",
+		"OutGameSelectSE",
+		"GameStartSE"
 	};
 }
 
@@ -129,4 +131,19 @@ void SoundManager::SetSEVolumeLevel(int level)
 	/** ここでSE音量を設定 */
 	/** SEは再生中のSEを保持していないので、即反映はできない */
 	m_seVolume = static_cast<float>(m_seVolumeLevel) / VOLUME_LEVEL_MAX;
+}
+
+void SoundManager::StopBGM(SoundSource*& bgm)
+{
+	/** BGMが存在するかチェック */
+	if (bgm == nullptr) { return; }
+
+	/** BGMを停止 */
+	if (m_currentBGM == bgm) { m_currentBGM = nullptr; }
+
+	/** BGMを削除 */
+	DeleteGO(bgm);
+
+	/** 引数のBGMをnullptrにする */
+	bgm = nullptr;
 }

@@ -159,7 +159,7 @@ namespace nsK2Engine {
         float pad1;
         Vector3 color3 = g_vec3Zero;        // 三つ目のカラー。
         float pad2;
-        Vector3 directionInView;            // カメラ空間での射出方向。
+        Vector3 directionInView = g_vec3Zero;            // カメラ空間での射出方向。
         float pad3;
         Vector3 rangePow = g_vec3One;       // 距離による光の影響率に累乗するパラメーター。1.0で線形の変化をする。
                                             // xが一つ目のカラー、yが二つ目のカラー、zが三つ目のカラー。
@@ -578,7 +578,12 @@ namespace nsK2Engine {
                 // フラグを未使用に変更する。
                 light->UnUse();
                 // 未使用リストに追加する。
-                que.push_back(light);
+                //que.push_back(light);
+
+				// 未使用リストの専用に戻す。
+				// 先頭に追加することで
+                // 最近使ったライトが再利用されるようにする。
+				que.push_front(light);  
             }
         }
     private:

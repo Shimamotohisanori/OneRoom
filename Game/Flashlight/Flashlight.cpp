@@ -52,30 +52,35 @@ Flashlight::Flashlight()
 {}
 
 Flashlight::~Flashlight()
-{}
+{
+	/** 削除前にライトを消して、スロットに色が残らないようにする */
+	m_spotLight.SetColor(0.0f, 0.0f, 0.0f);
+	m_spotLight.Update();
+}
 
 void Flashlight::Start()
 {
 	/** モデルを初期化 */
 	m_model.Init(MODEL_PATH);
 
-	/** スポットライトの初期化 */
+	/** スポットライトを初期化 */
 	m_spotLight.Init();
-
-	/** 最初は消灯状態 */
+	m_spotLight.SetPosition(g_camera3D->GetPosition());
+	m_spotLight.SetDirection(g_camera3D->GetForward());
 	m_spotLight.SetColor(0.0f, 0.0f, 0.0f);
-
-	/** 光の届く範囲 */
+	m_spotLight.SetColor2(0.0f, 0.0f, 0.0f);
+	m_spotLight.SetColor3(0.0f, 0.0f, 0.0f);
 	m_spotLight.SetRange(LIGHT_RANGE);
-
-	/** スポットライトの角度は度からラジアンに変換して設定 */
 	m_spotLight.SetAngle(Math::DegToRad(SPOT_ANGLE_DEG));
-
-	/** 距離による減衰の累乗を設定 */
+	m_spotLight.SetAngle2(Math::DegToRad(SPOT_ANGLE_DEG));
+	m_spotLight.SetAngle3(Math::DegToRad(SPOT_ANGLE_DEG));
 	m_spotLight.SetRangeAffectPowParam(RANGE_POW);
-
-	/** 角度による減衰の累乗を設定 */
+	m_spotLight.SetRangeAffectPowParam2(1.0f);
+	m_spotLight.SetRangeAffectPowParam3(1.0f);
 	m_spotLight.SetAngleAffectPowParam(ANGLE_POW);
+	m_spotLight.SetAngleAffectPowParam2(1.0f);
+	m_spotLight.SetAngleAffectPowParam3(1.0f);
+	m_spotLight.Update();
 
 	/** カメラの向きで初期化 */
 	m_smoothedForward = g_camera3D->GetForward();

@@ -226,6 +226,7 @@
   <ItemGroup>
     <ClCompile Include="Flashlight\Flashlight.cpp" />
     <ClCompile Include="GameCamera\GameCamera.cpp" />
+    <ClCompile Include="GameObjectCleaner\GameObjectCleaner.cpp" />
     <ClCompile Include="GameScene\Game.cpp" />
     <ClCompile Include="GameScene\GameClear.cpp" />
     <ClCompile Include="GameScene\GameOver.cpp" />
@@ -248,6 +249,7 @@
     <ClCompile Include="Source\Actor\Stage\DarkRoom\Paper\Paper.cpp" />
     <ClCompile Include="Source\Actor\Stage\Door\DarkRoomDoor\DarkRoomDoor.cpp" />
     <ClCompile Include="Source\Actor\Stage\Door\Door.cpp" />
+    <ClCompile Include="Source\Actor\Stage\Door\GoalDoor\GoalDoor.cpp" />
     <ClCompile Include="Source\Actor\Stage\Door\HandSetRoomDoor\HandSetRoomDoor.cpp" />
     <ClCompile Include="Source\Actor\Stage\Door\PlateRoomDoor\PlateRoomDoor.cpp" />
     <ClCompile Include="Source\Actor\Stage\HandSetRoom\HandSetRoom.cpp" />
@@ -269,6 +271,7 @@
   <ItemGroup>
     <ClInclude Include="Flashlight\Flashlight.h" />
     <ClInclude Include="GameCamera\GameCamera.h" />
+    <ClInclude Include="GameObjectCleaner\GameObjectCleaner.h" />
     <ClInclude Include="GameScene\Game.h" />
     <ClInclude Include="GameScene\GameClear.h" />
     <ClInclude Include="GameScene\GameOver.h" />
@@ -290,6 +293,7 @@
     <ClInclude Include="Source\Actor\Stage\DarkRoom\Paper\Paper.h" />
     <ClInclude Include="Source\Actor\Stage\Door\DarkRoomDoor\DarkRoomDoor.h" />
     <ClInclude Include="Source\Actor\Stage\Door\Door.h" />
+    <ClInclude Include="Source\Actor\Stage\Door\GoalDoor\GoalDoor.h" />
     <ClInclude Include="Source\Actor\Stage\Door\HandSetRoomDoor\HandSetRoomDoor.h" />
     <ClInclude Include="Source\Actor\Stage\Door\PlateRoomDoor\PlateRoomDoor.h" />
     <ClInclude Include="Source\Actor\Stage\HandSetRoom\HandSetRoom.h" />

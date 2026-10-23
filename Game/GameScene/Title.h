@@ -31,12 +31,24 @@ public:
 	/** タイトル画面の選択に関する処理 */
 	void HandleSelection();
 
+
+private:
+	/** ゲームスタート待機状態の更新 */
+	void UpdateStartWait();
+
+
 private:
 	/** タイトルスプライト */
 	SpriteRender m_titleSprite;
 
 	/** タイトルのBGM */
 	SoundSource* m_titleBGM = nullptr;
+
+	/** 選択時のSE */
+	SoundSource* m_selectionSE = nullptr;
+
+	/** ゲーム開始時のSE */
+	SoundSource* m_startSE = nullptr;
 
 	/** ゲームスタートのフォント */
 	FontRender m_startFont;
@@ -49,5 +61,8 @@ private:
 
 	/** 現在選んでいるフォントのインデックス */
 	int m_selectedFontIndex = TitleState::Start;
+
+	/** ゲームスタートが決定され、SEの再生終了を待っているか */
+	bool m_isStarting = false;
 };
 

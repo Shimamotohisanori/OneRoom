@@ -437,7 +437,16 @@ namespace nsK2EngineLow {
 			WaitDraw();
 		}
 
-		m_directXTKGfxMemroy->Commit(m_commandQueue);
+		//m_directXTKGfxMemroy->Commit(m_commandQueue);
+		////レンダリングコンテキストを閉じる。
+		//m_renderContext.Close();
+		////このフレームに作成した描画コマンドを実行する。
+		//ID3D12CommandList* ppCommandLists[] = { m_commandList[m_frameIndex] };
+		//m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+		//// コマンドリストをGPUに流した印。
+		//m_isExecuteCommandList = true;
+		//m_directXTKGfxMemroy->GarbageCollect();
+
 		//レンダリングコンテキストを閉じる。
 		m_renderContext.Close();
 		//このフレームに作成した描画コマンドを実行する。
@@ -445,6 +454,8 @@ namespace nsK2EngineLow {
 		m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 		// コマンドリストをGPUに流した印。
 		m_isExecuteCommandList = true;
+		// ExecuteCommandListsの後にCommitする(DirectXTKの規約)
+		m_directXTKGfxMemroy->Commit(m_commandQueue);
 		m_directXTKGfxMemroy->GarbageCollect();
 
 		// バックバッファを入れ替える。

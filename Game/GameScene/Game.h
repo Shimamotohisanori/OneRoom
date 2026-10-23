@@ -12,6 +12,7 @@ class IntroductionUI;
 class SANCalculation;
 class Player;
 class Pause;
+class GoalDoor;
 class Game : public IGameObject
 {
 public:
@@ -24,36 +25,39 @@ public:
 
 private:
 	/** ゲームオーバー処理 */
-	void Death();
+	bool Death();
 
 	/** ゲームクリア処理 */
-	void Clear();
+	bool Clear();
 
 	/** 一時停止処理 */
 	void GamePause();
 
 	/** SANUI */
-	SANUI* m_sanUI;
+	SANUI* m_sanUI = nullptr;
 
 	/** KeyUI */
-	KeyUI* m_keyUI;
+	KeyUI* m_keyUI = nullptr;
 
 	/** Key */
-	Key* m_key;
+	Key* m_key = nullptr;
 
 	/** SAN計算クラス */
-	SANCalculation* m_sanCalculation;
+	SANCalculation* m_sanCalculation = nullptr;
 
 	/** 操作紹介UI */
-	IntroductionUI* m_introductionUI;
+	IntroductionUI* m_introductionUI = nullptr;
 
 	/** プレイヤー */
-	Player* m_player;
+	Player* m_player = nullptr;
 
 	/** 一時停止クラス */
-	Pause* m_pause;
+	Pause* m_pause = nullptr;
 	
 	/** ゲーム中BGM */
-	SoundSource* m_gameBGM;
+	SoundSource* m_gameBGM = nullptr;
+
+	/** ゴールのドア */
+	GoalDoor* m_goalDoor = nullptr;
 };
 

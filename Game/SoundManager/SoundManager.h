@@ -15,6 +15,8 @@ enum SoundSE
 	enLightOnOff,
 	enPadSelect,
 	enPadDecision,
+	enOutGameSelect,
+	enStartGame,
 	enSENum
 };
 
@@ -70,6 +72,9 @@ public:
 	/** SE音量レベル(0〜10)を取得・設定 */
 	int GetSEVolumeLevel() const { return m_seVolumeLevel; }
 	void SetSEVolumeLevel(int level);
+
+	/** BGMを止めて削除する(m_currentBGMも安全に空にする) */
+	void StopBGM(SoundSource*& bgm);
 
 private:
 	/** BGM音量 */

@@ -47,10 +47,6 @@ public:
 	/** 選択状態に応じてフォントの色を更新する処理 */
 	void UpdateFontColor();
 
-private:
-	/** ゲーム内のオブジェクトをすべて削除する処理 */
-	void DeleteAllGameObjects();
-
 
 private:
 	/** 一時停止画面のスプライト */
@@ -64,6 +60,9 @@ private:
 
 	/** 音量調整フォント */
 	FontRender m_volumeFont;
+	
+	/** 選択時のSE */
+	SoundSource* m_selectionSE = nullptr;
 
 	/** ゲームを閉じるフォント */
 	FontRender m_exitFont;
