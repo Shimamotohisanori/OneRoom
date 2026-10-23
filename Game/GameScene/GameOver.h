@@ -4,22 +4,20 @@
  * ゲームオーバー画面クラス
  * ここでゲームオーバー画面の操作や状態を管理する。
  */
-class GameCamera;
-class SANUI;
-class Player;
-class MainStage;
-class Plate;
-class DanBall;
-class IntroductionUI;
-class Key;
-class KeyUI;
-class SANCalculation;
-class Paper;
-class KeyPad;
-class PhonePaper;
-class PlateRoomDoor;
-class DarkRoomDoor;
-class HandSetRoomDoor;
+
+ /**
+  * ゲームオーバー画面のメニュー項目
+  * ※TitleStateのStart/Volume/Exitと名前が衝突しないよう、接頭辞を付けている
+  */
+enum GameOverMenu
+{
+	enGameOverRetry,		// リトライ
+	enGameOverVolume,		// 音量調節
+	enGameOverBackTitle,	// タイトルに戻る
+	enGameOverExit,			// ゲームを閉じる
+	enGameOverMenuNum,		// 項目数
+};
+
 class GameOver : public IGameObject
 {
 public:
@@ -29,63 +27,47 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
+	/** ゲームオーバー画面の操作に関する処理 */
+	void HandleInput();
+
+	/** ゲームオーバー画面の選択に関する処理 */
+	void HandleSelection();
+
+private:
+	/** リトライ決定後の待機状態の更新 */
+	void UpdateRetryWait();
 
 private:
 	/** ゲームオーバースプライト */
 	SpriteRender m_gameOverSprite;
 
-	/** プレイヤー */
-	Player* m_player;
-	
-	/** SAN UI */
-	SANUI* m_sanUI;
-
-	/** メインステージ */
-	MainStage* m_mainStage;
-
-	/** ゲームカメラ */
-	GameCamera* m_gameCamera;
-
-	/** 空 */
-	SkyCube* m_skyCube;
-
-	/** プレート */
-	Plate* m_plate;
-
-	/** 段ボール */
-	DanBall* m_danBall;
-
-	/** 操作紹介UI */
-	IntroductionUI* m_introductionUI;
-
-	/** キー */
-	Key* m_key;
-
-	/** キーUI */
-	KeyUI* m_keyUI;
-
-	/** SAN計算クラス */
-	SANCalculation* m_sanCalculation;
-
-	/** 紙 */
-	Paper* m_paper;
-
-	/** キーパッド */
-	KeyPad* m_keyPad;
-
-	/** 電話の紙 */
-	PhonePaper* m_phonePaper;
-
-	/** プレートルームのドア */
-	PlateRoomDoor* m_plateRoomDoor;
-
-	/** ダークルームのドア */
-	DarkRoomDoor* m_darkRoomDoor;
-
-	/** ハンドセットルームのドア */
-	HandSetRoomDoor* m_handSetRoomDoor;
-
 	/** ゲームオーバーBGM */
-	SoundSource* m_gameOverBGM;
-};
+	SoundSource* m_gameOverBGM = nullptr;
 
+	/** 選択時のSE */
+	SoundSource* m_selectionSE = nullptr;
+
+	/** リトライ時のSE */
+	SoundSource* m_retrySE = nullptr;
+
+	/** リトライのフォント */
+	FontRender m_retryFont;
+
+	/** 音量調節のフォント */
+	FontRender m_volumeFont;
+
+	/** タイトルに戻るフォント */
+	FontRender m_titleFont;
+
+	/** ゲームを閉じるフォント */
+	FontRender m_exitFont;
+
+	/** 現在選んでいるフォントのインデックス */
+	int m_selectedFontIndex = enGameOverRetry;
+
+	/** リトライが決定され、SEの再生終了を待っているか */
+	bool m_isRetrying = false;
+
+	/** タイトルに戻る処理で自身を削除したか */
+	bool m_isClosing = false;
+};

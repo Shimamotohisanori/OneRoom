@@ -11,7 +11,7 @@ Player::Player()
 
 Player::~Player()
 {
-	DeleteGO(m_lightInteractSE);
+	
 }
 
 bool Player::Start()

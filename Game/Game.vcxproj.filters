@@ -94,6 +94,12 @@
     <Filter Include="VolumeAdjustment">
       <UniqueIdentifier>{53e1a3ad-42bc-46d0-a926-035564c254c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Actor\Stage\Door\GoalDoor">
+      <UniqueIdentifier>{967b8d9e-7b17-4936-9687-c6b1226947ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjectCleaner">
+      <UniqueIdentifier>{7d03903d-caa3-452a-a788-dcc85523959f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -203,6 +209,12 @@
     <ClCompile Include="Source\Actor\Stage\HandSetRoom\HandSetRoom.cpp">
       <Filter>Source\Actor\Stage\HandSetRoom</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Actor\Stage\Door\GoalDoor\GoalDoor.cpp">
+      <Filter>Source\Actor\Stage\Door\GoalDoor</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectCleaner\GameObjectCleaner.cpp">
+      <Filter>GameObjectCleaner</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -310,6 +322,12 @@
     </ClInclude>
     <ClInclude Include="Source\Actor\Stage\Door\DarkRoomDoor\DarkRoomDoor.h">
       <Filter>Source\Actor\Stage\Door\DarkRoomDoor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Stage\Door\GoalDoor\GoalDoor.h">
+      <Filter>Source\Actor\Stage\Door\GoalDoor</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectCleaner\GameObjectCleaner.h">
+      <Filter>GameObjectCleaner</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

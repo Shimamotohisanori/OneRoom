@@ -20,6 +20,12 @@ public:
 	/** ドアを開ける */
 	void Open();
 
+	/** ドアが開き切っているか(アニメーションが終わっているか) */
+	bool IsOpenCompleted() const
+	{
+		return m_isOpen && m_currentAngle == m_openAngleY;
+	}
+
 /** 保護状態 */
 protected:
 	/** ドアのモデルのファイルパス */

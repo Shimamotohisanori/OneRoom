@@ -1,26 +1,11 @@
 ﻿#include "stdafx.h"
 #include "Pause.h"
-#include "GameScene/Title.h"
-#include "Source/Actor/Player/Player.h"
-#include "Source/Actor/Stage/MainStage.h"
-#include "GameCamera/GameCamera.h"
-#include "SAN/SANUI.h"
-#include "Source/Actor/Stage/PlateRoom/Plate/Plate.h"
-#include "Source/Actor/Stage/PlateRoom/DanBall/DanBall.h"
-#include "IntroductionUI/IntroductionUI.h"
-#include "Key/Key.h"
-#include "Key/KeyUI/KeyUI.h"
-#include "SAN/SANCalculation.h"
-#include "Source/Actor/Stage/DarkRoom/Paper/Paper.h"
-#include "Source/Actor/Stage/DarkRoom/KeyPad/KeyPad.h"
-#include "Source/Actor/Stage/HandSetRoom/Phone/Phone.h"
-#include "Source/Actor/Stage/HandSetRoom/PhonePaper/PhonePaper.h"
-#include "Game.h"
-#include "Source/Actor/Stage/Door/PlateRoomDoor/PlateRoomDoor.h"
-#include "Source/Actor/Stage/Door/DarkRoomDoor/DarkRoomDoor.h"
-#include "Source/Actor/Stage/Door/HandSetRoomDoor/HandSetRoomDoor.h"
-
 #include "VolumeAdjustment/VolumeAdjustment.h"
+#include "Source/Actor/Player/Player.h"
+#include "Title.h"
+#include "GameObjectCleaner/GameObjectCleaner.h"
+#include "Game.h"
+#include "SoundManager/SoundManager.h"
 namespace
 {
 	/** 一時停止画面のファイルパス */
@@ -49,7 +34,12 @@ Pause::Pause()
 {}
 
 Pause::~Pause()
-{}
+{
+	if (m_selectionSE != nullptr)
+	{
+		DeleteGO(m_selectionSE);
+	}
+}
 
 bool Pause::Start()
 {
@@ -136,7 +126,8 @@ void Pause::HandleInput()
 
 	case PauseState::PauseTitle:
 		/** タイトルに戻る処理 */
-		DeleteAllGameObjects();
+		GameObjectCleaner::DeleteAllGameObjects();
+		DeleteGO(FindGO<Game>("Game"));
 		NewGO<Title>(0, "title");
 		break;
 
@@ -161,6 +152,10 @@ void Pause::HandleSelection()
 	if (g_pad[0]->IsTrigger(enButtonUp))
 	{
 		m_selectedFontIndex--;
+		
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		m_selectionSE = sound->PlayingSE(enOutGameSelect, false);
+
 		if (m_selectedFontIndex < PauseState::PauseResume)
 		{
 			m_selectedFontIndex = PauseState::PauseExit;
@@ -171,6 +166,10 @@ void Pause::HandleSelection()
 	if (g_pad[0]->IsTrigger(enButtonDown))
 	{
 		m_selectedFontIndex++;
+
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		m_selectionSE = sound->PlayingSE(enOutGameSelect, false);
+
 		if (m_selectedFontIndex > PauseState::PauseExit)
 		{
 			m_selectedFontIndex = PauseState::PauseResume;
@@ -185,68 +184,4 @@ void Pause::UpdateFontColor()
 	m_titleFont.SetColor(m_selectedFontIndex == PauseState::PauseTitle ? Vector4::White : Vector4::Gray);
 	m_volumeFont.SetColor(m_selectedFontIndex == PauseState::PauseVolume ? Vector4::White : Vector4::Gray);
 	m_exitFont.SetColor(m_selectedFontIndex == PauseState::PauseExit ? Vector4::White : Vector4::Gray);
-}
-
-void Pause::DeleteAllGameObjects()
-{
-	/** メインステージを削除 */
-	DeleteGO(FindGO<MainStage>("MainStage"));
-
-	/** プレイヤーを削除 */
-	DeleteGO(FindGO<Player>("Player"));
-
-	/** ゲームカメラを削除 */
-	DeleteGO(FindGO<GameCamera>("GameCamera"));
-
-	/** 空を削除 */
-	DeleteGO(FindGO<SkyCube>("SkyCube"));
-
-	/** SAN UIを削除 */
-	DeleteGO(FindGO<SANUI>("SanUI"));
-
-	/** プレートを削除 */
-	DeleteGO(FindGO<Plate>("Plate"));
-
-	/** 段ボールを削除 */
-	DeleteGO(FindGO<DanBall>("DanBall"));
-
-	/** 操作紹介UIを削除 */
-	DeleteGO(FindGO<IntroductionUI>("IntroductionUI"));
-
-	/** キーを削除 */
-	DeleteGO(FindGO<Key>("Key"));
-
-	/** キーUIを削除 */
-	DeleteGO(FindGO<KeyUI>("KeyUI"));
-
-	/** SAN計算クラスを削除 */
-	DeleteGO(FindGO<SANCalculation>("SANCalculation"));
-
-	/** 紙を削除 */
-	DeleteGO(FindGO<Paper>("Paper"));
-
-	/** キーパッドを削除 */
-	DeleteGO(FindGO<KeyPad>("KeyPad"));
-
-	/** 電話をすべて削除 */
-	QueryGOs<Phone>("Phone", [](Phone* phone) -> bool
-		{
-			DeleteGO(phone);
-			return true;
-		});
-
-	/** 電話の紙を削除 */
-	DeleteGO(FindGO<PhonePaper>("PhonePaper"));
-
-	/** プレートルームのドアを削除 */
-	DeleteGO(FindGO<PlateRoomDoor>("PlateRoomDoor"));
-
-	/** ダークルームのドアを削除 */
-	DeleteGO(FindGO<DarkRoomDoor>("DarkRoomDoor"));
-
-	/** ハンドセットルームのドアを削除 */
-	DeleteGO(FindGO<HandSetRoomDoor>("HandSetRoomDoor"));
-
-	/** ゲームを消去 */
-	DeleteGO(FindGO<Game>("Game"));
 }

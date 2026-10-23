@@ -10,6 +10,7 @@
 #include "Source/Actor/Player/Player.h"
 #include "SoundManager/SoundManager.h"
 #include "Pause.h"
+#include "Source/Actor/Stage/Door/GoalDoor/GoalDoor.h"
 namespace
 {
 	/** ゲームクリアになる場所 */
@@ -26,8 +27,15 @@ Game::Game()
 {}
 Game::~Game()
 {
-	DeleteGO(m_pause);
-	DeleteGO(m_gameBGM);
+	if(m_gameBGM != nullptr)
+	{
+		DeleteGO(m_gameBGM);
+	}
+
+	if (m_pause != nullptr)
+	{
+		DeleteGO(m_pause);
+	}
 }
 
 bool Game::Start()
@@ -53,6 +61,9 @@ bool Game::Start()
 	/** 一時停止クラスの生成 */
 	m_pause = NewGO<Pause>(0, "Pause");
 
+	/** ゴールのドアの取得 */
+	m_goalDoor = FindGO<GoalDoor>("GoalDoor");
+
 	/** ゲーム中BGMの再生 */
 	SoundManager* sound = FindGO<SoundManager>("soundManager");
 	m_gameBGM = sound->PlayingBGM(enGame, true);
@@ -62,12 +73,10 @@ bool Game::Start()
 
 void Game::Update()
 {
-	Death();
-
-	Clear();
-
+	if (Death()) { return; }
+	if (Clear()) { return; }
 	GamePause();
-	// g_renderingEngine->DisableRaytracing();
+	//g_renderingEngine->DisableRaytracing();
 }
 
 void Game::Render(RenderContext& rc)
@@ -75,25 +84,36 @@ void Game::Render(RenderContext& rc)
 	
 }
 
-void Game::Death()
+bool Game::Death()
 {
 	/** SAN値が0以下になった場合、ゲームオーバー処理を行う */
 	if (m_sanCalculation->GetSANValue() <= SAN_VALUE_ZERO)
 	{
 		NewGO<GameOver>(0,"GameOver");
 		DeleteGO(this);
+		return true;
 	}
+	return false;
 }
 
-void Game::Clear()
+bool Game::Clear()
 {
+	/** ゴールのドアが開き切るまではクリアにしない */
+	if (m_goalDoor == nullptr || !m_goalDoor->IsOpenCompleted())
+	{
+		return false;
+	}
+
 	/** 鍵を三つ持った状態で特定の場所に到達した場合、ゲームクリア処理を行う */
 	if (m_key->GetKeyCount() >= KEY_COUNT &&
 		m_player->GetPosition().z >= CLEAR_POSITION_Z)
 	{
 		NewGO<GameClear>(0,"GameClear");
 		DeleteGO(this);
+		return true;
 	}
+
+	return false;
 }
 
 void Game::GamePause()

@@ -1,28 +1,23 @@
 #pragma once
 
 /**
+ * ゲームクリア画面のメニュー項目
+ * ※TitleStateやGameOverMenuと名前が衝突しないよう、接頭辞を付けている
+ */
+enum GameClearMenu
+{
+    enGameClearRetry,		// リトライ
+    enGameClearBackTitle,	// タイトルに戻る
+    enGameClearVolume,		// 音量調節
+    enGameClearExit,		// ゲームを閉じる
+    enGameClearMenuNum,		// 項目数
+};
+
+/**
  * GameClear.h
  * ゲームクリア画面クラス
  * ここでゲームクリア画面の操作や状態を管理する。
  */
-
-class GameCamera;
-class SANUI;
-class Player;
-class MainStage;
-class Plate;
-class DanBall;
-class IntroductionUI;
-class Key;
-class KeyUI;
-class SANCalculation;
-class Paper;
-class KeyPad;
-class Phone;
-class PhonePaper;
-class PlateRoomDoor;
-class DarkRoomDoor;
-class HandSetRoomDoor;
 class GameClear : public IGameObject
 {
 public:
@@ -33,64 +28,47 @@ public:
     void Update();
     void Render(RenderContext& rc);
 
+    /** ゲームクリア画面の操作に関する処理 */
+    void HandleInput();
+
+    /** ゲームクリア画面の選択に関する処理 */
+    void HandleSelection();
+
+private:
+    /** リトライ決定後の待機状態の更新 */
+    void UpdateRetryWait();
+
 private:
     /** ゲームクリアスプライト */
     SpriteRender m_clearSprite;
 
-    /** プレイヤー */
-    Player* m_player;
-
-	/** SAN UI */
-    SANUI* m_sanUI;
-
-	/** メインステージ */
-    MainStage* m_mainStage;
-
-	/** ゲームカメラ */
-    GameCamera* m_gameCamera;
-
-	/** 空 */
-    SkyCube* m_skyCube;
-
-	/** プレート */
-    Plate* m_plate;
-
-	/** 段ボール */
-    DanBall* m_danBall;
-
-	/** 操作紹介UI */
-    IntroductionUI* m_introductionUI;
-
-	/** キー */
-    Key* m_key;
-
-	/** キーUI */
-    KeyUI* m_keyUI;
-
-	/** SAN計算クラス */
-    SANCalculation* m_sanCalculation;
-
-	/** 紙 */
-    Paper* m_paper;
-
-	/** キーパッド */
-    KeyPad* m_keyPad;
-
-    /** 電話 */
-	Phone* m_phone;
-
-	/** 電話の紙 */
-	PhonePaper* m_phonePaper;
-
-	/** プレートルームのドア */
-	PlateRoomDoor* m_plateRoomDoor;
-
-	/** ダークルームのドア */
-	DarkRoomDoor* m_darkRoomDoor;
-
-	/* ハンドセットルームのドア */
-	HandSetRoomDoor* m_handSetRoomDoor;
-
     /** ゲームクリアのBGM */
-    SoundSource* m_clearBGM;
+    SoundSource* m_clearBGM = nullptr;
+
+    /** 選択時のSE */
+    SoundSource* m_selectionSE = nullptr;
+
+    /** リトライ時のSE */
+    SoundSource* m_retrySE = nullptr;
+
+    /** リトライのフォント */
+    FontRender m_retryFont;
+
+    /** タイトルに戻るのフォント */
+    FontRender m_titleFont;
+
+    /** 音量調節のフォント */
+    FontRender m_volumeFont;
+
+    /** ゲームを閉じるフォント */
+    FontRender m_exitFont;
+
+    /** 現在選んでいるフォントのインデックス */
+    int m_selectedFontIndex = enGameClearRetry;
+
+    /** リトライが決定され、SEの再生終了を待っているか */
+    bool m_isRetrying = false;
+
+    /** タイトルに戻る処理で自身を削除したか */
+    bool m_isClosing = false;
 };
