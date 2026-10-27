@@ -2,6 +2,7 @@
 #include "Phone.h"
 #include "Source/Actor/Player/Player.h"
 #include "Key/Key.h"
+#include "SoundManager/SoundManager.h"
 
 /** これを使いKeyButtonの構造体を利用する */
 #include "Source/Actor/Stage/Darkroom/KeyPad/KeyPad.h"
@@ -265,15 +266,25 @@ void Phone::PressSelectedKey()
 	/** 現在選択しているボタンの情報を取得 */
 	const KeyButton& key = KEY_BUTTONS[m_selectedIndex];
 
+	SoundManager* sound = FindGO<SoundManager>("soundManager");
+
 	/** ボタンの種類に応じて処理を分岐 */
 	if (key.type == EnKeyButtonType::Number)
 	{
+		/** 押した数字に対応するSEを再生 */
+		/** 9→0の順番で並んでいるから既に登録されている音 + (9 - key.number)をする */
+		SoundSE phoneSE = static_cast<SoundSE>(enPhone_9_SE + (9 - key.number));
+		sound->PlayingSE(phoneSE,false);
+
 		/** 数字ボタンが押された場合は入力した数字を追加 */
 		InputDigit(key.number);
 	}
 	/** Enterボタンが押された場合は入力した数字を判定 */
 	else if (key.type == EnKeyButtonType::Enter)
 	{
+		/** Enterの音を鳴らす */
+		sound->PlayingSE(enPhone_Enter_SE, false);
+
 		/** 入力した数字が正解のコードと一致するかを判定 */
 		CheckCode();
 	}

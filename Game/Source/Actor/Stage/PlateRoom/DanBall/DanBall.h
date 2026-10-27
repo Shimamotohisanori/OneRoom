@@ -64,6 +64,12 @@ private:
 	/** プレート */
 	Plate* m_plate = nullptr;
 
+	/** 段ボールを置く音 */
+	SoundSource* m_putSE = nullptr;
+
+	/** 段ボールを取る音 */
+	SoundSource* m_catchSE = nullptr;
+
 	/** 段ボールの状態 */
 	EnState m_state = EnState::enState_Ground;
 

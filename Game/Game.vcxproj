@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -255,6 +255,7 @@
     <ClCompile Include="Source\Actor\Stage\HandSetRoom\HandSetRoom.cpp" />
     <ClCompile Include="Source\Actor\Stage\HandSetRoom\PhonePaper\PhonePaper.cpp" />
     <ClCompile Include="Source\Actor\Stage\HandSetRoom\Phone\Phone.cpp" />
+    <ClCompile Include="Source\Actor\Stage\LightObject\LightObject.cpp" />
     <ClCompile Include="Source\Actor\Stage\MainStage.cpp" />
     <ClCompile Include="Source\Actor\Stage\PlateRoom\DanBall\DanBall.cpp" />
     <ClCompile Include="Source\Actor\Stage\PlateRoom\PlateRoom.cpp" />
@@ -299,6 +300,7 @@
     <ClInclude Include="Source\Actor\Stage\HandSetRoom\HandSetRoom.h" />
     <ClInclude Include="Source\Actor\Stage\HandSetRoom\PhonePaper\PhonePaper.h" />
     <ClInclude Include="Source\Actor\Stage\HandSetRoom\Phone\Phone.h" />
+    <ClInclude Include="Source\Actor\Stage\LightObject\LightObject.h" />
     <ClInclude Include="Source\Actor\Stage\MainStage.h" />
     <ClInclude Include="Source\Actor\Stage\PlateRoom\DanBall\DanBall.h" />
     <ClInclude Include="Source\Actor\Stage\PlateRoom\PlateRoom.h" />

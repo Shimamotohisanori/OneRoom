@@ -18,6 +18,7 @@
 #include "Source/Actor/Stage/Door/DarkRoomDoor/DarkRoomDoor.h"
 #include "Source/Actor/Stage/Door/HandSetRoomDoor/HandSetRoomDoor.h"
 #include "Source/Actor/Stage/Door/GoalDoor/GoalDoor.h"
+#include "Source/Actor/Stage/LightObject/LightObject.h"
 
 void GameObjectCleaner::DeleteAllGameObjects()
 {
@@ -47,6 +48,13 @@ void GameObjectCleaner::DeleteAllGameObjects()
 	DeleteGO(FindGO<DarkRoomDoor>("DarkRoomDoor"));
 	DeleteGO(FindGO<HandSetRoomDoor>("HandSetRoomDoor"));
 	DeleteGO(FindGO<GoalDoor>("GoalDoor"));
+
+	/** 部屋にある全てのライトを削除 */
+	QueryGOs<LightObject>("LightObject", [](LightObject* light) -> bool
+		{
+			DeleteGO(light);
+			return true;
+		});
 }
 
 bool GameObjectCleaner::DeleteGameObjectsStep(int step)

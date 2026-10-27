@@ -2,6 +2,7 @@
 #include "GoalDoor.h"
 #include "Source/Actor/Player/Player.h"
 #include "Key/Key.h"
+#include "SoundManager/SoundManager.h"
 namespace
 {
 	/** ゴールののドアのモデルのパス */
@@ -79,6 +80,10 @@ void GoalDoor::Update()
 
 			if (m_player->IsInteractTriggered())
 			{
+				/** 開く音を再生 */
+				SoundManager* sound = FindGO<SoundManager>("soundManager");
+				m_doorOpenSound = sound->PlayingSE(enDoorOpenSE, false);
+
 				/** プレイヤーが開ける操作をしたら開く */
 				m_isOpenRequested = true;
 			}

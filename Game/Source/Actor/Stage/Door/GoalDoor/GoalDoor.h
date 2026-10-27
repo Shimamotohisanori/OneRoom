@@ -42,6 +42,9 @@ private:
 	/** 案内文字(DanBall.h の m_promptFont と同じ型にする) */
 	FontRender m_promptFont;
 
+	/** 開く音 */
+	SoundSource* m_doorOpenSound = nullptr;
+
 	/** 案内文字を表示するか */
 	bool m_isPromptVisible = false;
 

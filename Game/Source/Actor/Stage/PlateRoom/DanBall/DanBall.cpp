@@ -4,6 +4,7 @@
 #include "Source/Actor/Stage/PlateRoom/Plate/Plate.h"
 #include "Key/Key.h"
 #include "SAN/SANCalculation.h"
+#include "SoundManager/SoundManager.h"
 namespace
 {
 	/** 段ボールモデルのファイルパス */
@@ -150,6 +151,10 @@ bool DanBall::IsPlayerInRange() const
 
 void DanBall::PickUp()
 {
+	/** 段ボールを取る音を再生 */
+	SoundManager* sound = FindGO<SoundManager>("soundManager");
+	m_catchSE = sound->PlayingSE(enCatchDanBall, false);
+
 	/** プレイヤーが段ボールを持っている状態にする */
 	m_state = EnState::enState_Held;
 
@@ -159,6 +164,10 @@ void DanBall::PickUp()
 
 void DanBall::PlaceOnPlate()
 {
+	/** 段ボールを置く音を再生 */
+	SoundManager* sound = FindGO<SoundManager>("soundManager");
+	m_putSE = sound->PlayingSE(enPutDanBall, false);
+
 	/** キーの数を増やす */
 	m_key->AddKey();
 	

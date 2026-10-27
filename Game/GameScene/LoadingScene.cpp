@@ -16,6 +16,7 @@
 #include "Source/Actor/Stage/Door/HandSetRoomDoor/HandSetRoomDoor.h"
 #include "Source/Actor/Stage/Door/DarkRoomDoor/DarkRoomDoor.h"
 #include "Source/Actor/Stage/Door/GoalDoor/GoalDoor.h"
+#include "Source/Actor/Stage/LightObject/LightObject.h"
 namespace
 {
 	/** ローディング画面のファイルパス */
@@ -66,6 +67,76 @@ namespace
 		Vector3(0.0f, 0.0f, 0.0f),
 		Vector3(0.0f, -90.0f, 0.0f),
 	};
+
+	/** 環境光の色 */
+	const Vector3 AMBIENT_LIGHT_COLOR = { 0.001f, 0.001f, 0.001f };
+
+	/** 天井のライトの高さ */
+	constexpr float CEILING_LIGHT_HEIGHT = 120.0f;
+
+	/** 天井のライトの色 */
+	const Vector3 CEILING_LIGHT_COLOR = { 1.0f, 1.0f, 1.0f };
+
+	/** 天井のライトの届く距離 */
+	constexpr float CEILING_LIGHT_RANGE = 500.0f;
+
+	/** 天井のライトの射出角度(度) */
+	constexpr float CEILING_LIGHT_ANGLE = 45.0f;
+
+	/** 天井のライト1つ分の設定 */
+	struct CeilingLightSetting
+	{
+		/** ライトの種類 */
+		LightObject::EnLightType type;
+
+		/** ライトの位置(XとZ。高さは CEILING_LIGHT_HEIGHT) */
+		float x;
+		float z;
+
+		/** 点滅の安定時間(秒)の範囲。Flicker のときだけ使う */
+		float flickerMin;
+		float flickerMax;
+	};
+
+	/** 天井のライトの一覧 */
+	const CeilingLightSetting CEILING_LIGHT_SETTINGS[] =
+	{
+		/** 初期部屋 */
+		{ LightObject::enLightType_AlwaysOn,   0.0f, -1400.0f,  0.0f,  0.0f },
+		/** プレート部屋のドア前 */
+		{ LightObject::enLightType_Flicker,  800.0f,  -450.0f,  1.5f,  5.0f },
+		/** 暗室のドア前 */
+		{ LightObject::enLightType_ModelOnly, -800.0f, -250.0f,  0.0f,  0.0f },
+		/** 受話器部屋のドア前 */
+		{ LightObject::enLightType_Flicker,  800.0f,   600.0f,  1.0f,  3.0f },
+		/** 廊下(手前) */
+		{ LightObject::enLightType_Flicker,   50.0f,  -450.0f, 10.0f, 30.0f },
+		/** 廊下(中央) */
+		{ LightObject::enLightType_ModelOnly,  50.0f,   150.0f,  0.0f,  0.0f },
+		/** 廊下(奥) */
+		{ LightObject::enLightType_Flicker,   50.0f,   800.0f,  0.5f,  1.5f },
+	};
+
+	/** ロードの手順。LoadGame() の switch の case に対応する */
+	enum EnLoadStep
+	{
+		enLoadStep_MainStage,
+		enLoadStep_Player,
+		enLoadStep_GameCamera,
+		enLoadStep_SkyCube,
+		enLoadStep_LightSetting,
+		enLoadStep_Plate,
+		enLoadStep_Key,
+		enLoadStep_SANCalculation,
+		enLoadStep_Paper,
+		enLoadStep_PhonePaper,
+		enLoadStep_KeyPad,
+		enLoadStep_DanBall,
+		enLoadStep_Phone,
+		enLoadStep_Door,
+		enLoadStep_LightObject,
+		enLoadStep_Game,
+	};
 }
 
 LoadingScene::~LoadingScene()
@@ -88,7 +159,7 @@ void LoadingScene::Update()
 	LoadGame();
 }
 
-void LoadingScene::Render(RenderContext & rc)
+void LoadingScene::Render(RenderContext& rc)
 {
 	m_loadingSprite.Draw(rc);
 }
@@ -97,26 +168,26 @@ void LoadingScene::LoadGame()
 {
 	switch (m_loadingProgress)
 	{
-	case 0:
+	case enLoadStep_MainStage:
 		m_mainStage = NewGO<MainStage>(0, "MainStage");
 		break;
 
-	case 1:
+	case enLoadStep_Player:
 		m_player = NewGO<Player>(0, "Player");
 		break;
 
-	case 2:
+	case enLoadStep_GameCamera:
 		m_gameCamera = NewGO<GameCamera>(0, "GameCamera");
 		break;
 
-	case 3:
+	case enLoadStep_SkyCube:
 		/** 空の初期化 */
 		m_skyCube = NewGO<SkyCube>(0, "SkyCube");
 		m_skyCube->SetType(EnSkyCubeType::enSkyCubeType_Night);
 		m_skyCube->SetScale(SKY_CUBE_SIZE);
 		break;
 
-	case 4:
+	case enLoadStep_LightSetting:
 	{
 		/** 光の方向及び影の設定 */
 		Vector3 sunDirection = LIGHT_DIRECTION;
@@ -128,62 +199,62 @@ void LoadingScene::LoadGame()
 
 		/** ブルームを抑制 */
 		g_renderingEngine->SetBloomThreshold(BLOOM_STRENGTH);
-		
+
 		/** 環境光の設定 */
-		g_sceneLight->SetAmbinet(Vector3(0.001f, 0.001f, 0.001f));
+		g_sceneLight->SetAmbinet(AMBIENT_LIGHT_COLOR);
 		break;
 	}
 
-	case 5:
-	{		
+	case enLoadStep_Plate:
+	{
 		/** プレートの生成 */
 		NewGO<Plate>(0, "Plate");
 		break;
 	}
 
-	case 6:
+	case enLoadStep_Key:
 	{
 		/** キーの生成 */
 		NewGO<Key>(0, "Key");
 		break;
 	}
 
-	case 7:
+	case enLoadStep_SANCalculation:
 	{
 		/** SAN計算クラスの生成 */
 		NewGO<SANCalculation>(0, "SANCalculation");
 		break;
 	}
 
-	case 8:
+	case enLoadStep_Paper:
 	{
 		/** 紙の生成 */
 		NewGO<Paper>(0, "Paper");
 		break;
 	}
 
-	case 9:
+	case enLoadStep_PhonePaper:
 	{
 		/** 電話の紙の生成 */
 		NewGO<PhonePaper>(0, "PhonePaper");
 		break;
 	}
 
-	case 10:
+	case enLoadStep_KeyPad:
 	{
 		/** キーパッドの生成 */
 		NewGO<KeyPad>(0, "KeyPad");
 		break;
 	}
 
-	case 11:
+	case enLoadStep_DanBall:
 	{
 		/** 段ボールの生成 */
 		NewGO<DanBall>(0, "DanBall");
 		break;
 	}
 
-	case 12:
+	case enLoadStep_Phone:
 	{
 		/** 電話の生成(複数作る) */
 		for (int i = 0; i < PHONE_COUNT; i++)
@@ -199,7 +270,7 @@ void LoadingScene::LoadGame()
 		break;
 	}
 
-	case 13:
+	case enLoadStep_Door:
 	{
 		/** ドアの生成 */
 		NewGO<PlateRoomDoor>(0, "PlateRoomDoor");
@@ -209,7 +280,34 @@ void LoadingScene::LoadGame()
 		break;
 	}
 
-	case 14:
+	case enLoadStep_LightObject:
+	{
+		/** 天井のライトを一覧の設定どおりに生成する */
+		/** 設定したライトの数分だけ生成する */
+		for (const CeilingLightSetting& setting : CEILING_LIGHT_SETTINGS)
+		{
+			auto* light = NewGO<LightObject>(0, "LightObject");
+			light->SetLightType(setting.type);
+			light->SetLightPosition({ setting.x, CEILING_LIGHT_HEIGHT, setting.z });
+
+			/** 光を出さないライトは、位置以外の設定が要らない */
+			if (setting.type == LightObject::enLightType_ModelOnly) {
+				continue;
+			}
+
+			light->SetLightColor(CEILING_LIGHT_COLOR);
+			light->SetLightRange(CEILING_LIGHT_RANGE);
+			light->SetLightAngle(CEILING_LIGHT_ANGLE);
+
+			/** 点滅するライトだけ、点滅の間隔を設定する */
+			if (setting.type == LightObject::enLightType_Flicker) {
+				light->SetFlickerInterval(setting.flickerMin, setting.flickerMax);
+			}
+		}
+		break;
+	}
+
+	case enLoadStep_Game:
 
 		/** ゲームの生成 */
 		NewGO<Game>(0, "Game");
