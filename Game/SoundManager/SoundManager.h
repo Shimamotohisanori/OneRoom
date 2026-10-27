@@ -17,6 +17,20 @@ enum SoundSE
 	enPadDecision,
 	enOutGameSelect,
 	enStartGame,
+	enPutDanBall,
+	enCatchDanBall,
+	enPhone_9_SE,
+	enPhone_8_SE,
+	enPhone_7_SE,
+	enPhone_6_SE,
+	enPhone_5_SE,
+	enPhone_4_SE,
+	enPhone_3_SE,
+	enPhone_2_SE,
+	enPhone_1_SE,
+	enPhone_0_SE,
+	enPhone_Enter_SE,
+	enDoorOpenSE,
 	enSENum
 };
 

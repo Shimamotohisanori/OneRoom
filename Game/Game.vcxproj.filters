@@ -100,6 +100,9 @@
     <Filter Include="GameObjectCleaner">
       <UniqueIdentifier>{7d03903d-caa3-452a-a788-dcc85523959f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Actor\Stage\LightObject">
+      <UniqueIdentifier>{0147b312-beeb-4127-b86b-3fdc32877d04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -215,6 +218,9 @@
     <ClCompile Include="GameObjectCleaner\GameObjectCleaner.cpp">
       <Filter>GameObjectCleaner</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Actor\Stage\LightObject\LightObject.cpp">
+      <Filter>Source\Actor\Stage\LightObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -328,6 +334,9 @@
     </ClInclude>
     <ClInclude Include="GameObjectCleaner\GameObjectCleaner.h">
       <Filter>GameObjectCleaner</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Stage\LightObject\LightObject.h">
+      <Filter>Source\Actor\Stage\LightObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

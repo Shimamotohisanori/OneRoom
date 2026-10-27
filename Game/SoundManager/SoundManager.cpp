@@ -27,7 +27,21 @@ namespace
 		"PadSelectSE",
 		"PadDecisionSE",
 		"OutGameSelectSE",
-		"GameStartSE"
+		"GameStartSE",
+		"PutDanBallSE",
+		"CatchDanBallSE",
+		"Phone_9_SE",
+		"Phone_8_SE",
+		"Phone_7_SE",
+		"Phone_6_SE",
+		"Phone_5_SE",
+		"Phone_4_SE",
+		"Phone_3_SE",
+		"Phone_2_SE",
+		"Phone_1_SE",
+		"Phone_0_SE",
+		"Phone_Enter_SE",
+		"DoorOpenSE"
 	};
 }
 
