@@ -12,7 +12,6 @@
 enum GameOverMenu
 {
 	enGameOverRetry,		// リトライ
-	enGameOverVolume,		// 音量調節
 	enGameOverBackTitle,	// タイトルに戻る
 	enGameOverExit,			// ゲームを閉じる
 	enGameOverMenuNum,		// 項目数
@@ -50,11 +49,11 @@ private:
 	/** リトライ時のSE */
 	SoundSource* m_retrySE = nullptr;
 
+	/** 決定時のSE */
+	SoundSource* m_decideSE = nullptr;
+
 	/** リトライのフォント */
 	FontRender m_retryFont;
-
-	/** 音量調節のフォント */
-	FontRender m_volumeFont;
 
 	/** タイトルに戻るフォント */
 	FontRender m_titleFont;

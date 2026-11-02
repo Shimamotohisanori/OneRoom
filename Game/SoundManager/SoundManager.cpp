@@ -41,7 +41,8 @@ namespace
 		"Phone_1_SE",
 		"Phone_0_SE",
 		"Phone_Enter_SE",
-		"DoorOpenSE"
+		"DoorOpenSE",
+		"DecisionSE",
 	};
 }
 

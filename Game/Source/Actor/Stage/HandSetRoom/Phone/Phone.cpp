@@ -12,31 +12,31 @@ namespace
 	const char* PHONE_MODEL_FILE_PATH = "Assets/modelData/Phone/Phone.tkm";
 
 	/** 電話のカーソル画像のファイルパス */
-	const char* PHONE_CURSOR_FILE_PATH = "Assets/sprite/Black/Black.dds";
+	const char* PHONE_CURSOR_FILE_PATH = "Assets/sprite/Black/Cursor.dds";
 
 	/** 電話本体の画像のファイルパス */
 	const char* PHONE_SPRITE_FILE_PATH = "Assets/sprite/Phone/Phone.dds";
 
 	/** 正解の四桁 */
-	const std::wstring CORRECT_CODE = L"5921";
+	const std::wstring CORRECT_CODE = L"45967309201";
 
 	/** 電話本体の画像の縦幅 */
-	constexpr float PHONE_SPRITE_HEIGHT = 900.0f;
+	constexpr float PHONE_SPRITE_HEIGHT = 950.0f;
 
 	/** 電話本体の画像の横幅 */
-	constexpr float PHONE_SPRITE_WIDTH = 950.0f;
+	constexpr float PHONE_SPRITE_WIDTH = 1100.0f;
 
 	/** 電話のカーソル画像の縦幅 */
-	constexpr float PHONE_CURSOR_HEIGHT = 52.5f;
+	constexpr float PHONE_CURSOR_HEIGHT = 80.0f;
 
 	/** 電話のカーソル画像の横幅 */
-	constexpr float PHONE_CURSOR_WIDTH = 52.5f;
+	constexpr float PHONE_CURSOR_WIDTH = 80.0f;
 
 	/** 操作案内文字のスケール */
 	constexpr float PROMPT_FONT_SCALE = 1.5f;
 
 	/** 入力した数字のスケール */
-	constexpr float INPUT_FONT_SCALE = 1.5f;
+	constexpr float INPUT_FONT_SCALE = 1.3f;
 
 	/** インタラクトできる距離 */
 	constexpr float INTERACT_DISTANCE = 70.0f;
@@ -48,13 +48,16 @@ namespace
 	const Vector3 PROMPT_POSITION = Vector3(-150.0f, -100.0f, 0.0f);
 	
 	/** 入力数字の位置 */
-	const Vector3 DIGITS_POSITION = Vector3(0.0f, 280.0f, 0.0f);
+	const Vector3 DIGITS_POSITION = Vector3(-20.0f, 290.0f, 0.0f);
+
+	/** Enterボタン選択時のカーソルの倍率(横, 縦, 奥) */
+	const Vector3 ENTER_CURSOR_SCALE = Vector3(1.2f, 0.9f, 1.0f);
 
 	/** カーソルの色(半透明) */
 	const Vector4 CURSOR_COLOR = Vector4(1.0f, 1.0f, 1.0f, 0.5f);
 
 	/** 入力できる最大桁数 */
-	constexpr int MAX_DIGITS = 4;
+	constexpr int MAX_DIGITS = 11;
 
 	constexpr int NONE = -1;
 	constexpr int KEY_COUNT = 13;
@@ -63,19 +66,19 @@ namespace
 	const KeyButton KEY_BUTTONS[KEY_COUNT] =
 	{
 		//  種類                 数字  　座標(x, y)        上    下    左    右
-		{ EnKeyButtonType::Number, 1, {  15.0f,  85.0f}, NONE,    3, NONE,    1 },  // [0]
-		{ EnKeyButtonType::Number, 2, {  92.5f,  85.0f}, NONE,    4,    0,    2 },  // [1]
-		{ EnKeyButtonType::Number, 3, { 167.5f,  85.0f}, NONE,    5,    1, NONE },  // [2]
-		{ EnKeyButtonType::Number, 4, {  15.0f,  5.0f},    0,    6, NONE,    4 },  // [3]
-		{ EnKeyButtonType::Number, 5, {  92.5f,  5.0f},    1,    7,    3,    5 },  // [4]
-		{ EnKeyButtonType::Number, 6, { 167.5f,  5.0f},    2,    8,    4, NONE },  // [5]
-		{ EnKeyButtonType::Number, 7, {  15.0f,  -75.0f},    3,    9, NONE,    7 },  // [6]
-		{ EnKeyButtonType::Number, 8, {  92.5f,  -75.0f},    4,   10,    6,    8 },  // [7]
-		{ EnKeyButtonType::Number, 9, { 167.5f,  -75.0f},    5,   11,    7, NONE },  // [8]
-		{ EnKeyButtonType::Symbol, 0, {  15.0f, -160.0f},    6,   12, NONE,   10 },  // [9]  *
-		{ EnKeyButtonType::Number, 0, {  92.5f, -160.0f},    7,   12,    9,   11 },  // [10] 0
-		{ EnKeyButtonType::Symbol, 0, { 167.5f, -160.0f},    8,   12,   10, NONE },  // [11] #
-		{ EnKeyButtonType::Enter,  0, { 210.0f, -230.0f},   10, NONE, NONE, NONE },  // [12] Enter
+		{ EnKeyButtonType::Number, 1, {  17.5f,  89.0f}, NONE,    3, NONE,    1 },  // [0]
+		{ EnKeyButtonType::Number, 2, {  105.0f,  89.0f}, NONE,    4,    0,    2 },  // [1]
+		{ EnKeyButtonType::Number, 3, {  193.0f,  89.0f}, NONE,    5,    1, NONE },  // [2]
+		{ EnKeyButtonType::Number, 4, {  17.5f,  5.0f},    0,    6, NONE,    4 },  // [3]
+		{ EnKeyButtonType::Number, 5, {  105.0f,  5.0f},    1,    7,    3,    5 },  // [4]
+		{ EnKeyButtonType::Number, 6, {  193.0f,  5.0f},    2,    8,    4, NONE },  // [5]
+		{ EnKeyButtonType::Number, 7, {  17.5f,  -80.0f},    3,    9, NONE,    7 },  // [6]
+		{ EnKeyButtonType::Number, 8, {  105.0f,  -80.0f},    4,   10,    6,    8 },  // [7]
+		{ EnKeyButtonType::Number, 9, {  193.0f,  -80.0f},    5,   11,    7, NONE },  // [8]
+		{ EnKeyButtonType::Symbol, 0, {  17.5f, -170.0f},    6,   12, NONE,   10 },  // [9]  *
+		{ EnKeyButtonType::Number, 0, {  105.0f, -170.0f},    7,   12,    9,   11 },  // [10] 0
+		{ EnKeyButtonType::Symbol, 0, {  193.0f, -170.0f},    8,   12,   10, NONE },  // [11] #
+		{ EnKeyButtonType::Enter,  0, {  240.0f, -245.0f},   10, NONE, NONE, NONE },  // [12] Enter
 	};
 }
 
@@ -150,11 +153,20 @@ void Phone::Update()
 			PressSelectedKey();
 		}
 
-		/** 入力した数字を表示する */
-		m_phoneCursor.SetPosition(Vector3(
-			KEY_BUTTONS[m_selectedIndex].position.x,
-			KEY_BUTTONS[m_selectedIndex].position.y,
-			0.0f));
+		/** 選択中のボタンにカーソルを合わせる */
+		const KeyButton& selected = KEY_BUTTONS[m_selectedIndex];
+		m_phoneCursor.SetPosition(Vector3(selected.position.x, selected.position.y, 0.0f));
+
+		/** Enterを選んでいるときだけカーソルの大きさを変える */
+		if (selected.type == EnKeyButtonType::Enter)
+		{
+			m_phoneCursor.SetScale(ENTER_CURSOR_SCALE);
+		}
+		else
+		{
+			m_phoneCursor.SetScale(Vector3::One);
+		}
+
 		m_phoneCursor.Update();
 		m_phoneSprite.Update();
 		m_phoneModel.Update();

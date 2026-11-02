@@ -4,7 +4,6 @@
 #include "LoadingScene.h"
 #include "GameObjectCleaner/GameObjectCleaner.h"
 #include "SoundManager/SoundManager.h"
-#include "VolumeAdjustment/VolumeAdjustment.h"
 namespace
 {
 	/** ゲームクリア画面のファイルパス */
@@ -22,11 +21,8 @@ namespace
 	/** タイトルに戻る文字の位置 */
 	const Vector3 TITLE_FONT_POSITION = { -150.0f, -100.0f, 0.0f };
 
-	/** 音量調節文字の位置 */
-	const Vector3 VOLUME_FONT_POSITION = { -100.0f, -200.0f, 0.0f };
-
 	/** ゲームを閉じる文字の位置 */
-	const Vector3 EXIT_FONT_POSITION = { -150.0f, -300.0f, 0.0f };
+	const Vector3 EXIT_FONT_POSITION = { -150.0f, -200.0f, 0.0f };
 
 	/** 選択中の文字の色(白い背景でも見えるオレンジ寄りの赤) */
 	const Vector4 COLOR_SELECTED(0.9f, 0.3f, 0.0f, 1.0f);
@@ -74,9 +70,6 @@ bool GameClear::Start()
 	m_titleFont.SetText(L"タイトルに戻る");
 	m_titleFont.SetPosition(TITLE_FONT_POSITION);
 
-	m_volumeFont.SetText(L"音量調節");
-	m_volumeFont.SetPosition(VOLUME_FONT_POSITION);
-
 	m_exitFont.SetText(L"ゲームを閉じる");
 	m_exitFont.SetPosition(EXIT_FONT_POSITION);
 
@@ -85,11 +78,6 @@ bool GameClear::Start()
 
 void GameClear::Update()
 {
-	/** 音量調節画面が開いている間は操作を受け付けない */
-	if (VolumeAdjustment::IsOpen())
-	{
-		return;
-	}
 
 	/** リトライ決定後は、SEの再生が終わるのを待つ */
 	if (m_isRetrying)
@@ -116,20 +104,12 @@ void GameClear::Render(RenderContext& rc)
 	/** 現在選択しているインデックスによって描画するフォントの色を変える */
 	m_retryFont.SetColor(m_selectedFontIndex == enGameClearRetry ? COLOR_SELECTED : COLOR_NORMAL);
 	m_titleFont.SetColor(m_selectedFontIndex == enGameClearBackTitle ? COLOR_SELECTED : COLOR_NORMAL);
-	m_volumeFont.SetColor(m_selectedFontIndex == enGameClearVolume ? COLOR_SELECTED : COLOR_NORMAL);
 	m_exitFont.SetColor(m_selectedFontIndex == enGameClearExit ? COLOR_SELECTED : COLOR_NORMAL);
 
 	m_clearSprite.Draw(rc);
 
-	/** 音量調節画面が開いている間は、メニュー文字を隠す */
-	if (VolumeAdjustment::IsOpen())
-	{
-		return;
-	}
-
 	m_retryFont.Draw(rc);
 	m_titleFont.Draw(rc);
-	m_volumeFont.Draw(rc);
 	m_exitFont.Draw(rc);
 }
 
@@ -155,21 +135,21 @@ void GameClear::HandleInput()
 		break;
 	}
 	case enGameClearBackTitle:
+	{
 		/** タイトル画面に戻る */
 		NewGO<Title>(0, "title");
 		DeleteGO(m_clearBGM);
 		m_clearBGM = nullptr;
 
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		m_decideSE = sound->PlayingSE(enDecisionSE, false);
+
 		DeleteGO(this);
 		m_isClosing = true;
 		break;
-
-	case enGameClearVolume:
-		/** 音量調節画面を開く(文字色は黒) */
-		VolumeAdjustment::Open(true);
-		break;
-
+	}
 	case enGameClearExit:
+
 		/** ゲームを閉じる処理 */
 		PostQuitMessage(0);
 		break;

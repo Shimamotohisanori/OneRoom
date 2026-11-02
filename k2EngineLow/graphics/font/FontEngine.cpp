@@ -84,6 +84,61 @@ namespace nsK2EngineLow {
 		Vector2 pivot
 	)
 	{
+		/** 元の処理 */
+		/*m_spriteFont->DrawString(
+			m_spriteBatch.get(),
+			text,
+			position.vec,
+			color,
+			rotation,
+			DirectX::XMFLOAT2(pivot.x, pivot.y),
+			scale
+		);*/
+
+		/** 新しい処理 */
+		/** 縁取りの太さ（画面上のピクセル相当）*/
+		const float outline = 0.8f;
+
+		/** 黒い縁取りを8方向に描画 */
+		const Vector2 offsets[] = {
+			Vector2(-outline,  0.0f),
+			Vector2(outline,  0.0f),
+			Vector2(0.0f, -outline),
+			Vector2(0.0f,  outline),
+			Vector2(-outline, -outline),
+			Vector2(outline, -outline),
+			Vector2(-outline,  outline),
+			Vector2(outline,  outline)
+		};
+
+		/** 縁取りの色（黒）*/
+		const Vector4 outlineColor(
+			0.0f, 0.0f, 0.0f, 0.85f
+		);
+
+		/** 縁取りを描画 */
+		for (const auto& offset : offsets)
+		{
+			/** オフセットを加算して描画位置を計算 */
+			Vector2 drawPosition(
+				position.x + offset.x,
+				position.y + offset.y
+			);
+
+			/** 縁取りの文字を描画 */
+			/** DrawStringで文字の色やフォントサイズなどを指定 */
+			m_spriteFont->DrawString(
+				m_spriteBatch.get(),
+				text,
+				drawPosition.vec,
+				outlineColor,
+				rotation,
+				DirectX::XMFLOAT2(pivot.x, pivot.y),
+				scale
+			);
+		}
+
+		/** 最後に本来の文字を描画 */
 		m_spriteFont->DrawString(
 			m_spriteBatch.get(),
 			text,

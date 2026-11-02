@@ -13,9 +13,9 @@ namespace
 
 	/** カーソルの画像ファイルパス */
 	const char* CURSOR_SPRITE_FILE_PATH = "Assets/sprite/Cursor/Cursor.dds";
-	
-	/** 正解の四桁 */
-	const std::wstring CORRECT_CODE = L"3951";
+
+	/** 正解の7桁(紙に書かれている番号) */
+	const std::wstring CORRECT_CODE = L"3951784";
 
 	/** キーパッドの初期座標 */
 	const Vector3 KEYPAD_INITIAL_POSITION = Vector3(-330.0f, 10.0f, -200.0f);
@@ -30,7 +30,7 @@ namespace
 	const Vector3 CURSOR_SCALE = Vector3(1.0f, 1.0f, 1.0f);
 
 	/** キーパッドのスケール */
-	const Vector3 KEYPAD_SCALE = Vector3(3.0f, 3.0f, 3.0f);
+	const Vector3 KEYPAD_SCALE = Vector3(3.0f, 5.0f, 5.0f);
 
 	/** キーパッドの画像のスケール */
 	const Vector3 KEYPAD_SPRITE_SCALE = Vector3(1.0f, 1.0f, 1.0f);
@@ -56,8 +56,19 @@ namespace
 	/** カーソル画像の横幅 */
 	constexpr float CURSOR_SPRITE_WIDTH = 70.0f;
 
-	/** インタラクトできる距離(モデルの大きさに合わせて調整) */
-	constexpr float INTERACT_DISTANCE = 35.0f;
+	/** キーパッドの正面方向(キーパッドからプレイヤーが立つ側へ向かう向き)。
+	 *  壁にキーパッドが付いているなら、壁の表面に垂直で、部屋の内側を向く方向にする。
+	 *  壁の裏側(この向きと反対側)からは、どれだけ近くてもインタラクトできない */
+	const Vector3 KEYPAD_FRONT_DIRECTION = Vector3(-1.0f, 0.0f, 0.0f);
+
+	/** 正面方向に、どこまで離れてもインタラクトできるか(伸ばしたいのはこの値) */
+	constexpr float INTERACT_MAX_DEPTH = 100.0f;
+
+	/** 正面方向の最小値。0より小さくすると、キーパッドの原点より奥(壁側)でも反応する */
+	constexpr float INTERACT_MIN_DEPTH = 0.0f;
+
+	/** 正面方向と垂直な向き(横方向)に、中心からどこまでずれてもインタラクトできるか */
+	constexpr float INTERACT_HALF_WIDTH = 50.0f;
 
 	/** 案内文字のスケール */
 	constexpr float PROMPT_FONT_SCALE = 1.5f;
@@ -65,8 +76,8 @@ namespace
 	/** 入力数字のスケール */
 	constexpr float INPUT_FONT_SCALE = 1.5f;
 
-	/** 入力できる最大桁数 */
-	constexpr int MAX_DIGITS = 4;
+	/** 入力できる最大桁数(正解の桁数に合わせる) */
+	const int MAX_DIGITS = static_cast<int>(CORRECT_CODE.size());
 
 	constexpr int NONE = -1;
 	constexpr int KEY_COUNT = 11;
@@ -77,17 +88,17 @@ namespace
 	const KeyButton KEY_BUTTONS[KEY_COUNT] =
 	{
 		//  種類              数字  座標(x,y)         上    下   左    右
-		{ EnKeyButtonType::Number, 1, {-232.5f, 139.5f}, NONE,   3, NONE,   1 },
-		{ EnKeyButtonType::Number, 2, {-95.0f,  139.5f}, NONE,   4,    0,    2 },
-		{ EnKeyButtonType::Number, 3, { 40.0f,  139.5f}, NONE,   5,    1,   10 },
-		{ EnKeyButtonType::Number, 4, {-232.5f,  10.0f},    0,   6, NONE,    4 },
-		{ EnKeyButtonType::Number, 5, {-95.0f,   10.0f},    1,   7,    3,    5 },
-		{ EnKeyButtonType::Number, 6, { 40.0f,   10.0f},    2,   8,    4,   10 },
-		{ EnKeyButtonType::Number, 7, {-232.5f, -115.0f},    3, NONE, NONE,    7 },
-		{ EnKeyButtonType::Number, 8, {-95.0f,  -115.0f},    4,   9,    6,    8 },
-		{ EnKeyButtonType::Number, 9, { 40.0f,  -115.0f},    5, NONE,    7,   10 },
-		{ EnKeyButtonType::Number, 0, { -95.0f, -235.0f},    7, NONE, NONE, NONE },
-		{ EnKeyButtonType::Enter,  0, { 210.0f,   0.0f}, NONE, NONE,    5, NONE },
+		{ EnKeyButtonType::Number, 1,{ -232.5f, 139.5f }, NONE,   3, NONE,   1 },
+		{ EnKeyButtonType::Number, 2,{ -95.0f,  139.5f }, NONE,   4,    0,    2 },
+		{ EnKeyButtonType::Number, 3,{ 40.0f,  139.5f }, NONE,   5,    1,   10 },
+		{ EnKeyButtonType::Number, 4,{ -232.5f,  10.0f },    0,   6, NONE,    4 },
+		{ EnKeyButtonType::Number, 5,{ -95.0f,   10.0f },    1,   7,    3,    5 },
+		{ EnKeyButtonType::Number, 6,{ 40.0f,   10.0f },    2,   8,    4,   10 },
+		{ EnKeyButtonType::Number, 7,{ -232.5f, -115.0f },    3, NONE, NONE,    7 },
+		{ EnKeyButtonType::Number, 8,{ -95.0f,  -115.0f },    4,   9,    6,    8 },
+		{ EnKeyButtonType::Number, 9,{ 40.0f,  -115.0f },    5, NONE,    7,   10 },
+		{ EnKeyButtonType::Number, 0,{ -95.0f, -235.0f },    7, NONE, NONE, NONE },
+		{ EnKeyButtonType::Enter,  0,{ 210.0f,   0.0f }, NONE, NONE,    5, NONE },
 	};
 }
 KeyPad::KeyPad()
@@ -101,9 +112,15 @@ KeyPad::~KeyPad()
 		m_player->SetInputEnabled(true);
 	}
 
-	DeleteGO(m_selectSE);
+	if (m_selectSE != nullptr)
+	{
+		DeleteGO(m_selectSE);
+	}
 
-	DeleteGO(m_decisionSE);
+	if (m_decisionSE != nullptr)
+	{
+		DeleteGO(m_decisionSE);
+	}
 }
 
 bool KeyPad::Start()
@@ -186,7 +203,7 @@ void KeyPad::Update()
 	m_keyPadModel.Update();
 }
 
-void KeyPad::Render(RenderContext & rc)
+void KeyPad::Render(RenderContext& rc)
 {
 	m_keyPadModel.Draw(rc);
 
@@ -205,21 +222,29 @@ void KeyPad::Render(RenderContext & rc)
 	}
 }
 
-float KeyPad::CalculateDistanceToPlayer(const Vector3& playerPosition) const
-{
-	Vector3 diff = playerPosition - KEYPAD_INITIAL_POSITION;
-
-	/** 高さは無視して水平距離だけで判定 */
-	diff.y = 0.0f;
-	return diff.Length();
-}
-
 bool KeyPad::IsPlayerInRange() const
 {
 	if (m_player == nullptr) return false;
 
-	/** プレイヤーとの距離を計算して、インタラクト可能な距離かどうかを返す */
-	return CalculateDistanceToPlayer(m_player->GetPosition()) <= INTERACT_DISTANCE;
+	/** キーパッドからプレイヤーへのベクトル(高さは無視して水平だけで判定) */
+	Vector3 diff = m_player->GetPosition() - KEYPAD_INITIAL_POSITION;
+	diff.y = 0.0f;
+
+	/** キーパッドの正面方向(水平) */
+	Vector3 front = KEYPAD_FRONT_DIRECTION;
+	front.y = 0.0f;
+	front.Normalize();
+
+	/** 正面方向の距離。マイナスなら壁の裏側にいるので反応させない */
+	const float depth = diff.Dot(front);
+	if (depth < INTERACT_MIN_DEPTH || depth > INTERACT_MAX_DEPTH)
+	{
+		return false;
+	}
+
+	/** 正面方向と垂直な向き(横方向)のずれが、範囲内かどうか */
+	const Vector3 side = diff - front * depth;
+	return side.Length() <= INTERACT_HALF_WIDTH;
 }
 
 void KeyPad::Interact()
@@ -306,8 +331,8 @@ void KeyPad::PressSelectedKey()
 
 void KeyPad::InputDigit(int digit)
 {
-	/** 4桁までしか入力できない */
-	if (m_inputText.size() >= MAX_DIGITS)
+	/** 正解の桁数までしか入力できない */
+	if (m_inputText.size() >= static_cast<size_t>(MAX_DIGITS))
 	{
 		return;
 	}
@@ -323,7 +348,7 @@ void KeyPad::InputDigit(int digit)
 void KeyPad::CheckCode()
 {
 	/** 入力した数字が正解してて
-	 * まだ問題を解いていない場合 
+	 * まだ問題を解いていない場合
 	 */
 	if (m_inputText == CORRECT_CODE && !m_isUnlock)
 	{

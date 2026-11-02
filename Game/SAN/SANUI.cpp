@@ -82,6 +82,10 @@ void SANUI::Update()
 
 void SANUI::Render(RenderContext & rc)
 {
+	/** SAN値の文字色を更新 */
+	m_sanUIFont.SetColor(m_sanCalculation->GetSANColor());
+
+	/** SANUIフォントとSANUIスプライトを描画 */
 	m_sanUIFont.Draw(rc);
 	m_sanUISprite.Draw(rc);
 }

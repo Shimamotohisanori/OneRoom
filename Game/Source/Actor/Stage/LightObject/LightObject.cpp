@@ -1,6 +1,7 @@
 ﻿#include "stdafx.h"
 #include "LightObject.h"
 #include <random>
+#include <algorithm>
 
 namespace
 {
@@ -57,6 +58,18 @@ namespace
 	/** 光らない部分の明るさ(アルベドに掛ける) */
 	constexpr float EMISSIVE_BASE_BRIGHTNESS = 0.05f;
 
+	/** SAN値用の明るさ計算:見た目の光の広がりに対する、判定範囲の角度の倍率。
+	 *  1.0で描画のスポットライトの円錐と同じ。大きくするほど、円錐の外側も「明るい」扱いになる
+	 *  (大きすぎると、光が当たっていない場所でも減らなくなる) */
+	constexpr float SAN_BRIGHTNESS_ANGLE_SCALE = 1.2f;
+
+	/** SAN値用の明るさ計算:判定範囲の縁での明るさの割合。
+	 *  0.0で縁に向かって滑らかに0まで暗くなる(描画の見た目と同じ)。大きくするほど縁まで明るい扱い */
+	constexpr float SAN_BRIGHTNESS_EDGE_RATIO = 0.0f;
+
+	/** 円周率 */
+	constexpr float PI_VALUE = 3.14159265f;
+
 	/** 乱数エンジンを返す */
 	std::mt19937& GetRandomEngine()
 	{
@@ -65,11 +78,20 @@ namespace
 	}
 }
 
+/** 生成されている全ライト */
+std::vector<LightObject*> LightObject::s_lights;
+
 LightObject::LightObject()
-{}
+{
+	/** SAN値計算のために、全ライトのリストへ登録する */
+	s_lights.push_back(this);
+}
 
 LightObject::~LightObject()
 {
+	/** リストから外す */
+	s_lights.erase(std::remove(s_lights.begin(), s_lights.end(), this), s_lights.end());
+
 	/** 削除前にライトを消して、スロットに色が残らないようにする */
 	if (m_hasLight) {
 		m_spotLight.SetColor(g_vec3Zero);
@@ -272,6 +294,59 @@ void LightObject::ApplyLight()
 	m_spotLight.SetAngle2(angleRad);
 	m_spotLight.SetAngle3(angleRad);
 	m_spotLight.Update();
+}
+
+float LightObject::GetBrightnessAt(const Vector3& position) const
+{
+	/** 光を出さない/まだ初期化されていないライトは0 */
+	if (!m_hasLight) {
+		return 0.0f;
+	}
+
+	/** 色を輝度に変換して、点滅の明るさ倍率を掛ける */
+	const float luminance = 0.299f * m_color.x + 0.587f * m_color.y + 0.114f * m_color.z;
+	const float baseBrightness = luminance * m_intensity;
+
+	Vector3 toPos = position - m_position;
+	const float dist = toPos.Length();
+
+	/** 範囲外は0 */
+	if (dist >= m_range) {
+		return 0.0f;
+	}
+
+	/** ほぼ真上(同じ位置)の場合は距離減衰なしの明るさ */
+	if (dist <= 0.0001f) {
+		return baseBrightness;
+	}
+
+	/** 距離による減衰 */
+	const float rangeAffect = powf(1.0f - dist / m_range, AFFECT_POW_LINEAR);
+
+	/** 角度による減衰。判定は描画の円錐より広めにとる */
+	toPos.Normalize();
+	const float cosA = max(-1.0f, min(1.0f, m_direction.Dot(toPos)));
+	const float angle = acosf(cosA);
+	const float spotRad = min(
+		Math::DegToRad(max(m_angle, MIN_SPOT_ANGLE_DEG)) * SAN_BRIGHTNESS_ANGLE_SCALE,
+		PI_VALUE);
+	if (angle >= spotRad) {
+		return 0.0f;
+	}
+
+	/** 中心は1.0、縁は SAN_BRIGHTNESS_EDGE_RATIO まで下がる */
+	const float angleAffect = 1.0f - (1.0f - SAN_BRIGHTNESS_EDGE_RATIO) * (angle / spotRad);
+
+	return baseBrightness * rangeAffect * angleAffect;
+}
+
+float LightObject::CalculateBrightnessAt(const Vector3& position)
+{
+	float sum = 0.0f;
+	for (const LightObject* light : s_lights) {
+		sum += light->GetBrightnessAt(position);
+	}
+	return sum;
 }
 
 void LightObject::Render(RenderContext& rc)

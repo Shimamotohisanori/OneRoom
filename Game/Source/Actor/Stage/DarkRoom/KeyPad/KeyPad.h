@@ -6,7 +6,7 @@
  */
 
  /** キーパッドのボタンの種類 */
-enum class EnKeyButtonType {Number, Enter, Symbol};
+enum class EnKeyButtonType { Number, Enter, Symbol };
 
 /** キーパッドのボタンの構造体 */
 struct KeyButton
@@ -42,10 +42,8 @@ public:
 
 
 private:
-	/** キーパッドとプレイヤーの距離計算関数 */
-	float CalculateDistanceToPlayer(const Vector3& playerPosition) const;
-
-	/** プレイヤーがインタラクトの範囲内か */
+	/** プレイヤーがインタラクトの範囲内か
+	 *  キーパッドの正面側だけが範囲で、壁の裏側からは反応しない */
 	bool IsPlayerInRange() const;
 
 	/** インタラクト処理 */
@@ -112,6 +110,5 @@ private:
 	/** 入力した数字（例: "123"） */
 	std::wstring m_inputText;
 
-	
-};
 
+};

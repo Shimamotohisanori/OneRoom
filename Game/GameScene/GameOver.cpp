@@ -4,7 +4,6 @@
 #include "LoadingScene.h"
 #include "GameObjectCleaner/GameObjectCleaner.h"
 #include "SoundManager/SoundManager.h"
-#include "VolumeAdjustment/VolumeAdjustment.h"
 namespace
 {
 	/** ゲームオーバー画面のファイルパス */
@@ -17,14 +16,11 @@ namespace
 	/** リトライ文字の位置 */
 	const Vector3 RETRY_FONT_POSITION = { -100.0f, 0.0f, 0.0f };
 
-	/** 音量調節文字の位置 */
-	const Vector3 VOLUME_FONT_POSITION = { -100.0f, -100.0f, 0.0f };
-
 	/** タイトルに戻る文字の位置 */
-	const Vector3 TITLE_FONT_POSITION = { -150.0f, -200.0f, 0.0f };
+	const Vector3 TITLE_FONT_POSITION = { -150.0f, -100.0f, 0.0f };
 
 	/** ゲームを閉じる文字の位置 */
-	const Vector3 EXIT_FONT_POSITION = { -150.0f, -300.0f, 0.0f };
+	const Vector3 EXIT_FONT_POSITION = { -150.0f, -200.0f, 0.0f };
 }
 
 GameOver::GameOver()
@@ -59,9 +55,6 @@ bool GameOver::Start()
 	m_retryFont.SetText(L"リトライ");
 	m_retryFont.SetPosition(RETRY_FONT_POSITION);
 
-	m_volumeFont.SetText(L"音量調節");
-	m_volumeFont.SetPosition(VOLUME_FONT_POSITION);
-
 	m_titleFont.SetText(L"タイトルに戻る");
 	m_titleFont.SetPosition(TITLE_FONT_POSITION);
 
@@ -73,11 +66,6 @@ bool GameOver::Start()
 
 void GameOver::Update()
 {
-	/** 音量調節画面が開いている間は操作を受け付けない */
-	if (VolumeAdjustment::IsOpen())
-	{
-		return;
-	}
 
 	/** リトライ決定後は、SEの再生が終わるのを待つ */
 	if (m_isRetrying)
@@ -103,20 +91,12 @@ void GameOver::Render(RenderContext& rc)
 {
 	/** 現在選択しているインデックスによって描画するフォントの色を変える */
 	m_retryFont.SetColor(m_selectedFontIndex == enGameOverRetry ? Vector4::White : Vector4::Gray);
-	m_volumeFont.SetColor(m_selectedFontIndex == enGameOverVolume ? Vector4::White : Vector4::Gray);
 	m_titleFont.SetColor(m_selectedFontIndex == enGameOverBackTitle ? Vector4::White : Vector4::Gray);
 	m_exitFont.SetColor(m_selectedFontIndex == enGameOverExit ? Vector4::White : Vector4::Gray);
 
 	m_gameOverSprite.Draw(rc);
 
-	/** 音量調節画面が開いている間は、メニュー文字を隠す */
-	if (VolumeAdjustment::IsOpen())
-	{
-		return;
-	}
-
 	m_retryFont.Draw(rc);
-	m_volumeFont.Draw(rc);
 	m_titleFont.Draw(rc);
 	m_exitFont.Draw(rc);
 }
@@ -142,24 +122,25 @@ void GameOver::HandleInput()
 		m_isRetrying = true;
 		break;
 	}
-	case enGameOverVolume:
-		/** 音量調節画面を開く */
-		VolumeAdjustment::Open();
-		break;
 
 	case enGameOverBackTitle:
+	{
 		/** タイトル画面に戻る */
 		NewGO<Title>(0, "title");
 		DeleteGO(m_gameOverBGM);
 		m_gameOverBGM = nullptr;
 
+		/** 決定時のSEを再生 */
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		m_decideSE = sound->PlayingSE(enDecisionSE, false);
+
 		/** このフレームの以降のUpdate処理を止める */
 		m_isClosing = true;
 
 		DeleteGO(this);
-		
-		break;
 
+		break;
+	}
 	case enGameOverExit:
 		/** ゲームを閉じる処理 */
 		PostQuitMessage(0);

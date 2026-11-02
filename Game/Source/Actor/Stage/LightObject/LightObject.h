@@ -6,6 +6,8 @@
  *  - Flicker   : お化けライトのように不定期に点滅するライト(モデルも発光する)
  *  - ModelOnly : 光は出さず、モデルだけ表示されているライト
  */
+#include <vector>
+
 class LightObject : public IGameObject
 {
 public:
@@ -44,6 +46,9 @@ public:
 	/** 点滅の調整用。stableMin / Max = 安定して点いている時間(秒)の範囲 */
 	void SetFlickerInterval(float stableMin, float stableMax);
 
+	/** 指定位置の、全ライトの明るさの合計を返す(SAN値計算用) */
+	static float CalculateBrightnessAt(const Vector3& position);
+
 private:
 	/** 点滅の状態 */
 	enum EnFlickerState
@@ -64,6 +69,9 @@ private:
 	/** 発光シェーダーへ渡す定数バッファを更新する(明るさ倍率・色を反映) */
 	void UpdateEmissive();
 
+	/** このライト1つが指定位置に与える明るさを返す(SAN値計算用) */
+	float GetBrightnessAt(const Vector3& position) const;
+
 	/** min～max の乱数(浮動小数点) */
 	static float RandomRange(float min, float max);
 
@@ -71,6 +79,9 @@ private:
 	static int   RandomRangeInt(int min, int max);
 
 private:
+	/** 生成されている全ライト */
+	static std::vector<LightObject*> s_lights;
+
 	/** ライトの種類 */
 	EnLightType		m_lightType = enLightType_AlwaysOn;
 

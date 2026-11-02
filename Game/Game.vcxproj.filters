@@ -281,9 +281,6 @@
     <ClInclude Include="Source\Actor\Stage\PlateRoom\PlateRoom.h">
       <Filter>Source\Actor\Stage\PlateRoom</Filter>
     </ClInclude>
-    <ClInclude Include="Key\KeyUI\KeyUI.h">
-      <Filter>Key\KeyUI</Filter>
-    </ClInclude>
     <ClInclude Include="Key\Key.h">
       <Filter>Key</Filter>
     </ClInclude>
@@ -337,6 +334,9 @@
     </ClInclude>
     <ClInclude Include="Source\Actor\Stage\LightObject\LightObject.h">
       <Filter>Source\Actor\Stage\LightObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Key\KeyUI\KeyUI.h">
+      <Filter>Key\KeyUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,7 +8,6 @@ enum GameClearMenu
 {
     enGameClearRetry,		// リトライ
     enGameClearBackTitle,	// タイトルに戻る
-    enGameClearVolume,		// 音量調節
     enGameClearExit,		// ゲームを閉じる
     enGameClearMenuNum,		// 項目数
 };
@@ -51,14 +50,14 @@ private:
     /** リトライ時のSE */
     SoundSource* m_retrySE = nullptr;
 
+    /** 決定時のSE */
+    SoundSource* m_decideSE = nullptr;
+
     /** リトライのフォント */
     FontRender m_retryFont;
 
     /** タイトルに戻るのフォント */
     FontRender m_titleFont;
-
-    /** 音量調節のフォント */
-    FontRender m_volumeFont;
 
     /** ゲームを閉じるフォント */
     FontRender m_exitFont;

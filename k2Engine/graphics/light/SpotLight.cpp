@@ -11,6 +11,7 @@ namespace nsK2Engine {
 	}
 	void SpotLight::Init()
 	{
+		/** 変更前のスポットライトを初期化 */
 		if (m_spotLight) {
 			g_sceneLight->DeleteSpotLight(m_spotLight);
 		}

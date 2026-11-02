@@ -50,6 +50,9 @@ private:
 	/** ゲーム開始時のSE */
 	SoundSource* m_startSE = nullptr;
 
+	/** 決定時のSE */
+	SoundSource* m_decisionSE = nullptr;
+
 	/** ゲームスタートのフォント */
 	FontRender m_startFont;
 

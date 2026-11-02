@@ -8,7 +8,7 @@ namespace
 	const char* PAPER_MODEL_FILE_PATH = "Assets/modelData/Paper/Paper.tkm";
 
 	/** 紙画像のファイルパス(照らしている時) */
-	const char* PAPER_LIT_SPRITE_FILE_PATH = "Assets/sprite/Paper/Black.dds";
+	const char* PAPER_LIT_SPRITE_FILE_PATH = "Assets/sprite/Paper/NoLightNumber.dds";
 
 	/** 紙画像のファイルパス(照らしていない時) */
 	const char* PAPER_UNLIT_SPRITE_FILE_PATH = "Assets/sprite/Paper/LightNumber.dds";

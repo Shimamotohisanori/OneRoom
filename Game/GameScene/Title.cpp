@@ -141,12 +141,20 @@ void Title::HandleInput()
 
 	if (g_pad[0]->IsTrigger(enButtonA) && m_selectedFontIndex == TitleState::Volume)
 	{
+		/** 音量調節画面を開く前に、決定SEを鳴らす */
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		m_decisionSE = sound->PlayingSE(enDecisionSE, false);
+
 		/** 音量調節画面を開く */
 		VolumeAdjustment::Open();
 	}
 
 	if (g_pad[0]->IsTrigger(enButtonA) && m_selectedFontIndex == TitleState::Exit)
 	{
+		/** 決定SEを鳴らす */
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		m_decisionSE = sound->PlayingSE(enDecisionSE, false);
+
 		/** ゲームを閉じる処理 */
 		PostQuitMessage(0);
 	}
