@@ -238,6 +238,7 @@
     <ClCompile Include="Key\KeyUI\KeyUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SAN\SANCalculation.cpp" />
+    <ClCompile Include="SAN\SANRedEffect.cpp" />
     <ClCompile Include="SAN\SANUI.cpp" />
     <ClCompile Include="SoundManager\SoundManager.cpp" />
     <ClCompile Include="Source\Actor\Actor.cpp" />
@@ -283,6 +284,7 @@
     <ClInclude Include="Key\Key.h" />
     <ClInclude Include="Key\KeyUI\KeyUI.h" />
     <ClInclude Include="SAN\SANCalculation.h" />
+    <ClInclude Include="SAN\SANRedEffect.h" />
     <ClInclude Include="SAN\SANUI.h" />
     <ClInclude Include="SoundManager\SoundManager.h" />
     <ClInclude Include="Source\Actor\Actor.h" />

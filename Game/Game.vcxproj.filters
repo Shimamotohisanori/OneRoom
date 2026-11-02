@@ -221,6 +221,9 @@
     <ClCompile Include="Source\Actor\Stage\LightObject\LightObject.cpp">
       <Filter>Source\Actor\Stage\LightObject</Filter>
     </ClCompile>
+    <ClCompile Include="SAN\SANRedEffect.cpp">
+      <Filter>SAN</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -337,6 +340,9 @@
     </ClInclude>
     <ClInclude Include="Key\KeyUI\KeyUI.h">
       <Filter>Key\KeyUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SAN\SANRedEffect.h">
+      <Filter>SAN</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

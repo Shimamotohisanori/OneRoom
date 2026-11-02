@@ -17,6 +17,7 @@
 #include "Source/Actor/Stage/Door/DarkRoomDoor/DarkRoomDoor.h"
 #include "Source/Actor/Stage/Door/GoalDoor/GoalDoor.h"
 #include "Source/Actor/Stage/LightObject/LightObject.h"
+#include "SAN/SANRedEffect.h"
 namespace
 {
 	/** ローディング画面のファイルパス */
@@ -135,6 +136,7 @@ namespace
 		enLoadStep_Phone,
 		enLoadStep_Door,
 		enLoadStep_LightObject,
+		enLoadStep_SANRedEffect,
 		enLoadStep_Game,
 	};
 }
@@ -304,6 +306,13 @@ void LoadingScene::LoadGame()
 				light->SetFlickerInterval(setting.flickerMin, setting.flickerMax);
 			}
 		}
+		break;
+	}
+
+	case enLoadStep_SANRedEffect:
+	{
+		/** SAN値が減ったときの赤いエフェクトの生成 */
+		NewGO<SANRedEffect>(0, "SANRedEffect");
 		break;
 	}
 
