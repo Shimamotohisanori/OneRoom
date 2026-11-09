@@ -13,6 +13,7 @@ class SANCalculation;
 class Player;
 class Pause;
 class GoalDoor;
+class GoalLight;
 class Game : public IGameObject
 {
 public:
@@ -59,5 +60,8 @@ private:
 
 	/** ゴールのドア */
 	GoalDoor* m_goalDoor = nullptr;
+
+	/** ゴールの光 */
+	GoalLight* m_goalLight = nullptr;
 };
 

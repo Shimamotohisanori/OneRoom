@@ -18,16 +18,36 @@
 #include "Source/Actor/Stage/Door/GoalDoor/GoalDoor.h"
 #include "Source/Actor/Stage/LightObject/LightObject.h"
 #include "SAN/SANRedEffect.h"
+#include "Source/Actor/Stage/GoalLight/GoalLight.h"
 namespace
 {
 	/** ローディング画面のファイルパス */
 	constexpr const char* LOADING_FILE_PATH = "Assets/sprite/Loading/Loading.dds";
+
+	/** スピナーの点の画像 */
+	constexpr const char* SPINNER_DOT_FILE_PATH = "Assets/sprite/Loading/Dot.dds";
 
 	/** ローディング画面の横幅 */
 	constexpr float LOADING_WIDTH = 1920.0f;
 
 	/** ローディング画面の縦幅 */
 	constexpr float LOADING_HEIGHT = 1080.0f;
+
+	/** スピナーの点の大きさ */
+	constexpr float SPINNER_DOT_SIZE = 32.0f;
+
+	/** スピナーの半径 */
+	constexpr float SPINNER_RADIUS = 56.0f;
+
+	/** 先頭が次の点へ進む間隔(秒) */
+	constexpr float SPINNER_STEP_TIME = 0.08f;
+
+	/** 先頭の点の明るさと、一番後ろの点の明るさ */
+	constexpr float SPINNER_BRIGHT = 1.0f;
+	constexpr float SPINNER_DARK = 0.1f;
+
+	/** 2π */
+	constexpr float PI_2 = 6.2831853f;
 
 	/** 空の大きさ */
 	constexpr float SKY_CUBE_SIZE = 10000.0f;
@@ -60,6 +80,9 @@ namespace
 		Vector3(900.0f, -10.0f, 390.0f),
 		Vector3(1200.0f,-90.0f, 600.0f),
 	};
+
+	/** スピナーの中心位置 */
+	const Vector3 SPINNER_CENTER = { 820.0f, -400.0f, 0.0f };
 
 	/** 受話器の向き(ステージに合わせて調整) */
 	const Vector3 PHONE_ROTATIONS[PHONE_COUNT] =
@@ -136,6 +159,7 @@ namespace
 		enLoadStep_Phone,
 		enLoadStep_Door,
 		enLoadStep_LightObject,
+		enLoadStep_GoalLight,
 		enLoadStep_SANRedEffect,
 		enLoadStep_Game,
 	};
@@ -150,12 +174,24 @@ bool LoadingScene::Start()
 	m_loadingSprite.SetPosition(Vector3::Zero);
 	m_loadingProgress = LOADING_PROGRESS_INITIAL;
 
+	/** スピナーの点を円形に並べる(真上から時計回りに配置) */
+	for (int i = 0; i < SPINNER_DOT_NUM; i++)
+	{
+		const float angle = PI_2 * i / SPINNER_DOT_NUM;
+		m_spinnerDot[i].Init(SPINNER_DOT_FILE_PATH, SPINNER_DOT_SIZE, SPINNER_DOT_SIZE);
+		m_spinnerDot[i].SetPosition({
+			SPINNER_CENTER.x + SPINNER_RADIUS * sinf(angle),
+			SPINNER_CENTER.y + SPINNER_RADIUS * cosf(angle),
+			0.0f });
+		m_spinnerDot[i].Update();
+	}
 	return true;
 }
 
 void LoadingScene::Update()
 {
 	m_loadingSprite.Update();
+	UpdateSpinner();
 
 	/** ゲームをロードする */
 	LoadGame();
@@ -164,6 +200,11 @@ void LoadingScene::Update()
 void LoadingScene::Render(RenderContext& rc)
 {
 	m_loadingSprite.Draw(rc);
+
+	for (int i = 0; i < SPINNER_DOT_NUM; i++)
+	{
+		m_spinnerDot[i].Draw(rc);
+	}
 }
 
 void LoadingScene::LoadGame()
@@ -309,6 +350,14 @@ void LoadingScene::LoadGame()
 		break;
 	}
 
+	case enLoadStep_GoalLight:
+	{
+		GoalLight* goalLight = NewGO<GoalLight>(0, "GoalLight");
+		goalLight->SetLight(Vector3(0.0f, -100.0f, 1550.0f), Vector3(200.0f, 200.0f, 200.0f));
+		goalLight->SetLightScale(Vector3(1.5f, 2.0f, 1.0f));
+		break;
+	}
+
 	case enLoadStep_SANRedEffect:
 	{
 		/** SAN値が減ったときの赤いエフェクトの生成 */
@@ -329,4 +378,26 @@ void LoadingScene::LoadGame()
 
 	/** ローディングの進捗状況を更新 */
 	m_loadingProgress++;
+}
+
+void LoadingScene::UpdateSpinner()
+{
+	/** 一定間隔で先頭の点を時計回りに進める */
+	m_spinnerTimer += g_gameTime->GetFrameDeltaTime();
+	while (m_spinnerTimer >= SPINNER_STEP_TIME)
+	{
+		m_spinnerTimer -= SPINNER_STEP_TIME;
+		m_spinnerHead = (m_spinnerHead + 1) % SPINNER_DOT_NUM;
+	}
+
+	/** 先頭からどれだけ後ろにあるかで明るさを決める */
+	for (int i = 0; i < SPINNER_DOT_NUM; i++)
+	{
+		const int behind = (m_spinnerHead - i + SPINNER_DOT_NUM) % SPINNER_DOT_NUM;
+		const float t = static_cast<float>(behind) / (SPINNER_DOT_NUM - 1);
+		const float v = SPINNER_BRIGHT + (SPINNER_DARK - SPINNER_BRIGHT) * t;
+
+		m_spinnerDot[i].SetMulColor(Vector4(v, v, v, 1.0f));
+		m_spinnerDot[i].Update();
+	}
 }

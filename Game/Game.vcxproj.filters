@@ -103,6 +103,9 @@
     <Filter Include="Source\Actor\Stage\LightObject">
       <UniqueIdentifier>{0147b312-beeb-4127-b86b-3fdc32877d04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Actor\Stage\GoalLight">
+      <UniqueIdentifier>{5c7ac938-9302-448d-a7a3-916e29dded24}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -224,6 +227,9 @@
     <ClCompile Include="SAN\SANRedEffect.cpp">
       <Filter>SAN</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Actor\Stage\GoalLight\GoalLight.cpp">
+      <Filter>Source\Actor\Stage\GoalLight</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -343,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="SAN\SANRedEffect.h">
       <Filter>SAN</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Stage\GoalLight\GoalLight.h">
+      <Filter>Source\Actor\Stage\GoalLight</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

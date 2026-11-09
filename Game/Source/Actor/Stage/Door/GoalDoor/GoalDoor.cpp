@@ -3,6 +3,7 @@
 #include "Source/Actor/Player/Player.h"
 #include "Key/Key.h"
 #include "SoundManager/SoundManager.h"
+#include "Source/Actor/Stage/GoalLight/GoalLight.h"
 namespace
 {
 	/** ゴールののドアのモデルのパス */
@@ -86,6 +87,12 @@ void GoalDoor::Update()
 
 				/** プレイヤーが開ける操作をしたら開く */
 				m_isOpenRequested = true;
+
+				/** ゴールの光を見えるようにする */
+				GoalLight* goalLight = FindGO<GoalLight>("GoalLight");
+				if (goalLight != nullptr) {
+					goalLight->Show();
+				}
 			}
 		}
 		else

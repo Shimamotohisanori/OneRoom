@@ -11,6 +11,8 @@
 #include "SoundManager/SoundManager.h"
 #include "Pause.h"
 #include "Source/Actor/Stage/Door/GoalDoor/GoalDoor.h"
+#include "Source/Actor/Stage/GoalLight/GoalLight.h"
+
 namespace
 {
 	/** ゲームクリアになる場所 */
@@ -64,6 +66,9 @@ bool Game::Start()
 	/** ゴールのドアの取得 */
 	m_goalDoor = FindGO<GoalDoor>("GoalDoor");
 
+	/** ゴールの光の取得 */
+	m_goalLight = FindGO<GoalLight>("GoalLight");
+
 	/** ゲーム中BGMの再生 */
 	SoundManager* sound = FindGO<SoundManager>("soundManager");
 	m_gameBGM = sound->PlayingBGM(enGame, true);
@@ -104,16 +109,16 @@ bool Game::Clear()
 		return false;
 	}
 
-	/** 鍵を三つ持った状態で特定の場所に到達した場合、ゲームクリア処理を行う */
-	if (m_key->GetKeyCount() >= KEY_COUNT &&
-		m_player->GetPosition().z >= CLEAR_POSITION_Z)
+	/** ゴールの光がクリア状態になるまではクリアにしない */
+	if (m_goalLight == nullptr || !m_goalLight->IsCleared())
 	{
-		NewGO<GameClear>(0,"GameClear");
-		DeleteGO(this);
-		return true;
+		return false;
 	}
 
-	return false;
+	/** 鍵を三つ持った状態で扉を開け、光がクリア状態になる場合、ゲームクリア処理を行う */
+	NewGO<GameClear>(0,"GameClear");
+	DeleteGO(this);
+	return true;
 }
 
 void Game::GamePause()

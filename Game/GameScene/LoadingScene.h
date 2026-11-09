@@ -21,6 +21,10 @@ public:
 	void LoadGame();
 
 private:
+	/** スピナーの更新 */
+	void UpdateSpinner();
+
+private:
 	/** ローディングスプライト */
 	SpriteRender m_loadingSprite;
 
@@ -38,5 +42,17 @@ private:
 
 	/** スカイキューブ */
 	SkyCube* m_skyCube;
+
+	/** スピナーの点の数 */
+	static const int SPINNER_DOT_NUM = 12;
+
+	/** スピナーの点 */
+	SpriteRender m_spinnerDot[SPINNER_DOT_NUM];
+
+	/** 先頭の点を進めるためのタイマー */
+	float m_spinnerTimer = 0.0f;
+
+	/** 先頭(一番明るい)の点の番号 */
+	int m_spinnerHead = 0;
 };
 
