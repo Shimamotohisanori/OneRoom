@@ -43,6 +43,7 @@ namespace
 		"Phone_Enter_SE",
 		"DoorOpenSE",
 		"DecisionSE",
+		"HeartSE"
 	};
 }
 

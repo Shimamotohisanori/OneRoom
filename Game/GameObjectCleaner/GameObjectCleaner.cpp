@@ -19,6 +19,8 @@
 #include "Source/Actor/Stage/Door/HandSetRoomDoor/HandSetRoomDoor.h"
 #include "Source/Actor/Stage/Door/GoalDoor/GoalDoor.h"
 #include "Source/Actor/Stage/LightObject/LightObject.h"
+#include "Source/Actor/Stage/GoalLight/GoalLight.h"
+#include "SAN/SANRedEffect.h"
 
 void GameObjectCleaner::DeleteAllGameObjects()
 {
@@ -55,6 +57,12 @@ void GameObjectCleaner::DeleteAllGameObjects()
 			DeleteGO(light);
 			return true;
 		});
+
+	/** ゴールの光を削除 */
+	DeleteGO(FindGO<GoalLight>("GoalLight"));
+
+	/** SAN赤エフェクトを削除 */
+	DeleteGO(FindGO<SANRedEffect>("SANRedEffect"));
 }
 
 bool GameObjectCleaner::DeleteGameObjectsStep(int step)

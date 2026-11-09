@@ -32,6 +32,7 @@ enum SoundSE
 	enPhone_Enter_SE,
 	enDoorOpenSE,
 	enDecisionSE,
+	enHeartSE,
 	enSENum
 };
 

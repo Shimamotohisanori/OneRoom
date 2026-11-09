@@ -2,6 +2,7 @@
 #include "SANRedEffect.h"
 #include "SANCalculation.h"
 #include <cmath>
+#include "SoundManager/SoundManager.h"
 
 namespace
 {
@@ -12,7 +13,7 @@ namespace
 	/** このSAN値以下から赤くなり始める */
 	constexpr float EFFECT_START_SAN = 60.0f;
 
-	/** SAN値0のときの最大の濃さ(0.0~1.0)。「程よく」はここで調整 */
+	/** SAN値0のときの最大の濃さ(0.0~1.0)。 */
 	constexpr float MAX_ALPHA = 1.0f;
 
 	/** 濃さの立ち上がり方(1より大きいほど、低SANまで薄いまま) */
@@ -22,8 +23,22 @@ namespace
 	constexpr float PULSE_SPEED_MIN = 3.0f;   // rate=0 のとき
 	constexpr float PULSE_SPEED_MAX = 10.0f;  // rate=1 のとき
 
+	/** 心臓音のピッチ(周波数比)。1.0が元の音 */
+	constexpr float HEART_PITCH_MIN = 1.0f;   // rate=0 のとき
+	constexpr float HEART_PITCH_MAX = 1.5f;   // rate=1 のとき
+
 	/** 脈動の速さをSAN値に応じて変える */
 	constexpr float PULSE_AMOUNT = 0.3f;
+}
+
+SANRedEffect::~SANRedEffect()
+{
+	/** 心臓音が鳴っていたら止める */
+	if (m_heartSound != nullptr)
+	{
+		DeleteGO(m_heartSound);
+		m_heartSound = nullptr;
+	}
 }
 
 bool SANRedEffect::Start()
@@ -52,6 +67,29 @@ void SANRedEffect::Update()
 
 	/** 脈動の大きさをSAN値に応じて変える */
 	float pulse = 1.0f + sinf(m_pulsePhase) * PULSE_AMOUNT * rate;
+	
+	/** SAN値が下がり始めたら心臓音を鳴らし、回復したら止める */
+	SoundManager* sound = FindGO<SoundManager>("soundManager");
+	if (rate > 0.0f)
+	{
+		if (m_heartSound == nullptr && sound != nullptr)
+		{
+			m_heartSound = sound->PlayingSE(enHeartSE, true);
+		}
+
+		/** 心臓の速さ(rate)に応じてピッチを変える */
+		if (m_heartSound != nullptr)
+		{
+			const float pitch = HEART_PITCH_MIN + (HEART_PITCH_MAX - HEART_PITCH_MIN) * rate;
+			m_heartSound->SetFrequencyRatio(pitch);
+		}
+	}
+	/** SAN値が回復したら心臓音を止める */
+	else if (m_heartSound != nullptr)
+	{
+		DeleteGO(m_heartSound);
+		m_heartSound = nullptr;
+	}
 
 	/** 赤いエフェクトの濃さを設定 */
 	float alpha = min(MAX_ALPHA * rate * pulse, 1.0f);

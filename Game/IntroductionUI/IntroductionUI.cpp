@@ -4,16 +4,16 @@
 namespace
 {
 	/** 操作紹介UIスプライトのファイルパス */
-	const char* INTRODUCTION_UI_SPRITE_FILE_PATH = "Assets/sprite/Introduction/Introduction.dds";
+	const char* INTRODUCTION_UI_SPRITE_FILE_PATH = "Assets/sprite/Introduction/Control.dds";
 
 	/** 操作紹介UIスプライトの横幅 */
-	constexpr float INTRODUCTION_UI_SPRITE_WIDTH = 500.0f;
+	constexpr float INTRODUCTION_UI_SPRITE_WIDTH = 380.0f;
 
 	/** 操作紹介UIスプライトの縦幅 */
-	constexpr float INTRODUCTION_UI_SPRITE_HEIGHT = 500.0f;
+	constexpr float INTRODUCTION_UI_SPRITE_HEIGHT = 400.0f;
 
 	/** 操作紹介UIの座標 */
-	const Vector3 INTRODUCTION_UI_POSITION = Vector3(750.0f, -400.0f, 0.0f);
+	const Vector3 INTRODUCTION_UI_POSITION = Vector3(770.0f, -400.0f, 0.0f);
 }
 
 IntroductionUI::IntroductionUI()

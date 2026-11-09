@@ -4,7 +4,7 @@
 namespace
 {
 	/** キーの初期数 */
-	constexpr int INITIAL_KEY_COUNT = 0;
+	constexpr int INITIAL_KEY_COUNT = 3;
 }
 
 Key::Key()
