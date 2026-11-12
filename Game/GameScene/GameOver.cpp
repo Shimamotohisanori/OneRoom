@@ -4,6 +4,7 @@
 #include "LoadingScene.h"
 #include "GameObjectCleaner/GameObjectCleaner.h"
 #include "SoundManager/SoundManager.h"
+#include "Fade.h"
 namespace
 {
 	/** ゲームオーバー画面のファイルパス */
@@ -61,11 +62,20 @@ bool GameOver::Start()
 	m_exitFont.SetText(L"ゲームを閉じる");
 	m_exitFont.SetPosition(EXIT_FONT_POSITION);
 
+	/** 黒い画面から、ゲームオーバー画面を見せていく */
+	FindGO<Fade>("Fade")->StartFadeIn(3.0f);
+
 	return true;
 }
 
 void GameOver::Update()
 {
+	/** フェード中は入力を受け付けない */
+	if (FindGO<Fade>("Fade")->IsBusy())
+	{
+		m_gameOverSprite.Update();
+		return;
+	}
 
 	/** リトライ決定後は、SEの再生が終わるのを待つ */
 	if (m_isRetrying)
@@ -125,8 +135,6 @@ void GameOver::HandleInput()
 
 	case enGameOverBackTitle:
 	{
-		/** タイトル画面に戻る */
-		NewGO<Title>(0, "title");
 		DeleteGO(m_gameOverBGM);
 		m_gameOverBGM = nullptr;
 
@@ -137,8 +145,11 @@ void GameOver::HandleInput()
 		/** このフレームの以降のUpdate処理を止める */
 		m_isClosing = true;
 
-		DeleteGO(this);
-
+		FindGO<Fade>("Fade")->StartTransition(Vector3(0.0f, 0.0f, 0.0f), 0.5f, 0.5f, [this]()
+			{
+				NewGO<Title>(0, "title");
+				DeleteGO(this);
+			});
 		break;
 	}
 	case enGameOverExit:
@@ -189,7 +200,13 @@ void GameOver::UpdateRetryWait()
 		return;
 	}
 
-	/** 再生が終わったので、ローディング画面に遷移してゲームをやり直す */
-	NewGO<LoadingScene>(0, "loading");
-	DeleteGO(this);
+	/** すでに暗転が始まっていたら、何もしない(毎フレーム呼ばれるため) */
+	Fade* fade = FindGO<Fade>("Fade");
+	if (fade->IsBusy()) { return; }
+
+	fade->StartTransition(Vector3(0.0f, 0.0f, 0.0f), 0.5f, 0.5f, [this]()
+		{
+			NewGO<LoadingScene>(0, "loading");
+			DeleteGO(this);
+		});
 }

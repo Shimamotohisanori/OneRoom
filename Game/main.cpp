@@ -6,6 +6,7 @@
 
 #include "GameScene/Title.h"
 #include "SoundManager/SoundManager.h"
+#include "GameScene/Fade.h"
 
 void ReportLiveObjects()
 {
@@ -37,6 +38,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	//Titleクラスのオブジェクトを作成。
 	NewGO<Title>(0, "title");
+
+	//Fadeクラスのオブジェクトを作成。
+	NewGO<Fade>(1, "Fade");
 
 	//////////////////////////////////////
 	// 初期化を行うコードを書くのはここまで！！！

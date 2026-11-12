@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SANCalculation.h"
 #include "Source/Actor/Stage/LightObject/LightObject.h"
+#include "GameScene/Pause.h"
 #include <cstdio>
 
 namespace
@@ -66,6 +67,17 @@ bool SANCalculation::Start()
 
 void SANCalculation::Update()
 {
+	if (m_pause == nullptr) {
+		m_pause = FindGO<Pause>("Pause");
+		return;
+	}
+
+	if (m_pause->GetIsPaused())
+	{
+		/** ポーズ中はSAN値の計算を止める */
+		return;
+	}
+
 	/** SAN値を計算する */
 	CalculateSAN();
 }

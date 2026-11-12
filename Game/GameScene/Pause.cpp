@@ -6,6 +6,7 @@
 #include "GameObjectCleaner/GameObjectCleaner.h"
 #include "Game.h"
 #include "SoundManager/SoundManager.h"
+#include "Fade.h"
 namespace
 {
 	/** 一時停止画面のファイルパス */
@@ -72,6 +73,13 @@ void Pause::Update()
 		return;
 	}
 
+	/** フェード中は入力を受け付けない */
+	if (FindGO<Fade>("Fade")->IsBusy())
+	{
+		m_pauseSprite.Update();
+		return;
+	}
+
 	/** 音量調節画面が開いている間は操作を受け付けない */
 	if (VolumeAdjustment::IsOpen())
 	{
@@ -100,7 +108,6 @@ void Pause::Render(RenderContext& rc)
 	if (VolumeAdjustment::IsOpen())
 	{
 		return;
-	
 	}
 	m_resumeFont.Draw(rc);
 	m_titleFont.Draw(rc);
@@ -118,23 +125,46 @@ void Pause::HandleInput()
 	switch (m_selectedFontIndex)
 	{
 	case PauseState::PauseResume:
-		/** ゲームに戻る処理 */
-		m_isPaused = false;
-		/** プレイヤーの操作を有効化 */
-		m_player->SetInputEnabled(true);
+	{
+		/** 決定音を再生 */
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		sound->PlayingSE(enDecisionSE, false);
+		
+		/** 暗転して、真っ暗になった瞬間にポーズを解除し、明転する */
+		FindGO<Fade>("Fade")->StartTransition(Vector3(0.0f, 0.0f, 0.0f), 0.3f, 0.3f, [this]()
+			{
+				m_isPaused = false;
+				m_player->SetInputEnabled(true);
+			});
 		break;
+	}
 
 	case PauseState::PauseTitle:
-		/** タイトルに戻る処理 */
-		GameObjectCleaner::DeleteAllGameObjects();
-		DeleteGO(FindGO<Game>("Game"));
-		NewGO<Title>(0, "title");
+	{
+		/** 決定音を再生 */
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		sound->PlayingSE(enDecisionSE, false);
+
+		/** キャプチャなしのラムダ。PauseはGameと一緒に削除されるため、thisを使わない */
+		FindGO<Fade>("Fade")->StartTransition(Vector3(0.0f, 0.0f, 0.0f), 0.5f, 0.5f, []()
+			{
+				GameObjectCleaner::DeleteAllGameObjects();
+				DeleteGO(FindGO<Game>("Game"));
+				NewGO<Title>(0, "title");
+			});
 		break;
+	}
 
 	case PauseState::PauseVolume:
+	{
+		/** 決定音を再生 */
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		sound->PlayingSE(enDecisionSE, false);
+
 		/** 音量調節画面に遷移する処理 */
 		VolumeAdjustment::Open();
 		break;
+	}
 
 	case PauseState::PauseExit:
 		/** ゲームを閉じる処理 */

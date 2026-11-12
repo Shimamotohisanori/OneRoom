@@ -121,6 +121,11 @@ void VolumeAdjustment::Update()
 	/** 閉じる */
 	if (g_pad[0]->IsTrigger(enButtonB))
 	{
+		/** 閉じる時のSEを再生 */
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		m_selectionSE = sound->PlayingSE(enDecisionSE, false);
+
+		/** 開いているフラグを降ろす */
 		m_isOpen = false;
 		DeleteGO(this);
 	}

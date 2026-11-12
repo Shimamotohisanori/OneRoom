@@ -38,8 +38,7 @@ public:
 	/** クリアしたかどうか(Gameクラスが、クリア画面へ切り替える判断に使う) */
 	bool IsCleared() const
 	{
-		return m_state == EnGoalLightState::enGoalLightState_Cleared
-			&& m_clearedTimer >= 0.5f;
+		return m_state == EnGoalLightState::enGoalLightState_Cleared;
 	}
 
 private:
@@ -65,9 +64,6 @@ private:
 	/** 光る板の拡大率 */
 	Vector3 m_lightScale = Vector3(1.0f, 1.0f, 1.0f);
 
-	/** 画面全体を覆う白い画像 */
-	SpriteRender m_whiteSprite;
-
 	/** 光る箱の中心と、大きさ(半分の長さ) */
 	Vector3 m_lightPosition = Vector3::Zero;
 	Vector3 m_lightHalfSize = Vector3::Zero;
@@ -76,9 +72,6 @@ private:
 
 	/** 白の濃さ(0.0〜1.0) */
 	float m_whiteAlpha = 0.0f;
-
-	/** ホワイトアウトの速さ(1秒で1.0になる) */
-	float m_clearedTimer = 0.0f;
 
 	/** 光る板の枚数(前・左・右・上) */
 	static const int LIGHT_MODEL_NUM = 4;

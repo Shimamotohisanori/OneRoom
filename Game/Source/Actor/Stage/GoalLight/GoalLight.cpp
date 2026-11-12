@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "GoalLight.h"
 #include "Source/Actor/Player/Player.h"
-
+#include "GameScene/Fade.h"
+#include "SoundManager/SoundManager.h";
 namespace
 {
 	constexpr float WHITEOUT_SPEED = 0.8f;
@@ -73,6 +74,7 @@ GoalLight::GoalLight()
 
 GoalLight::~GoalLight()
 {
+	
 	for (int i = 0; i < LIGHT_MODEL_NUM; i++) {
 		m_spotLight[i].SetColor(g_vec3Zero);
 		m_spotLight[i].SetColor2(g_vec3Zero);
@@ -115,12 +117,6 @@ bool GoalLight::Start()
 		m_lightModel[i].SetScale(m_lightScale);
 		m_lightModel[i].Update();
 	}
-
-	/** 真っ白な画像(画面全体のサイズ) */
-	m_whiteSprite.Init("Assets/sprite/White/White.dds", 1920.0f, 1080.0f);
-	m_whiteSprite.SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-	m_whiteSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, 0.0f));
-	m_whiteSprite.Update();
 
 	/** スポットライトを初期化。最初は消灯 */
 	const float angleRad = Math::DegToRad(SPOT_ANGLE_DEG);
@@ -182,8 +178,13 @@ void GoalLight::Update()
 			m_lightModel[i].Update();
 		}
 		if (IsPlayerInLight()) {
-			/** プレイヤーが光る箱の中に入った → ホワイトアウト開始 */
 			m_player->SetInputEnabled(false);
+
+			SoundManager* sound = FindGO<SoundManager>("soundManager");
+			sound->PlayingSE(enGoalSE, false);
+
+			/** 白で覆い始める。画像と透明度の管理は、Fadeに任せる */
+			FindGO<Fade>("Fade")->StartFadeOut(Vector3(1.0f, 1.0f, 1.0f), 3.0f);
 			m_state = EnGoalLightState::enGoalLightState_WhiteOut;
 		}
 		break;
@@ -192,17 +193,14 @@ void GoalLight::Update()
 		for (int i = 0; i < LIGHT_MODEL_NUM; i++) {
 			m_lightModel[i].Update();
 		}
-		m_whiteAlpha += WHITEOUT_SPEED * g_gameTime->GetFrameDeltaTime();
-		if (m_whiteAlpha >= 1.0f) {
-			m_whiteAlpha = 1.0f;
+
+		/** 完全に白くなったら、クリア状態にする */
+		if (FindGO<Fade>("Fade")->IsFullyCovered()) {
 			m_state = EnGoalLightState::enGoalLightState_Cleared;
 		}
-		m_whiteSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_whiteAlpha));
-		m_whiteSprite.Update();
 		break;
 
 	case EnGoalLightState::enGoalLightState_Cleared:
-		m_clearedTimer += g_gameTime->GetFrameDeltaTime();
 		break;
 	}
 }
@@ -214,11 +212,5 @@ void GoalLight::Render(RenderContext& rc)
 		for (int i = 0; i < LIGHT_MODEL_NUM; i++) {
 			m_lightModel[i].Draw(rc);
 		}
-	}
-
-	/** 白い画像は、ホワイトアウト中とクリア後だけ描く */
-	if (m_state == EnGoalLightState::enGoalLightState_WhiteOut
-		|| m_state == EnGoalLightState::enGoalLightState_Cleared) {
-		m_whiteSprite.Draw(rc);
 	}
 }

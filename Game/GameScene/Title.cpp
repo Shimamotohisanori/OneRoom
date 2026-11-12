@@ -3,6 +3,7 @@
 #include "LoadingScene.h"
 #include "SoundManager/SoundManager.h"
 #include "VolumeAdjustment/VolumeAdjustment.h"
+#include "Fade.h"
 namespace
 {
 	/** タイトル画面のファイルパス */
@@ -66,7 +67,13 @@ bool Title::Start()
 
 void Title::Update()
 {
-	
+	/** フェード中は入力を受け付けない */
+	if (FindGO<Fade>("Fade")->IsBusy())
+	{
+		m_titleSprite.Update();
+		return;
+	}
+
 	/** 音量調節画面が開いている間は操作を受け付けない */
 	if (VolumeAdjustment::IsOpen())
 	{
@@ -201,7 +208,14 @@ void Title::UpdateStartWait()
 		return;
 	}
 
-	/** 再生が終わったので、ローディング画面に遷移する */
-	NewGO<LoadingScene>(0, "loading");
-	DeleteGO(this);
+	/** すでに暗転が始まっていたら何もしない(毎フレーム呼ばれるため) */
+	Fade* fade = FindGO<Fade>("Fade");
+	if (fade->IsBusy()) { return; }
+
+	/** 暗転して、真っ暗になった瞬間にロード画面へ切り替え、明転する */
+	fade->StartTransition(Vector3(0.0f, 0.0f, 0.0f), 0.5f, 0.5f, [this]()
+		{
+			NewGO<LoadingScene>(0, "loading");
+			DeleteGO(this);
+		});
 }
