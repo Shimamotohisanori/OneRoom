@@ -6,6 +6,7 @@
  *  - 明るい場所にいると回復、真っ暗な場所に一定時間いると減少
  *  - 音が鳴ると一定量減少(OnNoiseHeard を呼ぶ)
  */
+class Pause;
 class SANCalculation : public IGameObject
 {
 public:
@@ -78,4 +79,7 @@ private:
 
 	/** デバッグ出力用タイマー */
 	float m_debugTimer = 0.0f;
+
+	/** ポーズ画面の参照 */
+	Pause* m_pause = nullptr;
 };

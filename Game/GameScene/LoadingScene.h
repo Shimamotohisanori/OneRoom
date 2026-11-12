@@ -43,6 +43,9 @@ private:
 	/** スカイキューブ */
 	SkyCube* m_skyCube;
 
+	/** ゲーム */
+	Game* m_game = nullptr;
+
 	/** スピナーの点の数 */
 	static const int SPINNER_DOT_NUM = 12;
 
@@ -54,5 +57,14 @@ private:
 
 	/** 先頭(一番明るい)の点の番号 */
 	int m_spinnerHead = 0;
+
+	/** ライトのインデックス */
+	int m_lightIndex = 0;
+
+	/** 電話のインデックス */
+	int m_phoneIndex = 0;
+
+	/** ドアのインデックス */
+	int m_doorIndex = 0;
 };
 

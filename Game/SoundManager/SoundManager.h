@@ -33,6 +33,7 @@ enum SoundSE
 	enDoorOpenSE,
 	enDecisionSE,
 	enHeartSE,
+	enGoalSE,
 	enSENum
 };
 

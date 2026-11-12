@@ -19,6 +19,7 @@
 #include "Source/Actor/Stage/LightObject/LightObject.h"
 #include "SAN/SANRedEffect.h"
 #include "Source/Actor/Stage/GoalLight/GoalLight.h"
+#include "Fade.h"
 namespace
 {
 	/** ローディング画面のファイルパス */
@@ -66,6 +67,9 @@ namespace
 
 	/** 光の色 */
 	const Vector3 LIGHT_COLOR = { 0.001f, 0.001f, 0.001f };
+
+	/** ドアの数 */
+	constexpr int DOOR_COUNT = 4;
 
 	/** 受話器の数 */
 	constexpr int PHONE_COUNT = 3;
@@ -162,6 +166,10 @@ namespace
 		enLoadStep_GoalLight,
 		enLoadStep_SANRedEffect,
 		enLoadStep_Game,
+		enLoadStep_WaitGame,
+		enLoadStep_FadeOutStart,
+		enLoadStep_FadeOutWait,
+		enLoadStep_Finish,
 	};
 }
 
@@ -300,26 +308,31 @@ void LoadingScene::LoadGame()
 	case enLoadStep_Phone:
 	{
 		/** 電話の生成(複数作る) */
-		for (int i = 0; i < PHONE_COUNT; i++)
-		{
-			Phone* phone = NewGO<Phone>(0, "Phone");
-			phone->SetPosition(PHONE_POSITIONS[i]);
+		Phone* phone = NewGO<Phone>(0, "Phone");
+		phone->SetPosition(PHONE_POSITIONS[m_phoneIndex]);
+		phone->SetRotation(PHONE_ROTATIONS[m_phoneIndex]);
+		phone->SetIsCorrectPhone(m_phoneIndex == CORRECT_PHONE_INDEX);
 
-			phone->SetRotation(PHONE_ROTATIONS[i]);
-
-			/** 正解の番号と同じときだけ、正解の受話器にする */
-			phone->SetIsCorrectPhone(i == CORRECT_PHONE_INDEX);
-		}
+		/** 全部作り終わるまで、同じステップに留まる */
+		m_phoneIndex++;
+		if (m_phoneIndex < PHONE_COUNT) { return; }
 		break;
 	}
 
 	case enLoadStep_Door:
 	{
 		/** ドアの生成 */
-		NewGO<PlateRoomDoor>(0, "PlateRoomDoor");
-		NewGO<HandSetRoomDoor>(0, "HandSetRoomDoor");
-		NewGO<DarkRoomDoor>(0, "DarkRoomDoor");
-		NewGO<GoalDoor>(0, "GoalDoor");
+		switch (m_doorIndex)
+		{
+		case 0: NewGO<PlateRoomDoor>(0, "PlateRoomDoor"); break;
+		case 1: NewGO<HandSetRoomDoor>(0, "HandSetRoomDoor"); break;
+		case 2: NewGO<DarkRoomDoor>(0, "DarkRoomDoor"); break;
+		case 3: NewGO<GoalDoor>(0, "GoalDoor"); break;
+		}
+
+		m_doorIndex++;
+		if (m_doorIndex < DOOR_COUNT) { return; }
+		break;
 		break;
 	}
 
@@ -327,26 +340,32 @@ void LoadingScene::LoadGame()
 	{
 		/** 天井のライトを一覧の設定どおりに生成する */
 		/** 設定したライトの数分だけ生成する */
-		for (const CeilingLightSetting& setting : CEILING_LIGHT_SETTINGS)
-		{
-			auto* light = NewGO<LightObject>(0, "LightObject");
-			light->SetLightType(setting.type);
-			light->SetLightPosition({ setting.x, CEILING_LIGHT_HEIGHT, setting.z });
 
-			/** 光を出さないライトは、位置以外の設定が要らない */
-			if (setting.type == LightObject::enLightType_ModelOnly) {
-				continue;
-			}
+		/** ライトの数 */
+		const int lightNum = sizeof(CEILING_LIGHT_SETTINGS) / sizeof(CEILING_LIGHT_SETTINGS[0]);
 
+		/** ライトの設定 */
+		const CeilingLightSetting& setting = CEILING_LIGHT_SETTINGS[m_lightIndex];
+
+		/** ライトの生成 */
+		auto* light = NewGO<LightObject>(0, "LightObject");
+		
+		/** ライトの種類と位置を設定 */
+		light->SetLightType(setting.type);
+		light->SetLightPosition({ setting.x, CEILING_LIGHT_HEIGHT, setting.z });
+
+		if (setting.type != LightObject::enLightType_ModelOnly) {
 			light->SetLightColor(CEILING_LIGHT_COLOR);
 			light->SetLightRange(CEILING_LIGHT_RANGE);
 			light->SetLightAngle(CEILING_LIGHT_ANGLE);
-
-			/** 点滅するライトだけ、点滅の間隔を設定する */
 			if (setting.type == LightObject::enLightType_Flicker) {
 				light->SetFlickerInterval(setting.flickerMin, setting.flickerMax);
 			}
 		}
+
+		/** 全部作り終わるまで、同じステップに留まる */
+		m_lightIndex++;
+		if (m_lightIndex < lightNum) { return; }
 		break;
 	}
 
@@ -368,12 +387,39 @@ void LoadingScene::LoadGame()
 	case enLoadStep_Game:
 
 		/** ゲームの生成 */
-		NewGO<Game>(0, "Game");
+		m_game = NewGO<Game>(0, "Game");
 
-		/** ローディング完了 */
+		break;
+
+	case enLoadStep_WaitGame:
+		/** ゲームの準備が出来るまで、次のステップには進まない */
+		if (!m_game->IsReady()) { return; }
+		break;
+
+	case enLoadStep_FadeOutStart:
+	{
+		/** フェードアウトを開始する(黒い画面に変化) */
+		Fade* fade = FindGO<Fade>("Fade");
+		fade->StartFadeOut(Vector3(0.0f, 0.0f, 0.0f), 0.3f);
+		break;
+	}
+
+	case enLoadStep_FadeOutWait:
+	{
+		/** フェードアウトが終わるまで、次のステップには進まない */
+		Fade* fade = FindGO<Fade>("Fade");
+		if (!fade->IsFullyCovered()) { return; }
+		break;
+
+	}
+
+	case enLoadStep_Finish:
+	{
+		/** フェードインを開始する(黒い画面から元の画面に変化) */
+		FindGO<Fade>("Fade")->StartFadeIn(1.0f);
 		DeleteGO(this);
 		return;
-		break;
+	}
 	}
 
 	/** ローディングの進捗状況を更新 */

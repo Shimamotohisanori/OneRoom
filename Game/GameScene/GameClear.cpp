@@ -4,6 +4,7 @@
 #include "LoadingScene.h"
 #include "GameObjectCleaner/GameObjectCleaner.h"
 #include "SoundManager/SoundManager.h"
+#include "Fade.h"
 namespace
 {
 	/** ゲームクリア画面のファイルパス */
@@ -73,11 +74,19 @@ bool GameClear::Start()
 	m_exitFont.SetText(L"ゲームを閉じる");
 	m_exitFont.SetPosition(EXIT_FONT_POSITION);
 
+	/** 白い画面から、クリア画面を見せていく */
+	FindGO<Fade>("Fade")->StartFadeIn(3.0f);
 	return true;
 }
 
 void GameClear::Update()
 {
+	/** フェード中は入力を受け付けない */
+	if (FindGO<Fade>("Fade")->IsBusy())
+	{
+		m_clearSprite.Update();
+		return;
+	}
 
 	/** リトライ決定後は、SEの再生が終わるのを待つ */
 	if (m_isRetrying)
@@ -136,16 +145,21 @@ void GameClear::HandleInput()
 	}
 	case enGameClearBackTitle:
 	{
-		/** タイトル画面に戻る */
-		NewGO<Title>(0, "title");
 		DeleteGO(m_clearBGM);
 		m_clearBGM = nullptr;
 
 		SoundManager* sound = FindGO<SoundManager>("soundManager");
 		m_decideSE = sound->PlayingSE(enDecisionSE, false);
 
-		DeleteGO(this);
+		/** 暗転中に、毎フレーム入力処理が走らないようにする */
 		m_isClosing = true;
+
+		FindGO<Fade>("Fade")->StartTransition(Vector3(0.0f, 0.0f, 0.0f), 0.5f, 0.5f, [this]()
+			{
+				NewGO<Title>(0, "title");
+				DeleteGO(this);
+			});
+
 		break;
 	}
 	case enGameClearExit:
@@ -191,13 +205,18 @@ void GameClear::HandleSelection()
 
 void GameClear::UpdateRetryWait()
 {
-	/** SEがまだ再生中なら待つ */
 	if (m_retrySE != nullptr && m_retrySE->IsPlaying())
 	{
 		return;
 	}
 
-	/** 再生が終わったので、ローディング画面に遷移してゲームをやり直す */
-	NewGO<LoadingScene>(0, "loading");
-	DeleteGO(this);
+	/** すでに暗転が始まっていたら、何もしない(毎フレーム呼ばれるため) */
+	Fade* fade = FindGO<Fade>("Fade");
+	if (fade->IsBusy()) { return; }
+
+	fade->StartTransition(Vector3(0.0f, 0.0f, 0.0f), 0.5f, 0.5f, [this]()
+		{
+			NewGO<LoadingScene>(0, "loading");
+			DeleteGO(this);
+		});
 }

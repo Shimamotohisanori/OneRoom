@@ -227,6 +227,7 @@
     <ClCompile Include="Flashlight\Flashlight.cpp" />
     <ClCompile Include="GameCamera\GameCamera.cpp" />
     <ClCompile Include="GameObjectCleaner\GameObjectCleaner.cpp" />
+    <ClCompile Include="GameScene\Fade.cpp" />
     <ClCompile Include="GameScene\Game.cpp" />
     <ClCompile Include="GameScene\GameClear.cpp" />
     <ClCompile Include="GameScene\GameOver.cpp" />
@@ -275,6 +276,7 @@
     <ClInclude Include="Flashlight\Flashlight.h" />
     <ClInclude Include="GameCamera\GameCamera.h" />
     <ClInclude Include="GameObjectCleaner\GameObjectCleaner.h" />
+    <ClInclude Include="GameScene\Fade.h" />
     <ClInclude Include="GameScene\Game.h" />
     <ClInclude Include="GameScene\GameClear.h" />
     <ClInclude Include="GameScene\GameOver.h" />

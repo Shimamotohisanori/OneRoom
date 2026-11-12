@@ -12,7 +12,11 @@
 #include "Pause.h"
 #include "Source/Actor/Stage/Door/GoalDoor/GoalDoor.h"
 #include "Source/Actor/Stage/GoalLight/GoalLight.h"
-
+#include "Source/Actor/Stage/DarkRoom/KeyPad/KeyPad.h"
+#include "Source/Actor/Stage/DarkRoom/Paper/Paper.h"
+#include "Source/Actor/Stage/HandSetRoom/Phone/Phone.h"
+#include "Source/Actor/Stage/HandSetRoom/PhonePaper/PhonePaper.h"
+#include "Fade.h"
 namespace
 {
 	/** ゲームクリアになる場所 */
@@ -73,14 +77,37 @@ bool Game::Start()
 	SoundManager* sound = FindGO<SoundManager>("soundManager");
 	m_gameBGM = sound->PlayingBGM(enGame, true);
 
+	/** キーパッドの取得 */
+	m_keyPad = FindGO<KeyPad>("KeyPad");
+
+	/** 紙の取得 */
+	m_paper = FindGO<Paper>("Paper");
+
+	/** 電話の取得 */
+	m_phone = FindGO<Phone>("Phone");
+
+	/** 電話の紙の取得 */
+	m_phonePaper = FindGO<PhonePaper>("PhonePaper");
+
 	return true;
 }
 
 void Game::Update()
 {
+
+	/** Start()が呼ばれたので、ゲームが開始できる状態にする */
+	m_isReady = true;
+
 	if (Death()) { return; }
 	if (Clear()) { return; }
-	GamePause();
+
+	/** キーパッド、紙、電話、電話の紙を開いてる間はポーズしない */
+	if (m_keyPad->GetIsKeypadOpen() || m_paper->GetIsViewing() ||
+		m_phone->GetIsPhoneOpen() || m_phonePaper->GetIsViewing())
+	{
+		return;
+	}
+		GamePause();
 	//g_renderingEngine->DisableRaytracing();
 }
 
@@ -91,14 +118,30 @@ void Game::Render(RenderContext& rc)
 
 bool Game::Death()
 {
-	/** SAN値が0以下になった場合、ゲームオーバー処理を行う */
-	if (m_sanCalculation->GetSANValue() <= SAN_VALUE_ZERO)
+
+	/** 死んでなくて */
+	if (!m_isDying)
 	{
-		NewGO<GameOver>(0,"GameOver");
-		DeleteGO(this);
-		return true;
+		/** SAN値が0より大きい場合、ゲームオーバー処理を行わない */
+		if (m_sanCalculation->GetSANValue() > SAN_VALUE_ZERO) { return false; }
+
+		/** プレイヤーの操作を無効化 */
+		m_player->SetInputEnabled(false);
+
+		/** 画面をブラックアウト */
+		FindGO<Fade>("Fade")->StartFadeOut(Vector3(0.0f, 0.0f, 0.0f),3.0f);
+		
+		/** 死んだ */
+		m_isDying = true;
 	}
-	return false;
+
+	/** 完全に暗くなったら、ゲームオーバー画面へ */
+	if (FindGO<Fade>("Fade")->IsFullyCovered())
+	{
+		NewGO<GameOver>(0, "GameOver");
+		DeleteGO(this);
+	}
+	return true;
 }
 
 bool Game::Clear()
@@ -123,12 +166,20 @@ bool Game::Clear()
 
 void Game::GamePause()
 {
-	if(m_player->IsPauseTriggered())
-	{
-		/** 一時停止状態にする */
-		m_pause->SetIsPaused(true);
+	if (m_pause->GetIsPaused()) { return; }
 
-		/** プレイヤーの操作を無効化 */
-		m_player->SetInputEnabled(false);
-	}
+	if (!m_player->IsPauseTriggered()) { return; }
+
+	/** フェード中は、ポーズを二重に開かない */
+	Fade* fade = FindGO<Fade>("Fade");
+	if (fade->IsBusy()) { return; }
+
+	/** プレイヤーの操作を無効化 */
+	m_player->SetInputEnabled(false);
+
+	/** 暗転して、真っ暗になった瞬間にポーズ画面へ切り替え、明転する */
+	fade->StartTransition(Vector3(0.0f, 0.0f, 0.0f), 0.3f, 0.3f, [this]()
+		{
+			m_pause->SetIsPaused(true);
+		});
 }

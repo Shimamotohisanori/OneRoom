@@ -35,7 +35,7 @@ namespace
 	constexpr float LIGHT_POWER = 1.0f;
 
 	/** 光が届く距離 */
-	constexpr float LIGHT_RANGE = 700.0f;
+	constexpr float LIGHT_RANGE = 800.0f;
 
 	/** 光の広がり(度)。内側の明るい部分と外側の淡い部分 */
 	constexpr float SPOT_ANGLE_DEG = 38.0f;

@@ -230,6 +230,9 @@
     <ClCompile Include="Source\Actor\Stage\GoalLight\GoalLight.cpp">
       <Filter>Source\Actor\Stage\GoalLight</Filter>
     </ClCompile>
+    <ClCompile Include="GameScene\Fade.cpp">
+      <Filter>GameScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -352,6 +355,9 @@
     </ClInclude>
     <ClInclude Include="Source\Actor\Stage\GoalLight\GoalLight.h">
       <Filter>Source\Actor\Stage\GoalLight</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene\Fade.h">
+      <Filter>GameScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
