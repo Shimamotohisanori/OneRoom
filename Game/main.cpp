@@ -7,6 +7,7 @@
 #include "GameScene/Title.h"
 #include "SoundManager/SoundManager.h"
 #include "GameScene/Fade.h"
+#include "EffectManager/EffectManager.h"
 
 void ReportLiveObjects()
 {
@@ -41,6 +42,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	//Fadeクラスのオブジェクトを作成。
 	NewGO<Fade>(1, "Fade");
+
+	//EffectManagerクラスのオブジェクトを作成。
+	NewGO<EffectManager>(0, "EffectManager");
 
 	//////////////////////////////////////
 	// 初期化を行うコードを書くのはここまで！！！

@@ -1,4 +1,5 @@
 #pragma once
+#include "Effect/CanActionEffect.h"
 /**
  * KeyPad.h
  * キーパッドクラス
@@ -94,6 +95,12 @@ private:
 
 	/** 決定した時の効果音 */
 	SoundSource* m_decisionSE = nullptr;
+
+	/** キーパッドの位置 */
+	Vector3 m_position = Vector3::Zero;
+
+	/** アクション可能なエフェクト */
+	CanActionEffect m_canActionEffect;
 
 	/** 操作案内文字を出すかどうか */
 	bool m_isPromptVisible = false;

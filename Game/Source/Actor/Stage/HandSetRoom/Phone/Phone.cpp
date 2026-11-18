@@ -6,6 +6,8 @@
 
 /** これを使いKeyButtonの構造体を利用する */
 #include "Source/Actor/Stage/Darkroom/KeyPad/KeyPad.h"
+
+#include "SAN/SANCalculation.h"
 namespace
 {
 	/** 電話のモデルのファイルパス */
@@ -52,6 +54,12 @@ namespace
 
 	/** Enterボタン選択時のカーソルの倍率(横, 縦, 奥) */
 	const Vector3 ENTER_CURSOR_SCALE = Vector3(1.2f, 0.9f, 1.0f);
+	
+	/** エフェクトのスケール */
+	const Vector3 EFFECT_SCALE = Vector3(7.0f, 7.0f, 7.0f);
+
+	/** エフェクトを出す位置のオフセット(モデルの原点に合わせて調整) */
+	const Vector3 EFFECT_OFFSET = Vector3(0.0f, 20.0f, 0.0f);
 
 	/** カーソルの色(半透明) */
 	const Vector4 CURSOR_COLOR = Vector4(1.0f, 1.0f, 1.0f, 0.5f);
@@ -61,6 +69,9 @@ namespace
 
 	constexpr int NONE = -1;
 	constexpr int KEY_COUNT = 13;
+
+	/** 不正解の番号を打った時に減るSAN値 */
+	constexpr int WRONG_CODE_DAMAGE = 20;
 
 	/** ボタン配置(キーパッドと同じ。画像に合わせて調整してください) */
 	const KeyButton KEY_BUTTONS[KEY_COUNT] =
@@ -176,6 +187,9 @@ void Phone::Update()
 	/** 受話器を開いていないときの処理 */
 	m_isPromptVisible = false;
 
+	/** エフェクトの表示/非表示(距離と壁を見て自動で切り替わる) */
+	m_canActionEffect.UpdateVisibility(m_position + EFFECT_OFFSET, m_player->GetPosition(), EFFECT_SCALE);
+
 	/** プレイヤーがインタラクトの範囲内にいるとき */
 	if (IsPlayerInRange())
 	{
@@ -232,6 +246,9 @@ bool Phone::IsPlayerInRange() const
 
 void Phone::Interact()
 {
+	/** 受話器を開いている間はエフェクトを消す */
+	m_canActionEffect.Hide();
+
 	/** 受話器を開く */
 	m_isPhoneOpen = true;
 
@@ -314,26 +331,32 @@ void Phone::InputDigit(int digit)
 
 void Phone::CheckCode()
 {
-	/** 入力した数字が正解のコードと一致するかを判定 */
+	/** すでに鍵を渡している場合は、入力をリセットして閉じる */
+	if (m_isUnlock) { ResetInput(); Close(); return; }
+
 	if (m_isCorrectPhone && m_inputText == CORRECT_CODE && !m_isUnlock)
 	{
-		/** 正解した場合は鍵を渡す */
 		m_isUnlock = true;
-
-		/** キーの数を増やす */
 		m_key->AddKey();
-
-		/** 受話器を閉じる */
 		Close();
+		return;
 	}
-	else
+
+	/** 不正解:入力が11桁そろっていた時だけ、着信音とSAN値の減少 */
+	if (m_inputText.size() >= MAX_DIGITS)
 	{
-		/** 不正解の場合は入力をリセットする */
-		ResetInput();
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		sound->PlayingSE(enRingtoneSE, false);
 
-		/** 受話器を閉じる */
-		Close();
+		SANCalculation* san = FindGO<SANCalculation>("SANCalculation");
+		if (san != nullptr)
+		{
+			san->SubtractSANValue(WRONG_CODE_DAMAGE);
+		}
 	}
+
+	ResetInput();
+	Close();
 }
 
 void Phone::ResetInput()

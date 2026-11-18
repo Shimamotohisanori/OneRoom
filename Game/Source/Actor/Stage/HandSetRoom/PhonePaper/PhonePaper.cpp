@@ -24,6 +24,12 @@ namespace
 	const Vector3 PROMPT_POSITION =
 		Vector3(-100.0f, -100.0f, 0.0f);
 
+	/** エフェクトのオフセット */
+	const Vector3 EFFECT_OFFSET = Vector3(0.0f, 40.0f, 0.0f);
+
+	/** エフェクトのスケール */
+	const Vector3 EFFECT_SCALE = Vector3(7.0f, 7.0f, 7.0f);
+
 	/** 紙画像の横幅 */
 	constexpr float PHONE_PAPER_SPRITE_WIDTH = 1920.0f;
 
@@ -38,7 +44,9 @@ namespace
 }
 
 PhonePaper::PhonePaper()
-{}
+{
+	m_paperPosition = PHONE_PAPER_INITIAL_POSITION;
+}
 
 PhonePaper::~PhonePaper()
 {
@@ -52,7 +60,7 @@ bool PhonePaper::Start()
 
 	/** 紙モデルの初期化 */
 	m_paperModel.Init(PHONE_PAPER_MODEL_FILE_PATH);
-	m_paperModel.SetPosition(PHONE_PAPER_INITIAL_POSITION);
+	m_paperModel.SetPosition(m_paperPosition);
 
 	/** 紙画像の初期化 */
 	m_paperSprite.Init(
@@ -77,6 +85,10 @@ void PhonePaper::Update()
 
 	if (m_player != nullptr)
 	{
+
+		/** エフェクトの表示/非表示(距離と壁を見て自動で切り替わる) */
+		m_canActionEffect.UpdateVisibility(m_paperPosition + EFFECT_OFFSET, m_player->GetPosition(), EFFECT_SCALE);
+
 		if (m_isViewing)
 		{
 			/** 調べ中: Bボタンで閉じる */

@@ -74,13 +74,6 @@ GoalLight::GoalLight()
 
 GoalLight::~GoalLight()
 {
-	
-	for (int i = 0; i < LIGHT_MODEL_NUM; i++) {
-		m_spotLight[i].SetColor(g_vec3Zero);
-		m_spotLight[i].SetColor2(g_vec3Zero);
-		m_spotLight[i].SetColor3(g_vec3Zero);
-		m_spotLight[i].Update();
-	}
 }
 
 bool GoalLight::Start()

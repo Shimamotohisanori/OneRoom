@@ -224,6 +224,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EffectManager\EffectManager.cpp" />
+    <ClCompile Include="Effect\CanActionEffect.cpp" />
     <ClCompile Include="Flashlight\Flashlight.cpp" />
     <ClCompile Include="GameCamera\GameCamera.cpp" />
     <ClCompile Include="GameObjectCleaner\GameObjectCleaner.cpp" />
@@ -273,6 +275,8 @@
     <ClCompile Include="VolumeAdjustment\VolumeAdjustment.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EffectManager\EffectManager.h" />
+    <ClInclude Include="Effect\CanActionEffect.h" />
     <ClInclude Include="Flashlight\Flashlight.h" />
     <ClInclude Include="GameCamera\GameCamera.h" />
     <ClInclude Include="GameObjectCleaner\GameObjectCleaner.h" />

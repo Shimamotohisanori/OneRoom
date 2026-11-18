@@ -1,5 +1,6 @@
 #pragma once
 #include "Source/Actor/Stage/Door/Door.h"
+#include "Effect/CanActionEffect.h"
 class Player;
 class Key;
 /**
@@ -41,6 +42,9 @@ private:
 
 	/** 案内文字(DanBall.h の m_promptFont と同じ型にする) */
 	FontRender m_promptFont;
+
+	/** アクション可能エフェクト */
+	CanActionEffect m_canActionEffect;
 
 	/** 開く音 */
 	SoundSource* m_doorOpenSound = nullptr;

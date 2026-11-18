@@ -21,6 +21,12 @@ namespace
 	/** 案内文字の表示位置(画面中心が原点、下がマイナス) */
 	const Vector3 PROMPT_POSITION = Vector3(-200.0f, -100.0f, 0.0f);
 
+	/** エフェクトのオフセット */
+	const Vector3 EFFECT_OFFSET = Vector3(0.0f, 150.0f, -5.0f);
+
+	/** エフェクトのスケール */
+	const Vector3 EFFECT_SCALE = Vector3(7.0f, 7.0f, 7.0f);
+
 	/** ゴールのドアのY軸回転(閉じている状態) */
 	const float GOAL_DOOR_ROTATION_Y = 0.0f;
 
@@ -69,6 +75,13 @@ void GoalDoor::Update()
 		m_key = FindGO<Key>("Key");
 	}
 
+	/** ドアが閉じているとき */
+	if (!GetIsOpen())
+	{
+		/** エフェクトの表示/非表示(距離と壁を見て自動で切り替わる) */
+		m_canActionEffect.UpdateVisibility(GetDoorPosition() + EFFECT_OFFSET, m_player->GetPosition(), EFFECT_SCALE);
+	}
+
 	/** 閉じていて、まだ開ける操作をされていない間だけ案内を出す */
 	if (!GetIsOpen() && !m_isOpenRequested &&
 		m_player != nullptr && m_key != nullptr && IsPlayerInRange())
@@ -81,6 +94,8 @@ void GoalDoor::Update()
 
 			if (m_player->IsInteractTriggered())
 			{
+				m_canActionEffect.Hide();
+
 				/** 開く音を再生 */
 				SoundManager* sound = FindGO<SoundManager>("soundManager");
 				m_doorOpenSound = sound->PlayingSE(enDoorOpenSE, false);

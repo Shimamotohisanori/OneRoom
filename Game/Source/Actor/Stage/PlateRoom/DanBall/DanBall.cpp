@@ -22,6 +22,12 @@ namespace
 	/** 案内文字の表示位置(画面中心が原点、下がマイナス) */
 	const Vector3 PROMPT_POSITION = Vector3(-100.0f, -100.0f, 0.0f);
 
+	/** エフェクトを出す位置のオフセット(モデルの原点に合わせて調整) */
+	const Vector3 EFFECT_OFFSET = Vector3(0.0f, 50.0f, 0.0f);
+
+	/** エフェクトのスケール */
+	const Vector3 EFFECT_SCALE = Vector3(7.0f, 7.0f, 7.0f);
+
 	/** プレイヤーが段ボールを取得できる距離 */
 	const float PICKUP_DISTANCE = 70.0f;
 
@@ -45,18 +51,22 @@ namespace
 }
 
 DanBall::DanBall()
-{}
+{
+	/** 初期座標 */
+	m_position = DAN_BALL_INITIAL_POSITION;
+}
 
 DanBall::~DanBall()
 {}
 
 bool DanBall::Start()
 {
+
 	/** 段ボールモデルの初期化 */
 	m_danBallModel.Init(DAN_BALL_MODEL_FILE_PATH);
 
 	/** 段ボールの座標を設定 */
-	m_danBallModel.SetPosition(DAN_BALL_INITIAL_POSITION);
+	m_danBallModel.SetPosition(m_position);
 
 	/** 段ボールのスケールを設定 */
 	m_danBallModel.SetScale(DAN_BALL_SCALE);
@@ -94,6 +104,9 @@ void DanBall::Update()
 	switch (m_state)
 	{
 	case EnState::enState_Ground:
+		/** エフェクトの表示/非表示(距離と壁を見て自動で切り替わる) */
+		m_canActionEffect.UpdateVisibility(m_position + EFFECT_OFFSET, m_player->GetPosition(), EFFECT_SCALE);
+
 		if (IsPlayerInRange())
 		{
 			m_promptFont.SetText(L"物を取る");
@@ -101,9 +114,11 @@ void DanBall::Update()
 
 			if (m_player->IsInteractTriggered())
 			{
+				m_canActionEffect.Hide();
 				PickUp();
 			}
 		}
+
 		m_danBallModel.Update();
 		break;
 
