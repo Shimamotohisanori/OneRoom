@@ -1,4 +1,5 @@
 #pragma once
+#include "Effect/CanActionEffect.h"
 /**
  * Phone.h
  * 電話クラス
@@ -94,6 +95,9 @@ private:
 
 	/** モデルの向き */
 	Vector3 m_rotation = Vector3::Zero;
+
+	/** アクション可能な事を知らせるエフェクト */
+	CanActionEffect m_canActionEffect;
 
 	/** 正解の受話器か */
 	bool m_isCorrectPhone = false;

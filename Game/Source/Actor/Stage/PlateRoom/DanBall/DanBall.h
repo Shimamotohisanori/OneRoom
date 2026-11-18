@@ -1,4 +1,5 @@
 #pragma once
+#include "Effect/CanActionEffect.h"
 /**
  * DanBall.h
  * 段ボールクラス
@@ -22,6 +23,12 @@ public:
 	{
 		return m_state == EnState::enState_Placed; 
 	}
+
+	/** 段ボールの位置を設定 */
+	void SetPosition(const Vector3& pos) { m_position = pos; }
+
+	/** 段ボールの位置を取得 */
+	const Vector3& GetPosition() const { return m_position; }
 
 
 private:
@@ -72,6 +79,12 @@ private:
 
 	/** 段ボールの状態 */
 	EnState m_state = EnState::enState_Ground;
+
+	/** 段ボールの位置 */
+	Vector3 m_position = Vector3::Zero;
+
+	/** アクション可能な事を知らせるエフェクト */
+	CanActionEffect m_canActionEffect;
 
 	/** 取得済みか */
 	bool m_isPickedUp = false;

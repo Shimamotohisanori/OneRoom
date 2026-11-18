@@ -22,6 +22,12 @@ namespace
 	/** 操作案内フォントの座標 */
 	const Vector3 PROMPT_POSITION = Vector3(-100.0f, -100.0f, 0.0f);
 
+	/** エフェクトのスケール */
+	const Vector3 EFFECT_SCALE = Vector3(7.0f, 7.0f, 7.0f);
+
+	/** エフェクトの座標オフセット */
+	const Vector3 EFFECT_OFFSET = Vector3(0.0f, 20.0f, 0.0f);
+
 	/** 紙画像の横幅 */
 	constexpr float PAPER_SPRITE_WIDTH = 1920.0f;
 
@@ -35,7 +41,9 @@ namespace
 	constexpr float PROMPT_SCALE = 1.5f;
 }
 Paper::Paper()
-{}
+{
+	m_position = PAPER_INITIAL_POSITION;
+}
 
 Paper::~Paper()
 {
@@ -48,7 +56,7 @@ bool Paper::Start()
 
 	m_paperModel.Init(PAPER_MODEL_FILE_PATH);
 
-	m_paperModel.SetPosition(PAPER_INITIAL_POSITION);
+	m_paperModel.SetPosition(m_position);
 
 	m_litPaperSprite.Init(PAPER_LIT_SPRITE_FILE_PATH, PAPER_SPRITE_WIDTH, PAPER_SPRITE_HEIGHT);
 	m_litPaperSprite.SetPosition(PAPER_SPRITE_INITIAL_POSITION);
@@ -70,6 +78,9 @@ void Paper::Update()
 
 	if (m_player != nullptr)
 	{
+		/** エフェクトの表示/非表示(距離と壁を見て自動で切り替わる) */
+		m_canActionEffect.UpdateVisibility(m_position + EFFECT_OFFSET, m_player->GetPosition(), EFFECT_SCALE);
+
 		if (m_isViewing)
 		{
 			/** 調べ中: Bで閉じる */
@@ -79,6 +90,7 @@ void Paper::Update()
 				m_player->SetInputEnabled(true);
 			}
 		}
+
 		else if (IsPlayerInRange())
 		{
 			/** 範囲内: 案内を出し、Aで調べ始める */
@@ -136,6 +148,9 @@ bool Paper::IsPlayerInRange() const
 
 void Paper::Interact()
 {
+	/** 受話器を開いている間はエフェクトを消す */
+	m_canActionEffect.Hide();
+
 	/** 調べ始める。操作を止める */
 	m_isViewing = true;
 	m_player->SetInputEnabled(false);

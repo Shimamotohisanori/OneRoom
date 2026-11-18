@@ -39,6 +39,12 @@ namespace
 	/** 明るさをデバッグ出力する間隔(秒) */
 	constexpr float DEBUG_PRINT_INTERVAL = 0.5f;
 
+	/** 表示が追いつく基本の速さ(1秒あたりの量) */
+	constexpr float DISPLAY_SPEED_MIN = 20.0f;
+
+	/** 差が大きい時に、差に応じて速くする倍率 */
+	constexpr float DISPLAY_SPEED_RATE = 3.0f;
+
 	/** SAN値の文字色 */
 	const Vector4 COLOR_GREEN = Vector4(0.2f, 1.0f, 0.2f, 1.0f);
 	const Vector4 COLOR_WHITE = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -62,6 +68,7 @@ SANCalculation::~SANCalculation()
 bool SANCalculation::Start()
 {
 	m_sanValue = SAN_VALUE_INITIAL;
+	m_displaySANValue = SAN_VALUE_INITIAL;
 	return true;
 }
 
@@ -82,10 +89,32 @@ void SANCalculation::Update()
 	CalculateSAN();
 }
 
+void SANCalculation::UpdateDisplayValue(float deltaTime)
+{
+	const float diff = m_sanValue - m_displaySANValue;
+	if (fabsf(diff) < 0.01f)
+	{
+		m_displaySANValue = m_sanValue;
+		return;
+	}
+
+	/** 差が大きいほど速く動く。差が1や2でも、最低速度で必ず追いつく */
+	const float speed = max(DISPLAY_SPEED_MIN, fabsf(diff) * DISPLAY_SPEED_RATE);
+	const float step = speed * deltaTime;
+
+	if (fabsf(diff) <= step) {
+		m_displaySANValue = m_sanValue;
+	}
+	else {
+		m_displaySANValue += (diff > 0.0f ? step : -step);
+	}
+}
+
 void SANCalculation::CalculateSAN()
 {
 	UpdateByLight(g_gameTime->GetFrameDeltaTime());
 	ClampSAN();
+	UpdateDisplayValue(g_gameTime->GetFrameDeltaTime());
 }
 
 void SANCalculation::UpdateByLight(float deltaTime)

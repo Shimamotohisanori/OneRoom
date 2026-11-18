@@ -3,10 +3,10 @@
 namespace 
 {
 	/** 歩きの最大速度 */
-	constexpr float WALK_MAX_SPEED = 850.0f;
+	constexpr float WALK_MAX_SPEED = 800.0f;
 	
 	/** 走りの最大速度 */
-	constexpr float RUN_MAX_SPEED = 170.0f;
+	constexpr float RUN_MAX_SPEED = 300.0f;
 
 	/** 左右の向きを変える速さ(度数/フレーム換算前の係数) */
 	constexpr float YAW_ROTATE_SPEED = 2.0f;

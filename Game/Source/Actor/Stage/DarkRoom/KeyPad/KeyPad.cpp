@@ -44,6 +44,12 @@ namespace
 	/** カーソルの色 */
 	const Vector4 CURSOR_COLOR = Vector4(1.0f, 1.0f, 1.0f, 0.5f);
 
+	/** エフェクトのスケール */
+	const Vector3 EFFECT_SCALE = Vector3(7.0f, 7.0f, 7.0f);
+
+	/** エフェクトの座標オフセット */
+	const Vector3 EFFECT_OFFSET = Vector3(0.0f, 40.0f, 0.0f);
+
 	/** キーパッド画像の縦幅 */
 	constexpr float KEYPAD_SPRITE_HEIGHT = 800.0f;
 
@@ -102,7 +108,9 @@ namespace
 	};
 }
 KeyPad::KeyPad()
-{}
+{
+	m_position = KEYPAD_INITIAL_POSITION;
+}
 
 KeyPad::~KeyPad()
 {
@@ -127,7 +135,7 @@ bool KeyPad::Start()
 {
 	m_keyPadModel.Init(KEYPAD_MODEL_FILE_PATH);
 
-	m_keyPadModel.SetPosition(KEYPAD_INITIAL_POSITION);
+	m_keyPadModel.SetPosition(m_position);
 	m_keyPadModel.SetScale(KEYPAD_SCALE);
 
 	m_keyPadSprite.Init(KEYPAD_SPRITE_FILE_PATH, KEYPAD_SPRITE_WIDTH, KEYPAD_SPRITE_HEIGHT);
@@ -186,6 +194,9 @@ void KeyPad::Update()
 		m_keyPadModel.Update();
 		return;
 	}
+
+	/** 障害物や距離を考慮してエフェクトの表示/非表示を切り替える */
+	m_canActionEffect.UpdateVisibility(m_position + EFFECT_OFFSET, m_player->GetPosition(), EFFECT_SCALE);
 
 	/** プレイヤーが近くにいる場合は、操作案内文字を表示する */
 	m_isPromptVisible = false;
@@ -249,6 +260,9 @@ bool KeyPad::IsPlayerInRange() const
 
 void KeyPad::Interact()
 {
+	/** エフェクトを消す */
+	m_canActionEffect.Hide();
+
 	/** キーパッドを開く */
 	m_isKeypadOpen = true;
 

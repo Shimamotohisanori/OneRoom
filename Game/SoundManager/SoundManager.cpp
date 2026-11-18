@@ -44,7 +44,8 @@ namespace
 		"DoorOpenSE",
 		"DecisionSE",
 		"HeartSE",
-		"GoalSE"
+		"GoalSE",
+		"RingtoneSE"
 	};
 }
 

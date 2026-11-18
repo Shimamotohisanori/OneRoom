@@ -1,4 +1,5 @@
 #pragma once
+#include "Effect/CanActionEffect.h"
 /**
  * Paper.h
  * 紙クラス
@@ -50,6 +51,12 @@ private:
 
 	/** インタラクト時のSE */
 	SoundSource* m_interactSE = nullptr;
+
+	/** アクション可能な事を知らせるエフェクト */
+	CanActionEffect m_canActionEffect;
+
+	/** 紙の座標 */
+	Vector3 m_position = Vector3::Zero;
 
 	/** 紙を調べている最中か */
 	bool m_isViewing = false;

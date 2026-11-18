@@ -1,4 +1,5 @@
 #pragma once
+#include "Effect/CanActionEffect.h"
 /**
  * PhonePaper.h
  * 電話の紙クラス
@@ -41,6 +42,9 @@ private:
 	/** 紙の画像 */
 	SpriteRender m_paperSprite;
 
+	/** 紙の位置 */
+	Vector3 m_paperPosition;
+
 	/** 操作案内フォント */
 	FontRender m_introductionFont;
 
@@ -49,6 +53,9 @@ private:
 
 	/** インタラクト時のSE */
 	SoundSource* m_interactSE = nullptr;
+
+	/** アクション可能エフェクト */
+	CanActionEffect m_canActionEffect;
 
 	/** 紙を調べている最中か */
 	bool m_isViewing = false;

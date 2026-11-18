@@ -54,6 +54,15 @@ public:
 		return m_smoothedBrightness;
 	}
 
+	/** 画面に表示する値を取得する(アニメーションで追いかける) */
+	int GetDisplaySANValue() const
+	{
+		return static_cast<int>(m_displaySANValue + 0.5f);
+	}
+
+	/** 表示用のSAN値を更新する */
+	void UpdateDisplayValue(float deltaTime);
+
 private:
 	/** SANを計算する */
 	void CalculateSAN();
@@ -71,14 +80,17 @@ private:
 	/** なめらかにした明るさ(点滅ライトで回復/減少が細かく切り替わらないようにする) */
 	float m_smoothedBrightness = 0.0f;
 
-	/** m_smoothedBrightness を初期化済みか */
-	bool m_isBrightnessInitialized = false;
+	/** 表示用のSAN値 */
+	float m_displaySANValue = 100.0f;
 
 	/** 暗い状態が続いている時間(秒) */
 	float m_darkTimer = 0.0f;
 
 	/** デバッグ出力用タイマー */
 	float m_debugTimer = 0.0f;
+
+	/** m_smoothedBrightness を初期化済みか */
+	bool m_isBrightnessInitialized = false;
 
 	/** ポーズ画面の参照 */
 	Pause* m_pause = nullptr;
