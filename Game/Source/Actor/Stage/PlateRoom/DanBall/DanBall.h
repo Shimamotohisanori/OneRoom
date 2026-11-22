@@ -7,7 +7,6 @@
  */
 class Player;
 class Plate;
-class Key;
 class SANCalculation;
 class DanBall : public IGameObject
 {
@@ -61,9 +60,6 @@ private:
 
 	/** プレイヤー */
 	Player* m_player = nullptr;
-	
-	/** キー */
-	Key* m_key = nullptr;
 
 	/** SAN計算クラス */
 	SANCalculation* m_sanCalculation = nullptr;

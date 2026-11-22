@@ -238,6 +238,8 @@
     <ClCompile Include="GameScene\Title.cpp" />
     <ClCompile Include="IntroductionUI\IntroductionUI.cpp" />
     <ClCompile Include="Key\Key.cpp" />
+    <ClCompile Include="Key\KeyGetDirection\KeyGetDirector.cpp" />
+    <ClCompile Include="Key\KeyItem\KeyItem.cpp" />
     <ClCompile Include="Key\KeyUI\KeyUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SAN\SANCalculation.cpp" />
@@ -289,6 +291,8 @@
     <ClInclude Include="GameScene\Title.h" />
     <ClInclude Include="IntroductionUI\IntroductionUI.h" />
     <ClInclude Include="Key\Key.h" />
+    <ClInclude Include="Key\KeyGetDirection\KeyGetDirector.h" />
+    <ClInclude Include="Key\KeyItem\KeyItem.h" />
     <ClInclude Include="Key\KeyUI\KeyUI.h" />
     <ClInclude Include="SAN\SANCalculation.h" />
     <ClInclude Include="SAN\SANRedEffect.h" />

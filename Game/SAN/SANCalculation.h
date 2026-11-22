@@ -7,6 +7,7 @@
  *  - 音が鳴ると一定量減少(OnNoiseHeard を呼ぶ)
  */
 class Pause;
+class KeyGetDirector;
 class SANCalculation : public IGameObject
 {
 public:
@@ -94,4 +95,7 @@ private:
 
 	/** ポーズ画面の参照 */
 	Pause* m_pause = nullptr;
+
+	/** 鍵取得時の演出の参照 */
+	KeyGetDirector* m_keyGetDirector = nullptr;
 };

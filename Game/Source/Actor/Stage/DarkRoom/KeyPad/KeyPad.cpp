@@ -1,8 +1,8 @@
 ﻿#include "stdafx.h"
 #include "KeyPad.h"
 #include "Source/Actor/Player/Player.h"
-#include "Key/Key.h"
 #include "SoundManager/SoundManager.h"
+#include "Key/KeyGetDirection/KeyGetDirector.h"
 namespace
 {
 	/** キーパッドモデルのファイルパス */
@@ -24,7 +24,7 @@ namespace
 	const Vector3 CURSOR_INITIAL_POSITION = Vector3(0.0f, 0.0f, 0.0f);
 
 	/** キーパッドに表示される数字の初期座標 */
-	const Vector3 DIGITS_INITIAL_POSITION = Vector3(-290.0f, 300.0f, 0.0f);
+	const Vector3 DIGITS_INITIAL_POSITION = Vector3(290.0f, 300.0f, 0.0f);
 
 	/** カーソルのスケール */
 	const Vector3 CURSOR_SCALE = Vector3(1.0f, 1.0f, 1.0f);
@@ -49,6 +49,15 @@ namespace
 
 	/** エフェクトの座標オフセット */
 	const Vector3 EFFECT_OFFSET = Vector3(0.0f, 40.0f, 0.0f);
+
+	/** 演出用のカメラの設定 */
+	const KeyGetDirection KEY_GET_DIRECTION = {
+		Vector3(-800.0f, 30.0f, 0.0f),  // カメラの位置
+		Vector3(-1120.0f, -70.0f, 0.0f),  // 注視点
+		Vector3(-1120.0f, -70.0f, 0.0f),  // 鍵の位置
+		3.0f,  // 移動時間
+		1.5f   // 停止時間
+	};
 
 	/** キーパッド画像の縦幅 */
 	constexpr float KEYPAD_SPRITE_HEIGHT = 800.0f;
@@ -89,6 +98,15 @@ namespace
 	constexpr int KEY_COUNT = 11;
 	constexpr int ENTER_INDEX = 10;
 	constexpr int INITIAL_SELECT = 4; // 5のキーから開始
+
+	/** 入力数字の右端のX座標(この位置に最後の数字が揃う) */
+	constexpr float DIGITS_RIGHT_X = 80.0f;
+
+	/** 入力数字のY座標 */
+	constexpr float DIGITS_Y = 300.0f;
+
+	/** 数字1桁分の横幅(スケール1.0のとき) */
+	constexpr float DIGIT_WIDTH = 20.0f;
 
 	// 座標は画像に合わせて調整してください
 	const KeyButton KEY_BUTTONS[KEY_COUNT] =
@@ -149,9 +167,6 @@ bool KeyPad::Start()
 	/** プレイヤーの取得 */
 	m_player = FindGO<Player>("Player");
 
-	/** キーの取得 */
-	m_key = FindGO<Key>("Key");
-
 	/** 操作案内文字の初期化 */
 	m_promptFont.SetPosition(PROMPT_POSITION);
 	m_promptFont.SetScale(PROMPT_FONT_SCALE);
@@ -166,6 +181,12 @@ bool KeyPad::Start()
 
 void KeyPad::Update()
 {
+	/** キーパッドを開いているときの処理 */
+	if (m_isUnlock)
+	{
+		return;
+	}
+
 	/** キーパッドを開いている間は、閉じる入力だけ受け付ける */
 	if (m_isKeypadOpen)
 	{
@@ -351,9 +372,12 @@ void KeyPad::InputDigit(int digit)
 		return;
 	}
 
-	/** 数字を文字に変えて、後ろにくっつける
-	 *  L'0' に digit を足すと '0'～'9' の文字になる */
+	/** 入力した数字を追加 */
 	m_inputText += static_cast<wchar_t>(L'0' + digit);
+
+	/** 右端が動かないように、桁数に応じて左端の位置をずらす */
+	const float width = m_inputText.size() * DIGIT_WIDTH * INPUT_FONT_SCALE;
+	m_inputFont.SetPosition(Vector3(DIGITS_RIGHT_X - width, DIGITS_Y, 0.0f));
 
 	/** 表示用フォントに反映する */
 	m_inputFont.SetText(m_inputText.c_str());
@@ -368,8 +392,14 @@ void KeyPad::CheckCode()
 	{
 		/** 正解 */
 		m_isUnlock = true;
-		m_key->AddKey();
 		Close();
+
+		/** 鍵取得時の演出をする */
+		KeyGetDirector* director = FindGO<KeyGetDirector>("KeyGetDirector");
+		if (director)
+		{
+			director->Play(KEY_GET_DIRECTION);
+		}
 	}
 	else
 	{

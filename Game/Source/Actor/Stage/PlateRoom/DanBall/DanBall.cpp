@@ -2,9 +2,9 @@
 #include "DanBall.h"
 #include "Source/Actor/Player/Player.h"
 #include "Source/Actor/Stage/PlateRoom/Plate/Plate.h"
-#include "Key/Key.h"
 #include "SAN/SANCalculation.h"
 #include "SoundManager/SoundManager.h"
+#include "Key/KeyGetDirection/KeyGetDirector.h"
 namespace
 {
 	/** 段ボールモデルのファイルパス */
@@ -27,6 +27,15 @@ namespace
 
 	/** エフェクトのスケール */
 	const Vector3 EFFECT_SCALE = Vector3(7.0f, 7.0f, 7.0f);
+
+	/** 演出用のカメラの設定 */
+	const KeyGetDirection KEY_GET_DIRECTION = {
+		Vector3(800.0f, 30.0f, -390.0f),  // カメラの位置
+		Vector3(800.0f, 0.0f, -300.0f),  // 注視点
+		Vector3(797.5f, -65.0f, -193.5f),  // 鍵の位置
+		2.0f,  // 移動時間
+		1.0f   // 停止時間
+	};
 
 	/** プレイヤーが段ボールを取得できる距離 */
 	const float PICKUP_DISTANCE = 70.0f;
@@ -85,12 +94,6 @@ bool DanBall::Start()
 
 void DanBall::Update()
 {
-
-	/** キーの取得 */
-	if (m_key == nullptr)
-	{
-		m_key = FindGO<Key>("Key");
-	}
 
 	/** SAN計算クラスの取得 */
 	if (m_sanCalculation == nullptr)
@@ -182,9 +185,6 @@ void DanBall::PlaceOnPlate()
 	/** 段ボールを置く音を再生 */
 	SoundManager* sound = FindGO<SoundManager>("soundManager");
 	m_putSE = sound->PlayingSE(enPutDanBall, false);
-
-	/** キーの数を増やす */
-	m_key->AddKey();
 	
 	/** SANを減らす */
 	m_sanCalculation->SubtractSANValue(SAN_DECREASE_AMOUNT);
@@ -205,6 +205,13 @@ void DanBall::PlaceOnPlate()
 	m_danBallModel.SetRotation(Quaternion::Identity);
 	m_danBallModel.SetScale(DAN_BALL_SCALE);
 	m_danBallModel.Update();
+
+	/** 鍵取得時の演出をする */
+	KeyGetDirector* director = FindGO<KeyGetDirector>("KeyGetDirector");
+	if (director)
+	{
+		director->Play(KEY_GET_DIRECTION);
+	}
 }
 
 void DanBall::UpdateHeld()
