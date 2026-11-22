@@ -2,6 +2,7 @@
 #include "SANCalculation.h"
 #include "Source/Actor/Stage/LightObject/LightObject.h"
 #include "GameScene/Pause.h"
+#include "Key/KeyGetDirection/KeyGetDirector.h"
 #include <cstdio>
 
 namespace
@@ -69,6 +70,8 @@ bool SANCalculation::Start()
 {
 	m_sanValue = SAN_VALUE_INITIAL;
 	m_displaySANValue = SAN_VALUE_INITIAL;
+
+	m_keyGetDirector = FindGO<KeyGetDirector>("KeyGetDirector");
 	return true;
 }
 
@@ -76,6 +79,12 @@ void SANCalculation::Update()
 {
 	if (m_pause == nullptr) {
 		m_pause = FindGO<Pause>("Pause");
+		return;
+	}
+
+	if (m_keyGetDirector->IsPlaying())
+	{
+		/** 鍵取得演出中はSAN値の計算を止める */
 		return;
 	}
 

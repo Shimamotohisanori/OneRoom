@@ -1,13 +1,13 @@
 ﻿#include "stdafx.h"
 #include "Phone.h"
 #include "Source/Actor/Player/Player.h"
-#include "Key/Key.h"
 #include "SoundManager/SoundManager.h"
 
 /** これを使いKeyButtonの構造体を利用する */
 #include "Source/Actor/Stage/Darkroom/KeyPad/KeyPad.h"
 
 #include "SAN/SANCalculation.h"
+#include "Key/KeyGetDirection/KeyGetDirector.h"
 namespace
 {
 	/** 電話のモデルのファイルパス */
@@ -61,6 +61,15 @@ namespace
 	/** エフェクトを出す位置のオフセット(モデルの原点に合わせて調整) */
 	const Vector3 EFFECT_OFFSET = Vector3(0.0f, 20.0f, 0.0f);
 
+	/** 演出用のカメラの設定 */
+	const KeyGetDirection KEY_GET_DIRECTION = {
+		Vector3(1190.0f, 30.0f, 800.0f),  // カメラの位置
+		Vector3(1200.0f, 0.0f, 820.0f),  // 注視点
+		Vector3(1200.0f, -65.0f, 820.0f),  // 鍵の位置
+		2.0f,  // 移動時間
+		1.0f   // 停止時間
+	};
+
 	/** カーソルの色(半透明) */
 	const Vector4 CURSOR_COLOR = Vector4(1.0f, 1.0f, 1.0f, 0.5f);
 
@@ -72,6 +81,15 @@ namespace
 
 	/** 不正解の番号を打った時に減るSAN値 */
 	constexpr int WRONG_CODE_DAMAGE = 20;
+
+	/** 入力数字の右端のX座標(この位置に最後の数字が揃う) */
+	constexpr float DIGITS_RIGHT_X = 220.0f;
+
+	/** 入力数字のY座標 */
+	constexpr float DIGITS_Y = 290.0f;
+
+	/** 数字1桁分の横幅(スケール1.0のとき) */
+	constexpr float DIGIT_WIDTH = 17.0f;
 
 	/** ボタン配置(キーパッドと同じ。画像に合わせて調整してください) */
 	const KeyButton KEY_BUTTONS[KEY_COUNT] =
@@ -125,9 +143,6 @@ bool Phone::Start()
 
 	/** プレイヤーの取得 */
 	m_player = FindGO<Player>("Player");
-
-	/** キーの取得 */
-	m_key = FindGO<Key>("Key");
 
 	/** フォントの初期化 */
 	m_promptFont.SetPosition(PROMPT_POSITION);
@@ -326,6 +341,12 @@ void Phone::InputDigit(int digit)
 	if (m_inputText.size() >= MAX_DIGITS) return;
 
 	m_inputText += static_cast<wchar_t>(L'0' + digit);
+
+	/** 右端が動かないように、桁数に応じて左端の位置をずらす */
+	const float width = m_inputText.size() * DIGIT_WIDTH * INPUT_FONT_SCALE;
+	m_inputFont.SetPosition(Vector3(DIGITS_RIGHT_X - width, DIGITS_Y, 0.0f));
+
+	/** 表示用フォントに反映する */
 	m_inputFont.SetText(m_inputText.c_str());
 }
 
@@ -337,8 +358,14 @@ void Phone::CheckCode()
 	if (m_isCorrectPhone && m_inputText == CORRECT_CODE && !m_isUnlock)
 	{
 		m_isUnlock = true;
-		m_key->AddKey();
 		Close();
+
+		/** 鍵取得演出を開始する */
+		KeyGetDirector* keyGetDirector = FindGO<KeyGetDirector>("KeyGetDirector");
+		if (keyGetDirector)
+		{
+			keyGetDirector->Play(KEY_GET_DIRECTION);
+		}
 		return;
 	}
 

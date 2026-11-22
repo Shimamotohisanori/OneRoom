@@ -52,12 +52,6 @@
     <Filter Include="Key\KeyUI">
       <UniqueIdentifier>{55cbd433-9760-4a20-8c27-d8c1727415f2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Key\PlateRoomKey">
-      <UniqueIdentifier>{ea0cfb5f-fd55-4f23-89f4-c52fb43068a5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Key\DarkRoomKey">
-      <UniqueIdentifier>{b9fe2202-a24a-42db-a09a-7a055891ea08}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Actor\Stage\PlateRoom\DanBall">
       <UniqueIdentifier>{d44ab33e-f479-42a2-a2fb-340729ade1a7}</UniqueIdentifier>
     </Filter>
@@ -72,9 +66,6 @@
     </Filter>
     <Filter Include="Source\Actor\Stage\DarkRoom\KeyPad">
       <UniqueIdentifier>{dbcbc5b4-b898-4773-8ee8-48c20cfb5b40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Key\HandSetRoomKey">
-      <UniqueIdentifier>{ed04af8d-2d4a-43cf-9f96-e48f71392266}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Actor\Stage\HandSetRoom">
       <UniqueIdentifier>{45ffc4b6-a8d7-4fc8-86b8-52d22b245d61}</UniqueIdentifier>
@@ -111,6 +102,12 @@
     </Filter>
     <Filter Include="Effect">
       <UniqueIdentifier>{4a054fa2-b241-4f96-aff5-74708c13eb33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Key\KeyGetDirection">
+      <UniqueIdentifier>{c4739270-d168-4e8d-ab91-f337673186b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Key\KeyItem">
+      <UniqueIdentifier>{e99ec37a-0bb9-4898-ab3a-11c680c50d0d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -245,6 +242,12 @@
     <ClCompile Include="Effect\CanActionEffect.cpp">
       <Filter>Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Key\KeyGetDirection\KeyGetDirector.cpp">
+      <Filter>Key\KeyGetDirection</Filter>
+    </ClCompile>
+    <ClCompile Include="Key\KeyItem\KeyItem.cpp">
+      <Filter>Key\KeyItem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -376,6 +379,12 @@
     </ClInclude>
     <ClInclude Include="Effect\CanActionEffect.h">
       <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Key\KeyGetDirection\KeyGetDirector.h">
+      <Filter>Key\KeyGetDirection</Filter>
+    </ClInclude>
+    <ClInclude Include="Key\KeyItem\KeyItem.h">
+      <Filter>Key\KeyItem</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

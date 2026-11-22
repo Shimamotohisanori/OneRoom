@@ -6,7 +6,6 @@
  * 同じクラスを複数生成し、そのうち一つだけ正解の受話器にする
  */
 class Player;
-class Key;
 class Phone : public IGameObject
 {
 public:
@@ -86,9 +85,6 @@ private:
 
 	/** プレイヤー */
 	Player* m_player = nullptr;
-
-	/** キー */
-	Key* m_key = nullptr;
 
 	/** 設置位置 */
 	Vector3 m_position = Vector3::Zero;

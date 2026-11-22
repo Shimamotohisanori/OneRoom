@@ -19,7 +19,6 @@ struct KeyButton
 };
 
 class Player;
-class Key;
 class KeyPad : public IGameObject
 {
 public:
@@ -86,9 +85,6 @@ private:
 
 	/** プレイヤー */
 	Player* m_player = nullptr;
-
-	/** キー */
-	Key* m_key = nullptr;
 
 	/** 選択を変えた時の効果音 */
 	SoundSource* m_selectSE = nullptr;

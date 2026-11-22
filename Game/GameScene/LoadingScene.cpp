@@ -20,6 +20,7 @@
 #include "SAN/SANRedEffect.h"
 #include "Source/Actor/Stage/GoalLight/GoalLight.h"
 #include "Fade.h"
+#include "Key/KeyGetDirection/KeyGetDirector.h"
 namespace
 {
 	/** ローディング画面のファイルパス */
@@ -151,6 +152,7 @@ namespace
 		enLoadStep_MainStage,
 		enLoadStep_Player,
 		enLoadStep_GameCamera,
+		enLoadStep_KeyGetDirector,
 		enLoadStep_SkyCube,
 		enLoadStep_LightSetting,
 		enLoadStep_Plate,
@@ -229,6 +231,10 @@ void LoadingScene::LoadGame()
 
 	case enLoadStep_GameCamera:
 		m_gameCamera = NewGO<GameCamera>(0, "GameCamera");
+		break;
+
+	case enLoadStep_KeyGetDirector:
+		NewGO<KeyGetDirector>(0, "KeyGetDirector");
 		break;
 
 	case enLoadStep_SkyCube:

@@ -54,6 +54,9 @@ void GameCamera::Update()
 		return;
 	}
 
+	/** 演出中は通常のカメラ操作を無効化 */
+	if (m_isDirection) { return; }
+
 	/** ゲームパッドの右スティックのY入力を取得 */
 	float y = g_pad[0]->GetRStickYF();
 
@@ -93,5 +96,14 @@ void GameCamera::Update()
 	nsK2EngineLow::g_camera3D->SetTarget(target);
 	nsK2EngineLow::g_camera3D->SetPosition(eyePosition);
 	nsK2EngineLow::g_camera3D->SetUp(up);
+	nsK2EngineLow::g_camera3D->Update();
+}
+
+void GameCamera::SetDirectionView(const Vector3& pos, const Vector3& target)
+{
+	m_isDirection = true;
+	nsK2EngineLow::g_camera3D->SetPosition(pos);
+	nsK2EngineLow::g_camera3D->SetTarget(target);
+	nsK2EngineLow::g_camera3D->SetUp(Vector3::AxisY);
 	nsK2EngineLow::g_camera3D->Update();
 }
