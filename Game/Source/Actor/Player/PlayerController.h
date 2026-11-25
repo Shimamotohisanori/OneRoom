@@ -11,6 +11,7 @@ enum class EnMoveState
 	enMoveState_Run,  //走り
 };
 
+class SoundManager;
 class PlayerController : public IGameObject
 {
 public:
@@ -61,6 +62,7 @@ public:
 	/** 入力の有効化の状態を取得 */
 	bool GetIsInputEnabled() const { return m_isInputEnabled; }
 
+
 private:
 	/** 入力を読み取るだけの処理 */
 	void UpdateInput();
@@ -76,7 +78,13 @@ private:
 
 	/** アクション入力(ボタン)を読み取る */
 	void UpdateActionInput();
-	
+
+	/** 歩きのサウンドを更新 */
+	void UpdateWalkSound();
+
+	/** 歩きのサウンドを停止 */
+	void StopWalkSound();
+
 
 private:
 	/** プレイヤーの当たり判定 */
@@ -90,6 +98,12 @@ private:
 
 	/** プレイヤーの向き */
 	Quaternion m_rotation = Quaternion::Identity;
+
+	/** サウンドソース */
+	SoundSource* m_walkSE = nullptr;
+
+	/** サウンドマネージャー */
+	SoundManager* m_soundManager = nullptr;
 
 	/** 走るボタンが押されているか */
 	bool m_isRunButtonPressed = false;
