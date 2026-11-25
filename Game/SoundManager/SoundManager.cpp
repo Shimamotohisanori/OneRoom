@@ -45,7 +45,8 @@ namespace
 		"DecisionSE",
 		"HeartSE",
 		"GoalSE",
-		"RingtoneSE"
+		"RingtoneSE",
+		"WalkSE"
 	};
 }
 
@@ -164,4 +165,16 @@ void SoundManager::StopBGM(SoundSource*& bgm)
 
 	/** 引数のBGMをnullptrにする */
 	bgm = nullptr;
+}
+
+void SoundManager::StopSE(SoundSource*& se)
+{
+	/** SEが存在するかチェック */
+	if (se == nullptr) { return; }
+
+	/** SEを停止 */
+	DeleteGO(se);
+
+	/** nullptrに設定 */
+	se = nullptr;
 }

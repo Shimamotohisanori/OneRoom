@@ -35,6 +35,7 @@ enum SoundSE
 	enHeartSE,
 	enGoalSE,
 	enRingtoneSE,
+	enWalkSE,
 	enSENum
 };
 
@@ -93,6 +94,10 @@ public:
 
 	/** BGMを止めて削除する(m_currentBGMも安全に空にする) */
 	void StopBGM(SoundSource*& bgm);
+
+	/** SEを止めて削除する */
+	void StopSE(SoundSource*& se);
+
 
 private:
 	/** BGM音量 */

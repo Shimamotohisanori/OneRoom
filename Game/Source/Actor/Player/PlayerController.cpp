@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "PlayerController.h"
+#include "SoundManager/SoundManager.h"
 namespace 
 {
 	/** 歩きの最大速度 */
-	constexpr float WALK_MAX_SPEED = 800.0f;
+	constexpr float WALK_MAX_SPEED = 100.0f;
 	
 	/** 走りの最大速度 */
 	constexpr float RUN_MAX_SPEED = 300.0f;
@@ -25,13 +26,23 @@ namespace
 
 	/** プレイヤー座標(目線)から、当たり判定(足元)までの高さの差 */
 	constexpr float FOOT_OFFSET = 100.0f;
+
+	/** 歩きのサウンドの再生速度の比率 */
+	constexpr float WALK_SOUND_RATIO = 0.3f; //歩きのサウンドの再生速度の比率
+
+	/** 走りのサウンドの再生速度の比率 */
+	constexpr float RUN_SOUND_RATIO = 0.8f; //走りのサウンドの再生速度の比率
+
 }
 
 PlayerController::PlayerController()
 {}
 
 PlayerController::~PlayerController()
-{}
+{
+	/** 歩きのサウンドを停止 */
+	StopWalkSound();
+}
 
 bool PlayerController::Start()
 {
@@ -40,6 +51,8 @@ bool PlayerController::Start()
 	Vector3 footPosition = m_position;
 	footPosition.y -= FOOT_OFFSET;
 	m_characterController.Init(COLLISION_RADIUS, COLLISION_HEIGHT, footPosition);
+
+	m_soundManager = FindGO<SoundManager>("soundManager");
 	return true;
 }
 
@@ -51,12 +64,14 @@ void PlayerController::Update()
 	{
 		m_moveInput = Vector3::Zero;
 		m_isRunButtonPressed = false;
+		StopWalkSound();
 		return;
 	}
 
 	UpdateInput();
 	UpdateMoveState();
 	UpdateMove();
+	UpdateWalkSound();
 }
 
 void PlayerController::SetPosition(const Vector3& position)
@@ -173,4 +188,35 @@ void PlayerController::UpdateMove()
 	/** プレイヤー座標は、足元からオフセット分上にする */
 	m_position = footPosition;
 	m_position.y += FOOT_OFFSET;
+}
+
+void PlayerController::UpdateWalkSound()
+{
+	if (m_soundManager == nullptr) { return; }
+
+	if (m_moveState == EnMoveState::enMoveState_Idle)
+	{
+		StopWalkSound();
+		return;
+	}
+
+	/** 鳴っていなければループ再生を開始 */
+	if (m_walkSE == nullptr)
+	{
+		m_walkSE = m_soundManager->PlayingSE(enWalkSE, true);
+	}
+
+	/** 歩き=等速、走り=2.0倍速 */
+	float ratio = (m_moveState == EnMoveState::enMoveState_Run)
+		? RUN_SOUND_RATIO : WALK_SOUND_RATIO;
+	m_walkSE->SetFrequencyRatio(ratio);
+}
+
+void PlayerController::StopWalkSound()
+{
+	/** 歩きのサウンドを止める */
+	if (m_soundManager != nullptr)
+	{
+		m_soundManager->StopSE(m_walkSE);
+	}
 }
