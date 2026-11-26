@@ -58,7 +58,7 @@ namespace
 	constexpr float IBL_STRENGTH = 0.001f;
 
 	/** ブルームの強さ */
-	constexpr float BLOOM_STRENGTH = 3.0f;
+	constexpr float BLOOM_STRENGTH = 10.0f;
 
 	/** ローディングの進捗状況の初期値 */
 	constexpr int LOADING_PROGRESS_INITIAL = 0;

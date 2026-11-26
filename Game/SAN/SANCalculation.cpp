@@ -3,6 +3,7 @@
 #include "Source/Actor/Stage/LightObject/LightObject.h"
 #include "GameScene/Pause.h"
 #include "Key/KeyGetDirection/KeyGetDirector.h"
+#include "Source/Actor/Player/Player.h"
 #include <cstdio>
 
 namespace
@@ -26,7 +27,7 @@ namespace
 	constexpr float LIGHT_DARK_THRESHOLD = 0.05f;
 
 	/** 1秒あたりの回復量 */
-	constexpr float LIGHT_RECOVER_PER_SEC = 2.5f;
+	constexpr float LIGHT_RECOVER_PER_SEC = 3.0f;
 
 	/** 暗いときの1秒あたりの減少量 */
 	constexpr float DARK_DAMAGE_PER_SEC = 2.0f;
@@ -45,6 +46,15 @@ namespace
 
 	/** 差が大きい時に、差に応じて速くする倍率 */
 	constexpr float DISPLAY_SPEED_RATE = 3.0f;
+
+	/** 走り続けて、この秒数が経ってから減り始める */
+	constexpr float RUN_GRACE_TIME = 3.0f;
+
+	/** 走りで減る間隔(秒) */
+	constexpr float RUN_DAMAGE_INTERVAL = 1.0f;
+
+	/** 1回で減る量 */
+	constexpr float RUN_DAMAGE_AMOUNT = 1.0f;
 
 	/** SAN値の文字色 */
 	const Vector4 COLOR_GREEN = Vector4(0.2f, 1.0f, 0.2f, 1.0f);
@@ -71,7 +81,12 @@ bool SANCalculation::Start()
 	m_sanValue = SAN_VALUE_INITIAL;
 	m_displaySANValue = SAN_VALUE_INITIAL;
 
+	/** 鍵取得時の演出の参照 */
 	m_keyGetDirector = FindGO<KeyGetDirector>("KeyGetDirector");
+
+	/** プレイヤーの参照 */
+	m_player = FindGO<Player>("Player");
+
 	return true;
 }
 
@@ -121,9 +136,11 @@ void SANCalculation::UpdateDisplayValue(float deltaTime)
 
 void SANCalculation::CalculateSAN()
 {
-	UpdateByLight(g_gameTime->GetFrameDeltaTime());
+	const float deltaTime = g_gameTime->GetFrameDeltaTime();
+	UpdateByLight(deltaTime);
+	UpdateByRun(deltaTime);
 	ClampSAN();
-	UpdateDisplayValue(g_gameTime->GetFrameDeltaTime());
+	UpdateDisplayValue(deltaTime);
 }
 
 void SANCalculation::UpdateByLight(float deltaTime)
@@ -181,6 +198,31 @@ void SANCalculation::OnNoiseHeard()
 void SANCalculation::ClampSAN()
 {
 	m_sanValue = max(SAN_VALUE_MIN, min(SAN_VALUE_MAX, m_sanValue));
+}
+
+void SANCalculation::UpdateByRun(float deltaTime)
+{
+	if (m_player == nullptr) { return; }
+
+	/** 走っていなければタイマーをリセット */
+	if (m_player->GetMoveState() != EnMoveState::enMoveState_Run)
+	{
+		m_runTimer = 0.0f;
+		m_runDamageTimer = 0.0f;
+		return;
+	}
+
+	/** 猶予時間が過ぎるまでは減らさない */
+	m_runTimer += deltaTime;
+	if (m_runTimer < RUN_GRACE_TIME) { return; }
+
+	/** 一定間隔ごとに1ずつ減らす(明るさに関係なく) */
+	m_runDamageTimer += deltaTime;
+	while (m_runDamageTimer >= RUN_DAMAGE_INTERVAL)
+	{
+		m_runDamageTimer -= RUN_DAMAGE_INTERVAL;
+		m_sanValue -= RUN_DAMAGE_AMOUNT;
+	}
 }
 
 Vector4 SANCalculation::GetSANColor() const

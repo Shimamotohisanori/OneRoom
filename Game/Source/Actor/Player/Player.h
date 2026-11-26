@@ -68,6 +68,9 @@ public:
 	/** 入力の有効化の状態を取得 */
 	bool GetIsInputEnabled() const { return m_controller.GetIsInputEnabled(); }
 
+	/** 現在の移動状態を取得 */
+	EnMoveState GetMoveState() const { return m_controller.GetMoveState(); }
+
 private:
 	/** プレイヤーモデル */
 	PlayerModel m_model;

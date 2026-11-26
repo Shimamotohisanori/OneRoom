@@ -32,17 +32,17 @@ namespace
 
 	/** ライトの基本色(半透明くらいの明るさ)と強さ */
 	const Vector3 LIGHT_COLOR = { 1.0f, 0.92f, 0.75f };
-	constexpr float LIGHT_POWER = 1.0f;
+	constexpr float LIGHT_POWER = 1.5f;
 
 	/** 光が届く距離 */
 	constexpr float LIGHT_RANGE = 800.0f;
 
 	/** 光の広がり(度)。内側の明るい部分と外側の淡い部分 */
-	constexpr float SPOT_ANGLE_DEG = 38.0f;
+	constexpr float SPOT_ANGLE_DEG = 30.0f;
 
 	/** 距離減衰・角度減衰の累乗。大きいほど急に暗く/縁がぼける */
 	constexpr float RANGE_POW = 3.0f;
-	constexpr float ANGLE_POW = 3.0f;
+	constexpr float ANGLE_POW = 2.0f;
 
 	/** ちらつきの強さ(0.03 = ±3%) */
 	constexpr float FLICKER_AMOUNT = 0.03f;

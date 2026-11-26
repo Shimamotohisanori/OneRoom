@@ -66,7 +66,11 @@ void KeyGetDirector::Update()
 	}
 	case EnPhase::Hold:
 		/** ここで鍵を出す・SEを鳴らすなどの演出を足せる */
-		if (m_timer >= m_direction.holdTime) { m_phase = EnPhase::MoveOut; m_timer = 0.0f; }
+		if (m_timer >= m_direction.holdTime) 
+		{ 
+			m_phase = EnPhase::MoveOut;
+			m_timer = 0.0f; 
+		}
 		break;
 
 	case EnPhase::MoveOut:

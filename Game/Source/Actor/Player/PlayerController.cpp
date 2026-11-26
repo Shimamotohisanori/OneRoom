@@ -64,6 +64,7 @@ void PlayerController::Update()
 	{
 		m_moveInput = Vector3::Zero;
 		m_isRunButtonPressed = false;
+		m_moveState = EnMoveState::enMoveState_Idle;
 		StopWalkSound();
 		return;
 	}

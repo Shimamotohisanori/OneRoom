@@ -36,6 +36,7 @@ enum SoundSE
 	enGoalSE,
 	enRingtoneSE,
 	enWalkSE,
+	enGetKeySE,
 	enSENum
 };
 
