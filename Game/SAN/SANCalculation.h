@@ -8,6 +8,7 @@
  */
 class Pause;
 class KeyGetDirector;
+class Player;
 class SANCalculation : public IGameObject
 {
 public:
@@ -74,6 +75,9 @@ private:
 	/** SAN値を0～100に収める */
 	void ClampSAN();
 
+	/** 走りに夜SAN値の減少 */
+	void UpdateByRun(float deltaTime);
+
 private:
 	/** SAN値(1フレームあたりの増減が小さいのでfloatで持つ) */
 	float m_sanValue = 100.0f;
@@ -89,12 +93,21 @@ private:
 
 	/** デバッグ出力用タイマー */
 	float m_debugTimer = 0.0f;
+	
+	/** 走り続けている時間(秒) */
+	float m_runTimer = 0.0f;
+
+	/** 走りによるダメージの経過時間 */
+	float m_runDamageTimer = 0.0f;
 
 	/** m_smoothedBrightness を初期化済みか */
 	bool m_isBrightnessInitialized = false;
 
 	/** ポーズ画面の参照 */
 	Pause* m_pause = nullptr;
+	
+	/** プレイヤーの参照 */
+	Player* m_player = nullptr;
 
 	/** 鍵取得時の演出の参照 */
 	KeyGetDirector* m_keyGetDirector = nullptr;

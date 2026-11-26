@@ -15,8 +15,9 @@ namespace
 	/** 明るさ倍率:全点灯 */
 	constexpr float INTENSITY_FULL = 1.0f;
 
-	/** 距離・角度による減衰の累乗(1.0で線形) */
-	constexpr float AFFECT_POW_LINEAR = 1.0f;
+	/** 見た目用の減衰の累乗(大きいほど中心が明るく、縁が急に暗くなる) */
+	constexpr float SPOT_RANGE_POW = 2.0f;
+	constexpr float SPOT_ANGLE_POW = 2.0f;
 
 	/** チカチカの回数の範囲 */
 	constexpr int BURST_COUNT_MIN = 3;
@@ -138,12 +139,12 @@ bool LightObject::Start()
 		m_spotLight.SetAngle(angleRad);
 		m_spotLight.SetAngle2(angleRad);
 		m_spotLight.SetAngle3(angleRad);
-		m_spotLight.SetRangeAffectPowParam(AFFECT_POW_LINEAR);
-		m_spotLight.SetRangeAffectPowParam2(AFFECT_POW_LINEAR);
-		m_spotLight.SetRangeAffectPowParam3(AFFECT_POW_LINEAR);
-		m_spotLight.SetAngleAffectPowParam(AFFECT_POW_LINEAR);
-		m_spotLight.SetAngleAffectPowParam2(AFFECT_POW_LINEAR);
-		m_spotLight.SetAngleAffectPowParam3(AFFECT_POW_LINEAR);
+		m_spotLight.SetRangeAffectPowParam(SPOT_RANGE_POW);
+		m_spotLight.SetRangeAffectPowParam2(SPOT_RANGE_POW);
+		m_spotLight.SetRangeAffectPowParam3(SPOT_RANGE_POW);
+		m_spotLight.SetAngleAffectPowParam(SPOT_ANGLE_POW);
+		m_spotLight.SetAngleAffectPowParam2(SPOT_ANGLE_POW);
+		m_spotLight.SetAngleAffectPowParam3(SPOT_ANGLE_POW);
 		m_spotLight.Update();
 
 		/** ライトのパラメータをスポットライトへ反映 */
@@ -321,12 +322,18 @@ float LightObject::GetBrightnessAt(const Vector3& position) const
 	}
 
 	/** 距離による減衰 */
-	const float rangeAffect = powf(1.0f - dist / m_range, AFFECT_POW_LINEAR);
+	const float rangeAffect = powf(1.0f - dist / m_range, SPOT_RANGE_POW);
 
 	/** 角度による減衰。判定は描画の円錐より広めにとる */
 	toPos.Normalize();
+
+	/** cosA = cos(角度) = 内積。内積の値が大きいほど、ライトの方向に近い */
 	const float cosA = max(-1.0f, min(1.0f, m_direction.Dot(toPos)));
+
+	/** 角度を計算 */
 	const float angle = acosf(cosA);
+
+	/** 角度が射出角度より大きい場合は0 */
 	const float spotRad = min(
 		Math::DegToRad(max(m_angle, MIN_SPOT_ANGLE_DEG)) * SAN_BRIGHTNESS_ANGLE_SCALE,
 		PI_VALUE);
@@ -334,14 +341,16 @@ float LightObject::GetBrightnessAt(const Vector3& position) const
 		return 0.0f;
 	}
 
-	/** 中心は1.0、縁は SAN_BRIGHTNESS_EDGE_RATIO まで下がる */
-	const float angleAffect = 1.0f - (1.0f - SAN_BRIGHTNESS_EDGE_RATIO) * (angle / spotRad);
+	/** 角度による減衰。判定範囲の縁での明るさの割合を考慮する */
+	const float angleAffect = powf(1.0f - (1.0f - SAN_BRIGHTNESS_EDGE_RATIO) * (angle / spotRad), SPOT_ANGLE_POW);
 
+	/** 距離減衰と角度減衰を掛けて、明るさ倍率を算出 */
 	return baseBrightness * rangeAffect * angleAffect;
 }
 
 float LightObject::CalculateBrightnessAt(const Vector3& position)
 {
+	/** 全ライトの明るさを合計する */
 	float sum = 0.0f;
 	for (const LightObject* light : s_lights) {
 		sum += light->GetBrightnessAt(position);

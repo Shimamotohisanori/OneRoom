@@ -1,9 +1,9 @@
-// KeyItem.cpp
 #include "stdafx.h"
 #include "KeyItem.h"
 #include "Source/Actor/Player/Player.h"
 #include "Key/Key.h"
 #include "Key/KeyGetDirection/KeyGetDirector.h"
+#include "SoundManager/SoundManager.h"
 namespace
 {
 	/** 鍵モデルのファイルパス(最初は仮のモデルでもよい) */
@@ -71,6 +71,8 @@ void KeyItem::Update()
 		m_canActionEffect.Hide();
 		m_key->AddKey();
 		/** ここで取得SEを鳴らす */
+		SoundManager* sound = FindGO<SoundManager>("soundManager");
+		sound->PlayingSE(enGetKeySE, false);
 		DeleteGO(this);
 	}
 }

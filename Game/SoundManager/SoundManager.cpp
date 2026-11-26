@@ -46,7 +46,8 @@ namespace
 		"HeartSE",
 		"GoalSE",
 		"RingtoneSE",
-		"WalkSE"
+		"WalkSE",
+		"GetKeySE"
 	};
 }
 
